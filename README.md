@@ -10,7 +10,7 @@ An explainable job-search assistant for final-year students and candidates with 
 
 | Milestone | Scope | State |
 | --- | --- | --- |
-| M0 | Walking skeleton: monorepo, auth, schema + RLS, CI, health | Built and tested locally; **not yet deployed** (needs your Supabase + Vercel accounts) |
+| M0 | Walking skeleton: monorepo, auth, schema + RLS, CI, health | Supabase database live with migrations applied; CI, nightly e2e, and migrate workflows green on GitHub; **web app not yet deployed to Vercel**, and Supabase auth URLs not yet configured |
 | M1 | Résumé → editable profile | Not started |
 | M2 | Preferences and eligibility | Not started |
 | M3 | Bring-your-own-job | Not started |
@@ -79,7 +79,8 @@ pnpm dev                    # http://localhost:3000
 
 1. Push this repo to GitHub, then in Vercel choose **Add New → Project** and import it.
 2. Set **Root Directory** to `apps/web`. The framework preset (Next.js) and pnpm are detected automatically.
-3. Add these environment variables for Production and Preview: `DATABASE_URL`, `DATABASE_POOL_MAX` (optional), `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_SITE_URL` (your Vercel URL).
+3. Add these environment variables for Production and Preview: `DATABASE_URL`, `DATABASE_POOL_MAX` (optional), `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_SITE_URL` (your Vercel URL). Also add `ENABLE_EXPERIMENTAL_COREPACK=1` so Vercel installs the pnpm version pinned in the root `package.json` instead of guessing from the lockfile.
+   Under Settings → **Functions**, set the function region to Mumbai (`bom1`) so the server runs next to the database. New projects default to Washington, D.C. (`iad1`), which adds roughly 200 ms to every database round trip.
 4. Deploy, then open `https://<your-domain>/api/health`. It should return `{"status":"ok", ...}`.
 5. Add the deployed URL to the Supabase redirect URLs (step 5 above).
 

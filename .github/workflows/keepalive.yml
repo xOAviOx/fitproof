@@ -18,7 +18,8 @@ jobs:
     steps:
       - name: App health
         if: ${{ vars.APP_URL != '' }}
-        run: curl --fail --silent --show-error --max-time 30 "${{ vars.APP_URL }}/api/health"
+        # The first request after a day idle wakes the database and can be slow, so retry.
+        run: curl --fail --silent --show-error --max-time 30 --retry 2 --retry-delay 10 --retry-all-errors "${{ vars.APP_URL }}/api/health"
       - name: Note missing APP_URL
         if: ${{ vars.APP_URL == '' }}
         run: echo "::notice::Set the APP_URL repository variable to enable the health ping."

@@ -89,7 +89,7 @@ Short ADRs. Newest last. Status is one of: Accepted, Superseded, Proposed.
 ## ADR-013: One `.env` at the repo root
 
 - **Status:** Accepted (M0)
-- **Decision:** `next.config.ts` loads the root `.env` through `@next/env`, and the worker and migration scripts use `tsx --env-file-if-exists=../../.env`. One file to fill in, and env validation runs in each app.
+- **Decision:** `next.config.ts` loads the root `.env` with Node's `process.loadEnvFile` (variables already set in the environment win; `@next/env` can't be used because Next caches its first load from `apps/web`), and the worker and migration scripts use `tsx --env-file-if-exists=../../.env`. One file to fill in, and env validation runs in each app.
 
 ## ADR-014: Free-tier constraints (checked 2026-10-13)
 

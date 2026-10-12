@@ -12,7 +12,6 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@next/env": "16.4.0",
     "@repo/core": "workspace:*",
     "@repo/db": "workspace:*",
     "@supabase/ssr": "^0.12.7",

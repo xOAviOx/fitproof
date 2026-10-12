@@ -39,6 +39,8 @@ export default defineConfig({
           reuseExistingServer: !process.env.CI,
           env: {
             DATABASE_URL,
+            // Set explicitly so a DATABASE_MIGRATION_URL in the root .env can't point migrations elsewhere.
+            DATABASE_MIGRATION_URL: DATABASE_URL,
             DATABASE_POOL_MAX: "1",
             NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "http://127.0.0.1:54321",
             NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
