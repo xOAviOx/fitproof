@@ -1,0 +1,47 @@
+name: Keep-alive
+
+# Supabase pauses free projects after ~7 days of low activity. A daily health
+# check (which queries the database) and a worker selftest keep it awake and
+# double as an uptime probe for both deploy targets.
+on:
+  schedule:
+    - cron: "15 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: App health
+        if: ${{ vars.APP_URL != '' }}
+        run: curl --fail --silent --show-error --max-time 30 "${{ vars.APP_URL }}/api/health"
+      - name: Note missing APP_URL
+        if: ${{ vars.APP_URL == '' }}
+        run: echo "::notice::Set the APP_URL repository variable to enable the health ping."
+
+  worker-selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - name: Note missing DATABASE_URL
+        if: ${{ env.DATABASE_URL == '' }}
+        run: echo "::notice::Set the DATABASE_URL secret to enable the worker selftest."
+      - uses: actions/checkout@v7
+        if: ${{ env.DATABASE_URL != '' }}
+      - uses: pnpm/action-setup@v6
+        if: ${{ env.DATABASE_URL != '' }}
+      - uses: actions/setup-node@v7
+        if: ${{ env.DATABASE_URL != '' }}
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - if: ${{ env.DATABASE_URL != '' }}
+        run: pnpm install --frozen-lockfile
+      - if: ${{ env.DATABASE_URL != '' }}
+        run: pnpm worker selftest

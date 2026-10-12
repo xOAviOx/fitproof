@@ -1,0 +1,40 @@
+name: Migrate database
+
+# Applies committed Drizzle migrations to the production database.
+# Migrations must stay backward compatible with the currently deployed app,
+# because Vercel may deploy before or after this job finishes.
+on:
+  push:
+    branches: [main]
+    paths:
+      - packages/db/migrations/**
+  workflow_dispatch:
+
+concurrency:
+  group: migrate
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    env:
+      DATABASE_MIGRATION_URL: ${{ secrets.DATABASE_MIGRATION_URL }}
+    steps:
+      - name: Require the migration secret
+        if: ${{ env.DATABASE_MIGRATION_URL == '' }}
+        run: |
+          echo "::error::Set the DATABASE_MIGRATION_URL secret (Supabase session pooler, port 5432)."
+          exit 1
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:migrate
