@@ -11,7 +11,7 @@ An explainable job-search assistant for final-year students and candidates with 
 | Milestone | Scope | State |
 | --- | --- | --- |
 | M0 | Walking skeleton: monorepo, auth, schema + RLS, CI, health | Supabase database live with migrations applied; CI, nightly e2e, and migrate workflows green on GitHub; **web app not yet deployed to Vercel**, and Supabase auth URLs not yet configured |
-| M1 | Résumé → editable profile | Not started |
+| M1 | Résumé → editable profile | Implemented and locally tested with synthetic PDF/DOCX layouts; live provider/storage setup and three real-world résumé checks still pending |
 | M2 | Preferences and eligibility | Not started |
 | M3 | Bring-your-own-job | Not started |
 | M4 | Job collection (ATS connectors, Adzuna) | Not started |
@@ -23,9 +23,11 @@ An explainable job-search assistant for final-year students and candidates with 
 
 ```
 apps/web             Next.js 16 (App Router): UI, auth, route handlers, server actions
-apps/worker          CLI pipelines run by GitHub Actions (selftest today; ingest/verify/rematch/backfill/eval later)
+apps/worker          CLI pipelines run by GitHub Actions (selftest, extract-resumes, storage-setup; ingestion later)
 packages/core        Pure domain logic and config, no I/O (vocabulary, scoring weights)
 packages/db          Drizzle schema, migrations, RLS policies, job queue, PGlite test harness
+packages/llm         AI SDK provider adapters, user-scoped caching, quotas, quote verification
+packages/storage     Private résumé storage behind a replaceable interface
 data/                Seed companies and eval fixtures (from M3/M4)
 docs/                DECISIONS, RUNBOOK, PRIVACY, BACKLOG
 ```
@@ -36,6 +38,36 @@ docs/                DECISIONS, RUNBOOK, PRIVACY, BACKLOG
 - **Validation:** Zod at the boundaries. Both apps refuse to start if required environment variables are missing.
 
 See `docs/DECISIONS.md` for the reasoning behind each choice.
+
+## Résumé and profile (M1)
+
+Open `/profile` after signing in. You can create a profile manually even without storage or LLM configuration.
+Skills, work, internships, projects, education, certifications, summary, and contact links are editable.
+Review each evidence entry, check its confirmation box, then choose **Confirm profile**. Edits return the profile
+to draft. Manually added or changed skills are self-declared; changed entries no longer claim an original résumé quote.
+
+To enable upload and background extraction:
+
+1. Set `SUPABASE_SECRET_KEY` to a server-only Supabase secret (or legacy service-role key), and set the worker's
+   `GEMINI_API_KEY`, `LLM_PROVIDER`, and `LLM_MODEL`. Before processing real personal data, use a paid/no-training
+   provider tier. To switch providers, set `LLM_PROVIDER=openai`, an OpenAI `LLM_MODEL`, and `OPENAI_API_KEY`.
+2. Run `pnpm worker storage-setup` once to create/configure the private `resumes` bucket. This is an operator
+   command that changes Storage settings; it is never run by the app or tests.
+3. Set `RESUME_UPLOADS_ENABLED=true` in the web environment. Upload a text-based PDF or DOCX, at most 5 MB.
+4. Run `pnpm worker extract-resumes` locally to process queued uploads. In GitHub, configure the secrets
+   `DATABASE_URL`, `SUPABASE_SECRET_KEY`, and your provider key, plus repository variables
+   `RESUME_UPLOADS_ENABLED=true`, `NEXT_PUBLIC_SUPABASE_URL`, and the LLM model/provider settings.
+   `extract-resumes.yml` runs every five minutes when enabled, or can be run manually.
+
+The upload request only stores and queues the file. The worker parses it, removes contact information, obtains
+a structured draft, verifies quotes, and saves the result. The page polls status and updates automatically.
+GitHub schedules can be delayed. Re-uploading replaces the draft only after successful extraction; an older
+worker result cannot overwrite a newer upload. Failed files show a helpful error and still allow manual edits.
+Unrecognized section headings fail closed rather than sending an unredacted document to the provider.
+
+Limits: five uploads per user per hour, 40,000 extracted characters, 30 PDF pages, 20 MB expanded DOCX data,
+and configurable global LLM request budgets. Original files are accessed through 60-second signed URLs after an
+ownership check. Uploads remain off by default so M0 environments continue to start without new secrets.
 
 ## Prerequisites
 
@@ -112,6 +144,8 @@ Workflows:
 | `pnpm db:generate` | Generate a migration after editing `packages/db/src/schema` |
 | `pnpm db:migrate` | Apply migrations |
 | `pnpm worker selftest` | Check worker → database connectivity and record a run |
+| `pnpm worker storage-setup` | Operator-only: provision a private résumé bucket |
+| `pnpm worker extract-resumes` | Process up to five queued résumé uploads |
 | `pnpm --filter @repo/db pglite:serve` | In-memory Postgres on port 54329, for smoke-testing without Docker or Supabase (no auth) |
 
 ## Free-tier constraints (checked 2026-10-13; re-check before relying on them)
@@ -123,7 +157,23 @@ Workflows:
 
 ## Scaling up without a rewrite
 
-The database is plain Postgres plus pgvector, so it runs on any Postgres host. The LLM provider is selected by environment variable (from M1). File storage sits behind an interface (from M1). The queue lives in one module. Dockerfiles for `web` and `worker` ship in M7 and will be verified by building both images locally. Before charging users, move to Vercel Pro or run the web image on any container host, and move to a paid or no-training LLM tier.
+The database is plain Postgres plus pgvector, so it runs on any Postgres host. The LLM provider is selected by environment variable. File storage sits behind `ResumeStorage`. The queue lives in one module. Dockerfiles for `web` and `worker` ship in M7 and will be verified by building both images locally. Before charging users, move to Vercel Pro or run the web image on any container host, and move to a paid or no-training LLM tier.
+
+### M1 verification
+
+Unit/integration tests exercise real PDF/DOCX parsers with single-column, two-column, and table-based synthetic
+résumés, redaction, quote verification, provider caching/quotas, RLS profile persistence, stale results, and retries.
+Playwright exercises upload → background extraction → edit → confirm → reload, manual entry, re-upload,
+errors, and cross-user download isolation on desktop and mobile. Its auth service signs local test JWTs; the
+production app still verifies them normally. Storage and provider responses are mocked locally, with no real
+provider calls, auth bypass, or real résumé data. The fit/eligibility evaluation command arrives in M3/M5.
+
+Manual acceptance check after live setup:
+1. Sign in and upload three different real-world résumé layouts (PDF and DOCX), using a paid/no-training provider.
+2. Wait for each draft, compare every section to its source, and correct dates, evidence tiers, or fields as needed.
+3. Confirm every entry, save, reload, and check that it remains confirmed.
+4. Re-upload a different résumé and check that its successful draft replaces the old entries.
+5. Sign in as another user and check that the first user's profile and original-file URL are inaccessible.
 
 ## Docs
 

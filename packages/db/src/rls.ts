@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import type { Database, Transaction } from "./client";
+import type { DbOrTx, Transaction } from "./client";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -9,7 +9,7 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
  * does to the Supabase Data API. `userId` must come from a verified session.
  */
 export async function withUserContext<T>(
-  db: Database,
+  db: DbOrTx,
   userId: string,
   fn: (tx: Transaction) => Promise<T>,
 ): Promise<T> {

@@ -3,8 +3,14 @@ packages:
   - packages/*
 allowBuilds:
   esbuild: true
+overrides:
+  "mammoth@1.13.0>argparse": "-"
 minimumReleaseAgeExclude:
   - '@vitest/mocker@5.0.4'
   - '@vitest/spy@5.0.4'
   - vitest@5.0.4
   - zod@4.6.7
+  - '@ai-sdk/gateway@4.0.112'
+  - '@ai-sdk/google@4.0.95'
+  - '@ai-sdk/openai@4.0.93'
+  - ai@7.0.139

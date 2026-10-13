@@ -12,6 +12,9 @@
         "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
         "NEXT_PUBLIC_SITE_URL",
         "LOG_LEVEL",
+        "RESUME_UPLOADS_ENABLED",
+        "RESUME_STORAGE_BUCKET",
+        "SUPABASE_SECRET_KEY",
         "VERCEL_GIT_COMMIT_SHA"
       ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]

@@ -57,6 +57,7 @@ export async function claimNextJob(
     })
     .where(
       and(
+        inArray(jobRuns.kind, [...options.kinds]),
         eq(jobRuns.status, "running"),
         lt(jobRuns.lockedUntil, sql`now()`),
         gte(jobRuns.attempts, jobRuns.maxAttempts),

@@ -1,12 +1,41 @@
 import { createDb, type Database } from "@repo/db";
+import { createProfileExtractor } from "@repo/llm";
+import { createResumeStorage, provisionResumeBucket } from "@repo/storage";
 import pino, { type Logger } from "pino";
+import { extractResumes } from "./commands/extract-resumes";
 import { selftest } from "./commands/selftest";
 import { parseWorkerEnv } from "./env";
+import { parseResumeEnv, parseStorageEnv } from "./resume-env";
 
 type Command = { description: string; run: (db: Database, logger: Logger) => Promise<unknown> };
 
 const COMMANDS: Record<string, Command> = {
   selftest: { description: "Check database connectivity and record a run in job_runs", run: selftest },
+  "extract-resumes": {
+    description: "Process up to five queued résumé uploads",
+    async run(db, logger) {
+      const env = parseResumeEnv(process.env);
+      return extractResumes(db, logger, {
+        storage: createResumeStorage(
+          env.NEXT_PUBLIC_SUPABASE_URL,
+          env.SUPABASE_SECRET_KEY,
+          env.RESUME_STORAGE_BUCKET,
+        ),
+        extractor: createProfileExtractor(db, env),
+      });
+    },
+  },
+  "storage-setup": {
+    description: "Create or update the private résumé bucket (operator only)",
+    async run() {
+      const env = parseStorageEnv(process.env);
+      await provisionResumeBucket(
+        env.NEXT_PUBLIC_SUPABASE_URL,
+        env.SUPABASE_SECRET_KEY,
+        env.RESUME_STORAGE_BUCKET,
+      );
+    },
+  },
 };
 
 function usage(): string {

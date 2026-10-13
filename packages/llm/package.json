@@ -1,0 +1,22 @@
+{
+  "name": "@repo/llm",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "4.0.95",
+    "@ai-sdk/openai": "4.0.93",
+    "@repo/core": "workspace:*",
+    "@repo/db": "workspace:*",
+    "ai": "7.0.139",
+    "drizzle-orm": "^0.45.4",
+    "zod": "^4.6.7"
+  }
+}

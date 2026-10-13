@@ -11,10 +11,16 @@
   "dependencies": {
     "@repo/core": "workspace:*",
     "@repo/db": "workspace:*",
+    "@repo/llm": "workspace:*",
+    "@repo/storage": "workspace:*",
+    "drizzle-orm": "^0.45.4",
+    "mammoth": "1.13.0",
     "pino": "^10.4.0",
+    "unpdf": "1.8.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "fflate": "^0.8.3",
     "tsx": "^4.23.15"
   }
 }

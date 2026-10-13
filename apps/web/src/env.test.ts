@@ -9,6 +9,17 @@ const valid = {
 };
 
 describe("parseServerEnv", () => {
+  it("keeps uploads optional but requires a server-only secret when enabled", () => {
+    expect(parseServerEnv(valid).RESUME_UPLOADS_ENABLED).toBe(false);
+    expect(() => parseServerEnv({ ...valid, RESUME_UPLOADS_ENABLED: "true" })).toThrow(/SUPABASE_SECRET_KEY/);
+    expect(
+      parseServerEnv({
+        ...valid,
+        RESUME_UPLOADS_ENABLED: "true",
+        SUPABASE_SECRET_KEY: "synthetic-secret-for-unit-tests",
+      }).RESUME_UPLOADS_ENABLED,
+    ).toBe(true);
+  });
   it("accepts a complete config and applies defaults", () => {
     const env = parseServerEnv(valid);
     expect(env.DATABASE_POOL_MAX).toBe(3);

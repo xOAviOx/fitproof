@@ -107,6 +107,54 @@ Short ADRs. Newest last. Status is one of: Accepted, Superseded, Proposed.
 
 ---
 
+## ADR-016: Queued résumé extraction and safe replacement
+
+- **Status:** Accepted (M1)
+- **Decision:** Upload requests store and register the file plus a queue job atomically in Postgres; parsing/provider
+  work happens only in `worker extract-resumes`. A five-minute GitHub schedule is opt-in. The UI polls a small
+  authenticated status endpoint. User-facing file/profile writes remain under RLS, even inside owner queue transactions.
+- **Replacement:** The profile references its newest upload. A worker checks that reference under a row lock before
+  replacing the draft. Existing entries survive failed extraction. Optimistic revisions prevent stale editor saves;
+  saving is blocked while the current file is processing.
+- **Trade-off:** GitHub schedules can be delayed and private-repository minutes are limited. Small deployments can
+  run the worker manually. Original file history is retained until deletion; automated pruning arrives in M7.
+
+## ADR-017: Conservative redaction, verified quotes, explicit confirmation
+
+- **Status:** Accepted (M1)
+- **Decision:** Drop résumé headers and contact/address lines, redact common embedded PII, and fail closed when there
+  is no recognizable section heading. Contact URLs are recovered locally, not by an LLM. Provider output is Zod-validated;
+  verbatim quotes and row identities must occur in the source. Unsupported bullets and skill claims are dropped.
+  Skill tiers derive from verified work/project/course evidence, not the model's requested tier.
+- **Confirmation:** Every extracted row starts unconfirmed. Users can correct all fields; changed rows lose their
+  original quote, and manually added/changed skills become self-declared. Profile confirmation requires at least one
+  entry and a confirmation for every entry.
+- **Limits:** Header/contact detection is heuristic. It can reject unusual layouts or remove legitimate address-related
+  prose; it cannot guarantee removal of names embedded in arbitrary prose. Live testing with a paid/no-training
+  provider and three real-world layouts remains required before declaring M1 acceptance complete.
+
+## ADR-018: AI SDK providers, scoped cache, and global request budgets
+
+- **Status:** Accepted (M1)
+- **Decision:** `packages/llm` uses the Vercel AI SDK with Gemini as default and OpenAI as an env-selected alternative.
+  Cache keys include user, provider, model, prompt version, and redacted text. Cache entries expire logically after
+  30 days. Atomic Postgres counters bound requests per minute/day across worker instances. Input is limited to
+  40,000 characters and output to 8,000 tokens; each provider call times out after 60 seconds.
+- **Fallback:** Invalid quotes are removed. More than 30% invalid entries triggers one regeneration; a draft with no
+  verified evidence fails with a manual-entry prompt. Provider/quota failures remain queued until retries are exhausted.
+- **Testing:** Real parsers process three synthetic layouts. Unit/integration tests inject provider responses; browser
+  tests use isolated signed-JWT auth, private-file storage, and a synthetic provider. No auth bypass exists in the app.
+- **Test-host limit:** Local browser tests run serially and explicitly drive the worker after uploads commit.
+  PGlite's socket server shares unnamed prepared statements across connections and cannot reliably support
+  concurrent extended-query sessions. Production Postgres does not have this limitation.
+- **Scale-up:** `ResumeStorage` isolates Supabase Storage; new storage adapters or AI SDK provider adapters can replace
+  the current hosts without changing the profile pipeline.
+- **Dependency audit:** Omit Mammoth 1.13.0's unused CLI-only `argparse` dependency, which brings in vulnerable
+  `sprintf-js` (GHSA-hp3w-g68c-fv3c). The advisory lists 1.1.4 as patched, but the registry has not published it.
+  Mammoth's library API does not import argparse and remains covered by parser tests. The standalone `mammoth`
+  CLI is intentionally unsupported; use the project's worker. Remove this scoped override when upstream fixes
+  its dependency. No advisory is suppressed.
+
 ## Evaluation baselines
 
 There are no baselines yet. The eval set (`data/eval/`) and `pnpm eval` thresholds arrive with M3 (quote validity) and M5 (precision@10, eligibility false-negative rate). Numbers will be recorded here when they're first measured.
