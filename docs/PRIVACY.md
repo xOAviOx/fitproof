@@ -10,7 +10,7 @@ This describes how the system handles personal data today and what each later mi
 | Résumé file | Supabase Storage, private bucket | Accessed through 60-second signed URLs after an RLS ownership check; maximum 5 MB |
 | Extracted résumé text | `resume_files.extracted_text` | Used only to verify that quoted résumé evidence exists |
 | Candidate profile | `candidate_profiles` and `profile_*` tables | Editable by the user; contact links are stored but never used for matching |
-| Preferences and eligibility (from M2) | `preferences` | Includes graduation year, degree, CGPA, and work authorization |
+| Preferences and eligibility (from M2) | `preferences` | Roles, cities, relocation, salary floor, notice period, start date, graduation year, degree, branch, CGPA or percentage, and work authorization. All optional except roles, job types, and cities (unless remote only). Used only by deterministic filters |
 | Matches, feedback, applications | `matches`, `match_feedback`, `saved_jobs`, `applications`, `tailoring_suggestions` | |
 | Cached LLM outputs | `llm_cache` (tagged with `user_id`) | Per-user content hashes; expire logically after 30 days and are purged on account deletion |
 
@@ -24,6 +24,7 @@ This describes how the system handles personal data today and what each later mi
 
 - **Personal information is stripped before any LLM call.** Name, email, phone, address, and profile URLs are removed from any text sent to an LLM for extraction, matching, or tailoring. Contact details are never matching inputs.
 - **Conservative résumé redaction.** M1 discards the header before the first recognized section, removes labelled contact/address lines, masks embedded emails, phones, URLs, and postal codes, and removes names discovered in the header if repeated. Unrecognized section layouts are rejected before a provider call. This is a heuristic, not a guarantee for arbitrary prose or unconventional layouts; validate real-world layouts before onboarding users. Manually entered profile content is not sent to a provider in M1.
+- **Preferences and eligibility answers are never sent to an LLM.** Filters run as code in `packages/core`. Prefilling education copies the user's own profile rows on the server. The filter preview uses made-up example postings and no external data.
 - **Contact links stay local.** URLs are extracted locally and attached after the provider response. They are not included in the extraction prompt or cache.
 - **No training on user data.** We do not use user data to train models.
 - **Provider retention.** Free-tier LLM APIs (including the Gemini free tier) may retain inputs and use them to improve the provider's products. **Before onboarding real users, switch to a paid tier, or to a provider whose terms exclude training on and retention of API inputs.** The provider is one environment variable.

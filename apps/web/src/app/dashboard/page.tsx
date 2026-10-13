@@ -1,4 +1,11 @@
-import { loadProfile, schema, withUserContext } from "@repo/db";
+import {
+  describeFilters,
+  formatList,
+  type Preferences,
+  REMOTE_PREFERENCE_OPTIONS,
+  ROLE_FAMILY_LABELS,
+} from "@repo/core";
+import { loadPreferences, loadProfile, schema, withUserContext } from "@repo/db";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -8,11 +15,28 @@ import { getDb } from "@/lib/db";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-const NEXT_STEPS = ["Set your preferences and eligibility", "Paste a job to see how well it fits"];
+const NEXT_STEPS = ["Paste a job to see how well it fits", "Browse ranked jobs from tracked companies"];
+
+function summarizePreferences(preferences: Preferences): string {
+  const scope = [
+    formatList(preferences.desiredRoles.map((role) => ROLE_FAMILY_LABELS[role])),
+    REMOTE_PREFERENCE_OPTIONS[preferences.remotePreference].label,
+    preferences.remotePreference === "remote" ? "" : formatList(preferences.locations),
+  ].filter(Boolean);
+  // Experience comes from the profile, not from these answers.
+  const missing = describeFilters(preferences, null).filter(
+    (rule) => rule.kind === "missing" && rule.id !== "experience",
+  ).length;
+  const note = missing
+    ? ` ${missing} ${missing === 1 ? "answer is" : "answers are"} missing, so jobs that ask about ${missing === 1 ? "it" : "them"} show a check.`
+    : "";
+  return `${scope.join(" · ")}.${note}`;
+}
 
 export default async function DashboardPage() {
   const user = await requireUser();
   const { profile, content } = await loadProfile(getDb(), user.id);
+  const { preferences } = await loadPreferences(getDb(), user.id);
   const [account] = await withUserContext(getDb(), user.id, (tx) =>
     tx.select({ createdAt: schema.users.createdAt }).from(schema.users).limit(1),
   );
@@ -50,6 +74,25 @@ export default async function DashboardPage() {
         <CardContent>
           <Button asChild>
             <Link href="/profile">{profile ? "Review your profile" : "Create your profile"}</Link>
+          </Button>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <h2>Search preferences and eligibility</h2>
+          </CardTitle>
+          <CardDescription>
+            {preferences
+              ? summarizePreferences(preferences)
+              : "Tell us what you're looking for and the facts employers screen on, such as graduation year and degree."}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button asChild variant={preferences ? "outline" : "default"}>
+            <Link href={preferences ? "/settings" : "/preferences"}>
+              {preferences ? "Edit preferences" : "Set your preferences"}
+            </Link>
           </Button>
         </CardContent>
       </Card>

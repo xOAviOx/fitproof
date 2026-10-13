@@ -31,8 +31,17 @@ export const ELIGIBILITY_KINDS = [
   "degree",
   "graduation_batch",
   "experience_band",
+  "availability",
 ] as const;
 export type EligibilityKind = (typeof ELIGIBILITY_KINDS)[number];
+
+/** India-only for the MVP market. Stored in a text column, so adding a value needs no migration. */
+export const WORK_AUTHORIZATION_STATUSES = ["authorized", "needs_sponsorship"] as const;
+export type WorkAuthorizationStatus = (typeof WORK_AUTHORIZATION_STATUSES)[number];
+
+/** Ordered lowest to highest; eligibility compares by position. */
+export const DEGREE_LEVELS = ["diploma", "bachelor", "master", "doctorate"] as const;
+export type DegreeLevel = (typeof DEGREE_LEVELS)[number];
 
 /** `low` is hidden unless the user expands; `excluded` means a known-failed hard requirement. */
 export const MATCH_BANDS = ["strong", "good", "partial", "low", "excluded"] as const;

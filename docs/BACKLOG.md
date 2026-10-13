@@ -18,3 +18,6 @@ Ideas that are deliberately **out of scope** for the MVP. Record new ideas here 
 - Product analytics with PostHog (later)
 - A CI job that runs migrations and RLS tests against `supabase start` (Docker) to catch drift between Supabase and the PGlite stub
 - `@axe-core/playwright` accessibility assertions on every e2e page (planned for the M7 accessibility pass)
+- CGPA ↔ percentage conversion per university. Deliberately not done; cross-scale cutoffs show a check (ADR-019)
+- Work authorization for countries other than India (today those requirements always show a check)
+- Grow the city, degree, and branch vocabularies from real job descriptions collected in M4 (ADR-020)

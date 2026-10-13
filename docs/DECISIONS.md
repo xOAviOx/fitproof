@@ -155,6 +155,59 @@ Short ADRs. Newest last. Status is one of: Accepted, Superseded, Proposed.
   CLI is intentionally unsupported; use the project's worker. Remove this scoped override when upstream fixes
   its dependency. No advisory is suppressed.
 
+---
+
+## ADR-019: Deterministic hard filters, and unknown never excludes
+
+- **Status:** Accepted (M2)
+- **Context:** Excluding a job the candidate actually qualifies for is the worst failure for a job-search tool.
+  Job descriptions often omit work mode, job type, or pay, and candidates often leave answers empty.
+- **Decision:** `evaluateJobEligibility(candidate, job, today)` in `packages/core` is pure code with no LLM. Each
+  preference filter (role, work mode, city, job type, salary) and each stated requirement (`hardRequirementSchema`,
+  one structured value per `eligibility_kind`) returns met, unmet, or check with a plain-language message.
+  Requirement checks keep the job description's verbatim quote. A job is excluded only when a known value fails;
+  anything missing, unstated, or unrecognized becomes a check. M3 (pasted jobs) and M5 (discovery) call the same
+  function, and `parseHardRequirement` returns null for malformed stored rows so they are skipped, not trusted.
+- **Specific rules:** remote jobs are never filtered by city; salary compares only published INR annual or monthly
+  pay, never internship stipends, and a job passes when its published maximum meets the floor; CGPA and
+  percentage are compared only on the same type and scale, because conversions vary by university; a higher degree
+  than asked is a check, not a pass. Experience comes from dated paid work in a confirmed profile, with overlapping
+  roles counted once; `SCORING_CONFIG.eligibility.experienceGraceMonths` (6) turns near misses into checks.
+- **Trade-off:** more jobs show checks than a strict filter would allow. That is deliberate: the M5 eval will measure
+  the eligibility false-negative rate, and checks are visible rather than silent.
+
+## ADR-020: Small curated vocabularies for cities, degrees, and branches
+
+- **Status:** Accepted (M2)
+- **Decision:** `packages/core/src/terms.ts` maps common spellings to canonical keys: Indian cities (Bangalore →
+  Bengaluru, Gurgaon → Gurugram), degrees with levels (BTech, B.E., MCA, and others), and branches (CSE, IT, ECE).
+  Matching normalizes punctuation and tries the longest alias first, so "Electrical and Electronics Engineering"
+  is not mistaken for Electronics. Preferences are normalized on save, so stored values are already canonical.
+- **Why not an LLM or embeddings:** filters must be deterministic, explainable, and cheap to run on every job. A term
+  missing from the list is unrecognized, which makes it a check under ADR-019, never an exclusion.
+- **Revisit:** extend the lists from real job-description data in M4 and M5.
+
+## ADR-021: Preferences storage, revisions, and the availability kind
+
+- **Status:** Accepted (M2)
+- **Decision:** One `preferences` row per user (unique on `user_id`). `savePreferences` validates with
+  `preferencesSchema`, normalizes, and checks an optimistic revision (the loaded `updated_at`, or null for the first
+  save) under a row lock, rejecting stale tabs like the profile editor does. Reads skip the cross-field rules (at least one
+  role, job type, and city), so a row saved before such a rule existed still loads. Salary is stored in rupees and edited in LPA.
+- **Schema changes:** migration `0003` adds `availability` to `eligibility_kind` for joining-deadline requirements.
+  Work authorization stays in the existing `text` column and is validated by Zod (`authorized`,
+  `needs_sponsorship`), so adding statuses later needs no migration.
+
+## ADR-022: Preview filters on made-up example postings
+
+- **Status:** Accepted (M2)
+- **Context:** M2 is done when preferences are "reflected in filters", but real jobs don't exist until M3 and M4.
+- **Decision:** The review step and Settings run the live, unsaved answers through `evaluateJobEligibility` on six
+  clearly labeled example postings in `apps/web/src/app/preferences/example-jobs.ts`, plus a plain-language list of
+  every rule (`describeFilters`). The preview uses the production function, not a copy.
+- **Trade-off:** examples are fixed, so they can't show every rule. A unit test checks that every example
+  requirement passes the schema and that a typical fresher's answers produce all three outcomes.
+
 ## Evaluation baselines
 
 There are no baselines yet. The eval set (`data/eval/`) and `pnpm eval` thresholds arrive with M3 (quote validity) and M5 (precision@10, eligibility false-negative rate). Numbers will be recorded here when they're first measured.

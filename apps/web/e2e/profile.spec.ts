@@ -1,6 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
-import { RESUME_MIME_TYPES } from "@repo/core";
 import { FIXTURE_LINES, fixtureDocx, fixturePdf } from "../../worker/src/testing/resume-fixtures";
+import { signIn as signInAt, upload } from "./helpers";
 
 test.skip(
   Boolean(process.env.E2E_BASE_URL),
@@ -8,33 +8,8 @@ test.skip(
 );
 
 async function signIn(page: Page) {
-  const response = await page.request.post("http://127.0.0.1:54321/test/users");
-  expect(response.ok()).toBe(true);
-  const session: unknown = await response.json();
-  await page.context().addCookies([
-    {
-      name: "sb-127-auth-token",
-      value: `base64-${Buffer.from(JSON.stringify(session)).toString("base64url")}`,
-      url: test.info().project.use.baseURL as string,
-      httpOnly: false,
-      sameSite: "Lax",
-    },
-  ]);
-  await page.goto("/profile");
+  await signInAt(page, "/profile");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your experience");
-}
-async function upload(page: Page, extension: "pdf" | "docx", bytes: Uint8Array) {
-  const revision = await page.locator('input[name="revision"]').inputValue();
-  await page.getByLabel("PDF or DOCX résumé").setInputFiles({
-    name: `synthetic-resume.${extension}`,
-    mimeType: RESUME_MIME_TYPES[extension],
-    buffer: Buffer.from(bytes),
-  });
-  await page.getByRole("button", { name: /^(Upload résumé|Upload a new résumé)$/ }).click();
-  await expect(page.locator('input[name="revision"]')).not.toHaveValue(revision);
-  const processed = await page.request.post("http://127.0.0.1:54321/test/process");
-  expect(processed.ok()).toBe(true);
-  expect(await processed.json()).toMatchObject({ processed: 1 });
 }
 
 for (const layout of ["single-column PDF", "two-column PDF", "table-based DOCX"] as const) {

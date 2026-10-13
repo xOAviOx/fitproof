@@ -12,7 +12,7 @@ An explainable job-search assistant for final-year students and candidates with 
 | --- | --- | --- |
 | M0 | Walking skeleton: monorepo, auth, schema + RLS, CI, health | Supabase database live with migrations applied; CI, nightly e2e, and migrate workflows green on GitHub; **web app not yet deployed to Vercel**, and Supabase auth URLs not yet configured |
 | M1 | Résumé → editable profile | Implemented and locally tested with synthetic PDF/DOCX layouts; live provider/storage setup and three real-world résumé checks still pending |
-| M2 | Preferences and eligibility | Not started |
+| M2 | Preferences and eligibility | Implemented and locally tested (unit, RLS integration, desktop and mobile e2e). Filters apply to real jobs once they exist (pasted jobs in M3, discovery in M5) |
 | M3 | Bring-your-own-job | Not started |
 | M4 | Job collection (ATS connectors, Adzuna) | Not started |
 | M5 | Discovery and ranking | Not started |
@@ -24,7 +24,7 @@ An explainable job-search assistant for final-year students and candidates with 
 ```
 apps/web             Next.js 16 (App Router): UI, auth, route handlers, server actions
 apps/worker          CLI pipelines run by GitHub Actions (selftest, extract-resumes, storage-setup; ingestion later)
-packages/core        Pure domain logic and config, no I/O (vocabulary, scoring weights)
+packages/core        Pure domain logic and config, no I/O (vocabulary, scoring weights, preferences, eligibility rules)
 packages/db          Drizzle schema, migrations, RLS policies, job queue, PGlite test harness
 packages/llm         AI SDK provider adapters, user-scoped caching, quotas, quote verification
 packages/storage     Private résumé storage behind a replaceable interface
@@ -68,6 +68,29 @@ Unrecognized section headings fail closed rather than sending an unredacted docu
 Limits: five uploads per user per hour, 40,000 extracted characters, 30 PDF pages, 20 MB expanded DOCX data,
 and configurable global LLM request budgets. Original files are accessed through 60-second signed URLs after an
 ownership check. Uploads remain off by default so M0 environments continue to start without new secrets.
+
+## Preferences and eligibility (M2)
+
+After signing in, the dashboard links to `/preferences`, a five-step setup: roles and job types, work mode and
+cities, pay and availability, education and eligibility, and a review. `/settings` edits the same answers on one
+page. Roles and job types are required, and so is at least one city unless you choose remote only. Everything else
+is optional. Education is prefilled from your profile until preferences are first saved.
+
+Filters are deterministic code in `packages/core/src/eligibility.ts`, with no LLM involved. The rule is that
+**unknown never excludes a job**: a job is filtered out only when a known fact fails, for example a Pune office
+job when you chose Bengaluru and aren't open to relocating. Missing answers, unstated job details, and
+unrecognized terms become checks that show beside the job. The review step and Settings show every rule in plain
+language and run it on six made-up example postings, so you can see what changes before you save. Real postings
+use the same function from M3 on.
+
+- **Preference filters:** role family, work mode, city (relocation-aware; remote jobs are never filtered by city),
+  job type, and minimum salary (only published INR annual or monthly pay; internship stipends never filter).
+- **Requirements compared with the job description:** graduation batch, degree level and branch, CGPA or
+  percentage (same type and scale only), work authorization for India, joining deadline, and years of experience
+  (from dated paid work in a confirmed profile, with a six-month grace that shows a check instead of excluding).
+
+Saves are rate-limited and use the same optimistic revision check as the profile, so a stale tab cannot overwrite
+newer answers.
 
 ## Prerequisites
 
@@ -174,6 +197,28 @@ Manual acceptance check after live setup:
 3. Confirm every entry, save, reload, and check that it remains confirmed.
 4. Re-upload a different résumé and check that its successful draft replaces the old entries.
 5. Sign in as another user and check that the first user's profile and original-file URL are inaccessible.
+
+### M2 verification
+
+Unit tests cover city, degree, and branch matching, preference validation and normalization, every filter and
+requirement kind, and the "unknown never excludes" rule. Integration tests check RLS-scoped save and load, stale
+revisions, and normalization on PGlite. Playwright runs on desktop and mobile: wizard validation and focus,
+persistence after reload, Settings edits changing the live preview, stale-tab rejection, education prefill from an
+extracted résumé, sign-in redirects, and no horizontal scrolling.
+
+Manual acceptance check:
+1. Sign in and choose **Set your preferences** on the dashboard. Choose **Continue** with nothing selected; an error
+   appears and focus moves to the first role.
+2. Choose Backend, Full-time, Hybrid or remote, Bengaluru, not open to relocating, 6 LPA, a 30-day notice period,
+   2025, B.Tech, Computer Science, CGPA 8.2 out of 10, and authorized to work in India.
+3. On the review step, check the examples: "Backend Engineer, New Grad" is shown with an experience check (until your
+   profile is confirmed), and "Data Analyst", "Software Engineer II" (Pune), and "Backend Developer (Contract)" are
+   filtered out with a reason.
+4. Save, reload, and check that every answer persists and the dashboard card summarizes it.
+5. In Settings, switch relocation to **Yes**. "Software Engineer II" changes to shown with checks before you save.
+   Save and reload.
+6. Open Settings in two tabs, save in one, then save in the other. The second shows a "changed in another tab" error.
+7. Confirm a profile with dated work entries and check that the Experience rule shows your months of experience.
 
 ## Docs
 

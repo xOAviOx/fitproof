@@ -22,6 +22,13 @@
       "when": 1791835064114,
       "tag": "0002_auth_user_sync",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791921838676,
+      "tag": "0003_eligibility_availability",
+      "breakpoints": true
     }
   ]
 }

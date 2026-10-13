@@ -1,0 +1,1 @@
+ALTER TYPE "public"."eligibility_kind" ADD VALUE 'availability';

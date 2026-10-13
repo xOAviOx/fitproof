@@ -41,6 +41,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <Button asChild variant="ghost" size="sm">
                   <Link href="/profile">Profile</Link>
                 </Button>
+                <Button asChild variant="ghost" size="sm">
+                  <Link href="/settings">Settings</Link>
+                </Button>
                 <form action="/auth/signout" method="post">
                   <Button type="submit" variant="outline" size="sm">
                     Sign out

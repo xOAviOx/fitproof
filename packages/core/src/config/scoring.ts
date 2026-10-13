@@ -23,6 +23,8 @@ export const SCORING_CONFIG = {
   retrieval: { candidateLimit: 200 },
   explanations: { precomputeTopN: 30, maxQuoteFailureRate: 0.3 },
   freshness: { staleAfterHours: 48 },
+  /** Experience within this many months of a band's edge becomes a "check", never an exclusion. */
+  eligibility: { experienceGraceMonths: 6 },
 } as const;
 
 const unitInterval = z.number().gt(0).lte(1);
@@ -42,6 +44,7 @@ export const scoringConfigSchema = z
       maxQuoteFailureRate: unitInterval,
     }),
     freshness: z.object({ staleAfterHours: z.number().positive() }),
+    eligibility: z.object({ experienceGraceMonths: z.number().int().min(0).max(24) }),
   })
   .refine(
     (c) =>
