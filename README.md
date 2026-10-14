@@ -13,7 +13,7 @@ An explainable job-search assistant for final-year students and candidates with 
 | M0 | Walking skeleton: monorepo, auth, schema + RLS, CI, health | Supabase database live with migrations applied; CI, nightly e2e, and migrate workflows green on GitHub; **web app not yet deployed to Vercel**, and Supabase auth URLs not yet configured |
 | M1 | Résumé → editable profile | Implemented and locally tested with synthetic PDF/DOCX layouts; live provider/storage setup and three real-world résumé checks still pending |
 | M2 | Preferences and eligibility | Implemented and locally tested (unit, RLS integration, desktop and mobile e2e). Filters apply to real jobs once they exist (pasted jobs in M3, discovery in M5) |
-| M3 | Bring-your-own-job | Implemented and locally tested (unit, integration, keyword-mode eval, desktop and mobile e2e). **Acceptance not yet met:** the ≥ 90% quote-validity gate needs a model eval run with a provider key, which hasn't happened |
+| M3 | Bring-your-own-job | Implemented and locally tested (unit, integration, keyword-mode eval, desktop and mobile e2e). The model path works live with Gemini, but **acceptance isn't met yet**: the first model eval stopped at the free tier's 20 requests per day, with half the set done (see "Evaluation baselines" in `docs/DECISIONS.md`) |
 | M4 | Job collection (ATS connectors, Adzuna) | Not started |
 | M5 | Discovery and ranking | Not started |
 | M6 | Tailoring and résumé versions | Not started |
@@ -272,8 +272,9 @@ another user gets "Page not found" and a 404 from the status API.
 
 `pnpm eval` (keyword mode, 2026-10-14): extraction quote validity 100%, skill recall 98.8%. Band agreement is 29.2%
 exact and 62.5% within one band, because keyword mode can't reach Strong. See "Evaluation baselines" in
-`docs/DECISIONS.md`. **The model-mode gate (≥ 90% quote validity on extraction and explanations) has not been
-run**, so M3 acceptance is still open.
+`docs/DECISIONS.md`. A first model run (Gemini free tier) covered 6 of 12 postings before the daily quota ran out:
+extraction quote validity 100%, and the 9 explanations that came back were all verified (96.4% quote validity).
+**The model gate has not been met on a complete run**, so M3 acceptance is still open.
 
 Manual acceptance check (after adding a provider key to `.env` or the web project):
 1. Run `pnpm eval` with the key set, or the **Model eval** workflow. It must print `PASS`. Record the numbers in

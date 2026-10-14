@@ -58,7 +58,11 @@ Operating procedures. Sections for features that don't exist yet are marked with
 - **Quota.** Extraction and explanation calls share the `LLM_RPM` and `LLM_DAILY_REQUESTS` budget with résumé
   extraction. Embedding calls have a separate budget with the same limits. One new job costs one extraction call,
   one explanation call, and one embedding call, plus one more for each quote-validity retry. Re-checks reuse the
-  stored requirements, cached embeddings, and cached explanations when nothing changed.
+  stored requirements, cached embeddings, and cached explanations when nothing changed. Set the app limits to your
+  provider's real quota: on 2026-10-14, Gemini's free tier allowed only 20 `gemini-2.5-flash` requests per day.
+- **Provider failures** are logged as `explanation unavailable` or `job analysis deferred or failed`, with the error
+  class, HTTP `status`, and `finishReason`. A 429 is a provider quota, 5xx is a provider outage, and
+  `finishReason: "length"` means the response hit the output-token limit.
 - **"We couldn't verify a written explanation"** on a job page means the model's quotes failed verification twice,
   or the provider failed or hit its quota. The band and the line-by-line overlap are still computed by code. Run the
   model eval (below) if this becomes common. A "Read without AI" notice means the job was read in keyword mode.

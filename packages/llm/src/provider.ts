@@ -3,9 +3,10 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { createOpenAI } from "@ai-sdk/openai";
 import { consumeRateLimit, type Database, RateLimitError, schema } from "@repo/db";
-import { generateObject } from "ai";
+import { generateObject, jsonSchema } from "ai";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
+import { decoderJsonSchema, fitToSchema, strictJsonSchema } from "./decoder-schema";
 
 const optionalApiKey = z.preprocess(
   (value) => (value === "" ? undefined : value),
@@ -65,9 +66,10 @@ export type ObjectGenerator = (request: ObjectRequest) => Promise<{
 export function providerGenerator(env: LlmEnv): ObjectGenerator {
   const model = providerFor(env)(env.LLM_MODEL);
   return async (request) => {
+    const strict = strictJsonSchema(request.schema);
     const result = await generateObject({
       model,
-      schema: request.schema,
+      schema: jsonSchema(decoderJsonSchema(strict)),
       system: request.system,
       prompt: request.prompt,
       maxOutputTokens: request.maxOutputTokens,
@@ -75,7 +77,7 @@ export function providerGenerator(env: LlmEnv): ObjectGenerator {
       abortSignal: AbortSignal.timeout(90_000),
     });
     return {
-      object: result.object,
+      object: request.schema.parse(fitToSchema(result.object, strict)),
       inputTokens: result.usage.inputTokens ?? 0,
       outputTokens: result.usage.outputTokens ?? 0,
     };

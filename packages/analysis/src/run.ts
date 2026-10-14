@@ -11,7 +11,7 @@ import {
   RateLimitError,
 } from "@repo/db";
 import { z } from "zod";
-import { type AnalysisDeps, analyzeJob } from "./analyze";
+import { type AnalysisDeps, analyzeJob, errorDetails } from "./analyze";
 
 const payloadSchema = z.object({ jobId: z.uuid() });
 /** Long enough for two extraction and two explanation calls with a rate-limit wait each. */
@@ -59,7 +59,7 @@ export async function processAnalysisRun(db: Database, deps: AnalysisDeps, run: 
         jobId,
         permanent,
         retrying: retry.retrying,
-        err: error instanceof Error ? error.name : "unknown",
+        ...errorDetails(error),
       },
       "job analysis deferred or failed",
     );

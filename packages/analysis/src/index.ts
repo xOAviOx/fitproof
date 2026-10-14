@@ -3,6 +3,7 @@ export {
   type AnalysisLogger,
   type AnalysisMetrics,
   analyzeJob,
+  errorDetails,
   loadMatchContext,
   type MatchContext,
   matchInputHash,

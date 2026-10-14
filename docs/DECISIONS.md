@@ -315,13 +315,40 @@ Short ADRs. Newest last. Status is one of: Accepted, Superseded, Proposed.
   author. Add real postings with permission in M4 and M5. Standalone profile skills are always self-declared
   (ADR-017), so eval profiles put skills on entries.
 
+## ADR-029: Providers get a schema without size limits; code enforces them
+
+- **Status:** Accepted (M3)
+- **Context:** The first live call failed: Gemini rejected the job extraction schema as having "too many states for
+  serving". Constrained decoding expands every `maxLength` and `maxItems` (80 requirements, each with a 2,000-character
+  quote and a nested object of 15 nullable fields) into decoder states. Unit tests inject responses, so they missed it.
+- **Decision:** `providerGenerator` builds the same draft-7 JSON schema the AI SDK would send, then removes length,
+  count, range, pattern, and format limits (`packages/llm/src/decoder-schema.ts`). Types, enums, required fields, and
+  nullability stay. The response is trimmed to the strict limits (`fitToSchema`) and parsed with the strict Zod schema,
+  so one long note or an extra list item doesn't discard a response. Applies to every provider and every schema
+  (jobs, explanations, résumé extraction).
+- **Logging:** provider failures log the error class, HTTP status, and finish reason, never the message, which can
+  echo request content.
+
 ## Evaluation baselines
 
 | Date | Mode | Extraction quote validity | Skill recall | Core vs nice-to-have | Explanation quote validity | Band exact / within one |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Keyword reader, no LLM | 100% (12 jobs) | 98.8% (only Celery missed; not in the vocabulary) | 95.0% | Not measured (structured fallback) | 29.2% / 62.5% (24 pairs) |
 
-Keyword mode can't reach Strong (no similarity) and never excludes, which explains most band disagreements. The
-**model-mode baseline (the M3 acceptance gate of ≥ 90% quote validity) has not been measured yet**, because no
-provider key was available. Record it here after the first `eval.yml` run. M5 adds precision@10 and the
-eligibility false-negative rate.
+Keyword mode can't reach Strong (no similarity) and never excludes, which explains most band disagreements.
+
+**First model run, partial (2026-10-14, `gemini:gemini-2.5-flash`, free tier). Not a baseline, and the gate was not
+met.** The key's free-tier quota is 20 requests per day, and a full run needs at least 36. Results before the quota ran out:
+
+- Extraction: 6 of 12 postings read. Quote validity 100%, skill recall 97.9% (missed "microservices" in
+  backend-04), core vs nice-to-have agreement 97.8%, eligibility recall 100%.
+- Explanations: 12 attempted, 9 returned, and all 9 verified on the first attempt (quote validity 96.4%, none
+  regenerated). 3 failed with provider errors whose cause wasn't recorded; the error class and status are logged now.
+  12 pairs never ran.
+- Bands: 6 of the 9 pairs with a verified explanation matched exactly. Two were expected Strong and came out Good at
+  coverage 0.79; Strong is unreachable in the eval because it skips embeddings. backend-03/student was expected Good
+  and came out Low at coverage 0.40, with Django and FastAPI both counted as gaps (see the "alternatives" backlog
+  item) and "HTTP" read as a core skill.
+
+Record the real baseline after a complete run, which needs a paid tier or two days of free quota. M5 adds
+precision@10 and the eligibility false-negative rate.

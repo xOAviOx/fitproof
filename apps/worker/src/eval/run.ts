@@ -67,7 +67,13 @@ async function run(dataset: EvalDataset, only: string | null) {
   const test = await createTestDb();
   try {
     const base = createAnalysisDeps(test.db, env, {
-      logger: { info() {}, warn: (_details, message) => console.error(`  warning: ${message}`) },
+      logger: {
+        info() {},
+        warn: (details, message) => {
+          const { jobId: _jobId, ...facts } = details as Record<string, unknown>;
+          console.error(`  warning: ${message} ${JSON.stringify(facts)}`);
+        },
+      },
     });
     const deps: AnalysisDeps = {
       ...base,

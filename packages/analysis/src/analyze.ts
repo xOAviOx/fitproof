@@ -87,6 +87,16 @@ export type AnalysisMetrics = {
 const sha256 = (value: string) => createHash("sha256").update(value).digest("hex");
 const errorName = (error: unknown) => (error instanceof Error ? error.name : "unknown");
 
+/** Loggable facts about a failure. Never the message: provider errors can echo request content. */
+export function errorDetails(error: unknown) {
+  const fields = (error ?? {}) as { statusCode?: unknown; finishReason?: unknown };
+  return {
+    err: errorName(error),
+    ...(typeof fields.statusCode === "number" ? { status: fields.statusCode } : {}),
+    ...(typeof fields.finishReason === "string" ? { finishReason: fields.finishReason } : {}),
+  };
+}
+
 /** Changes whenever anything matching reads changes, so a match can be flagged as out of date. */
 export function matchInputHash(content: ProfileContent, preferences: Preferences | null) {
   return sha256(JSON.stringify({ v: STORED_MATCH_VERSION, content, preferences }));
@@ -192,7 +202,7 @@ async function similarityFor(
     return similarity === null ? null : Math.round(similarity * 1000) / 1000;
   } catch (error) {
     // Similarity only refines the band, so a missing embedding never blocks a match.
-    deps.logger?.warn({ jobId: input.jobId, err: errorName(error) }, "similarity unavailable");
+    deps.logger?.warn({ jobId: input.jobId, ...errorDetails(error) }, "similarity unavailable");
     return null;
   }
 }
@@ -351,7 +361,7 @@ export async function analyzeJob(
     } catch (error) {
       explanation.error = error instanceof RateLimitError ? "rate_limited" : "provider_error";
       deps.logger?.warn(
-        { jobId, err: errorName(error) },
+        { jobId, ...errorDetails(error) },
         "explanation unavailable, using structured overlap",
       );
     }
