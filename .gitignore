@@ -29,3 +29,4 @@ blob-report/
 # local data
 *.log
 /backups/
+.eval-cache/

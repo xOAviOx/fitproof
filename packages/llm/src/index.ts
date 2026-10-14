@@ -1,3 +1,4 @@
+export { strictJsonSchema } from "./decoder-schema";
 export { createEmbedder, type Embedder, type EmbedFunction } from "./embed";
 export { createMatchExplainer, type ExplanationResult, type MatchExplainer } from "./explain";
 export {
@@ -13,4 +14,5 @@ export {
   llmEnvSchema,
   type ObjectGenerator,
   type ObjectRequest,
+  providerGenerator,
 } from "./provider";

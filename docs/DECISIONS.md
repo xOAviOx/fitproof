@@ -329,6 +329,25 @@ Short ADRs. Newest last. Status is one of: Accepted, Superseded, Proposed.
 - **Logging:** provider failures log the error class, HTTP status, and finish reason, never the message, which can
   echo request content.
 
+## ADR-030: The model eval saves responses so a free-tier run can span days
+
+- **Status:** Accepted (M3)
+- **Context:** A full model run needs at least 36 requests, and the Gemini free tier allows 20 `gemini-2.5-flash`
+  requests per day. Paying for a tier only to run the eval isn't wanted.
+- **Decision:** `pnpm eval` in model mode wraps the provider call (`apps/worker/src/eval/replay.ts`). Each successful
+  response is saved to `apps/worker/.eval-cache/<provider>-<model>.json`, keyed by a hash of the model, system prompt,
+  prompt, JSON schema, and output-token limit. A later run replays a saved response instead of calling the model; the
+  nth identical request replays the nth saved response, so a regeneration stays a separate sample. A saved response
+  that no longer parses with the current schema is requested again. A 429 that names a per-day quota (or OpenAI's
+  `insufficient_quota`) stops the run with `PAUSED` and exit code 2. Other 429s wait for the provider's retry delay
+  (at most 2 minutes) up to three times, then pause the same way. Live calls are paced to `LLM_RPM`; replayed calls
+  are not.
+- **Consequences:** a resumed run measures the responses the model gave earlier, not new samples. Any change to a
+  prompt, the schema, or the posting text changes the hash, so stale responses are never reused for a different
+  request; changes to verification or scoring are measured on the saved responses. `--fresh` starts over. The files
+  hold model output for the synthetic eval data only. The **Model eval** workflow starts from an empty directory, so
+  every CI run is live.
+
 ## Evaluation baselines
 
 | Date | Mode | Extraction quote validity | Skill recall | Core vs nice-to-have | Explanation quote validity | Band exact / within one |
@@ -350,5 +369,6 @@ met.** The key's free-tier quota is 20 requests per day, and a full run needs at
   and came out Low at coverage 0.40, with Django and FastAPI both counted as gaps (see the "alternatives" backlog
   item) and "HTTP" read as a core skill.
 
-Record the real baseline after a complete run, which needs a paid tier or two days of free quota. M5 adds
+Record the real baseline after a complete run, which needs a paid tier or two to three days of free quota (ADR-030).
+M5 adds
 precision@10 and the eligibility false-negative rate.

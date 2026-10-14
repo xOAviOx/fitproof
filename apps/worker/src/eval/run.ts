@@ -1,4 +1,5 @@
 import { setTimeout as sleep } from "node:timers/promises";
+import { fileURLToPath } from "node:url";
 import {
   type AnalysisDeps,
   analyzeJob,
@@ -15,7 +16,7 @@ import {
   saveProfile,
 } from "@repo/db";
 import { createAuthUser, createTestDb } from "@repo/db/testing";
-import type { JobExtractionResult, JobExtractor } from "@repo/llm";
+import { type JobExtractionResult, type JobExtractor, type LlmEnv, providerGenerator } from "@repo/llm";
 import { type EvalDataset, loadDataset } from "./dataset";
 import {
   type EvalMode,
@@ -26,8 +27,15 @@ import {
   scoreExtraction,
   summarize,
 } from "./metrics";
+import { QuotaExhaustedError, replayingGenerator } from "./replay";
 
 const MAX_QUOTA_WAITS = 3;
+const SAVED_DIR = new URL("../../.eval-cache/", import.meta.url);
+
+const savedRunFile = (env: LlmEnv) =>
+  fileURLToPath(
+    new URL(`${`${env.LLM_PROVIDER}-${env.LLM_MODEL}`.replace(/[^\w.-]+/g, "_")}.json`, SAVED_DIR),
+  );
 
 /** Each posting is read once and shared by every profile it's paired with, to spend less quota. */
 function sharedExtractor(extractor: JobExtractor): JobExtractor {
@@ -61,12 +69,24 @@ async function analyzeWithQuota(db: Database, deps: AnalysisDeps, input: { userI
   }
 }
 
-async function run(dataset: EvalDataset, only: string | null) {
+async function run(dataset: EvalDataset, options: { only: string | null; fresh: boolean }) {
   const env = parseOptionalLlmEnv(process.env);
   const mode: EvalMode = env ? "model" : "keywords";
+  const replay = env
+    ? await replayingGenerator({
+        file: savedRunFile(env),
+        model: `${env.LLM_PROVIDER}:${env.LLM_MODEL}`,
+        rpm: env.LLM_RPM,
+        generate: providerGenerator(env),
+        fresh: options.fresh,
+        onWait: (seconds) => console.error(`  provider per-minute quota reached; waiting ${seconds}s`),
+      })
+    : null;
   const test = await createTestDb();
   try {
-    const base = createAnalysisDeps(test.db, env, {
+    // Live calls are paced by the replaying generator, so replayed ones don't wait on the budget.
+    const base = createAnalysisDeps(test.db, env && { ...env, LLM_RPM: 100 }, {
+      generate: replay?.generate,
       logger: {
         info() {},
         warn: (details, message) => {
@@ -92,7 +112,17 @@ async function run(dataset: EvalDataset, only: string | null) {
 
     const jobs: JobResult[] = [];
     const pairs: PairResult[] = [];
-    for (const job of dataset.jobs.filter((item) => !only || item.id.startsWith(only))) {
+    const selected = dataset.jobs.filter((item) => !options.only || item.id.startsWith(options.only));
+    const finish = (paused: boolean) => ({
+      mode,
+      model: env ? `${env.LLM_PROVIDER}:${env.LLM_MODEL}` : null,
+      jobs,
+      pairs,
+      totalPairs: selected.reduce((sum, job) => sum + job.pairs.length, 0),
+      paused,
+      calls: replay && { ...replay.stats, saved: replay.savedResponses() },
+    });
+    for (const job of selected) {
       console.error(job.id);
       for (const pair of job.pairs) {
         const userId = users.get(pair.profile) ?? "";
@@ -105,6 +135,8 @@ async function run(dataset: EvalDataset, only: string | null) {
         });
         try {
           const metrics = await analyzeWithQuota(test.db, deps, { userId, jobId });
+          // The explanation step turns provider errors into a fallback, so check for a spent quota here.
+          if (replay?.stats.exhausted) throw new QuotaExhaustedError();
           const loaded = await loadUserJob(test.db, userId, jobId);
           const score = readStoredMatch(loaded?.match ?? null)?.score;
           if (!jobs.some((item) => item.id === job.id) && metrics.extraction) {
@@ -132,6 +164,7 @@ async function run(dataset: EvalDataset, only: string | null) {
             error: null,
           });
         } catch (error) {
+          if (error instanceof QuotaExhaustedError) return finish(true);
           if (error instanceof RateLimitError) throw error;
           pairs.push({
             job: job.id,
@@ -148,7 +181,7 @@ async function run(dataset: EvalDataset, only: string | null) {
         }
       }
     }
-    return { mode, model: env ? `${env.LLM_PROVIDER}:${env.LLM_MODEL}` : null, jobs, pairs };
+    return finish(false);
   } finally {
     await test.close();
   }
@@ -219,6 +252,11 @@ function report(result: Awaited<ReturnType<typeof run>>, summary: EvalSummary) {
     `Verified explanations        ${pct(summary.verifiedShare)}${summary.providerErrors ? ` (${summary.providerErrors} provider errors)` : ""}`,
     `Band agreement               ${pct(summary.bandExact)} exact, ${pct(summary.bandNear)} within one band (informational)`,
   );
+  if (result.calls) {
+    lines.push(
+      `Model calls                  ${result.calls.live} live, ${result.calls.replayed} replayed from earlier runs (--fresh to call the model for everything)`,
+    );
+  }
   return lines.join("\n");
 }
 
@@ -232,7 +270,18 @@ async function main(argv: string[]) {
     return 1;
   }
   const dataset = await loadDataset();
-  const result = await run(dataset, only);
+  const result = await run(dataset, { only, fresh: argv.includes("--fresh") });
+  if (result.paused) {
+    const command = ["pnpm eval", ...argv.filter((arg) => arg !== "--fresh")].join(" ");
+    console.log(
+      [
+        `PAUSED: the provider's request quota is used up (${result.model}).`,
+        `${result.pairs.length} of ${result.totalPairs} pairs finished; ${result.calls?.saved ?? 0} model responses are saved in apps/worker/.eval-cache/.`,
+        `Run \`${command}\` again after the quota resets (Gemini free tier: midnight Pacific time) to continue from here.`,
+      ].join("\n"),
+    );
+    return 2;
+  }
   const summary = summarize(result.mode, result.jobs, result.pairs);
   console.log(report(result, summary));
   if (argv.includes("--json")) console.log(JSON.stringify(summary));

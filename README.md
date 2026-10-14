@@ -205,7 +205,7 @@ Workflows:
 | `pnpm worker storage-setup` | Operator-only: provision a private résumé bucket |
 | `pnpm worker extract-resumes` | Process up to five queued résumé uploads |
 | `pnpm worker analyze-jobs` | Process up to 10 queued job analyses |
-| `pnpm eval` | Run `data/eval` and check the gates: keyword mode without an LLM key, model mode (spends quota) with one. `--only <prefix>` runs a subset; `--require-model` fails without a key |
+| `pnpm eval` | Run `data/eval` and check the gates: keyword mode without an LLM key, model mode (spends quota) with one. `--only <prefix>` runs a subset; `--require-model` fails without a key. Model runs save responses and resume after a spent daily quota; `--fresh` starts over |
 | `pnpm --filter @repo/db pglite:serve` | In-memory Postgres on port 54329, for smoke-testing without Docker or Supabase (no auth) |
 
 ## Free-tier constraints (checked 2026-10-13; re-check before relying on them)
@@ -277,8 +277,9 @@ extraction quote validity 100%, and the 9 explanations that came back were all v
 **The model gate has not been met on a complete run**, so M3 acceptance is still open.
 
 Manual acceptance check (after adding a provider key to `.env` or the web project):
-1. Run `pnpm eval` with the key set, or the **Model eval** workflow. It must print `PASS`. Record the numbers in
-   `docs/DECISIONS.md`.
+1. Run `pnpm eval --require-model` with the key set, or the **Model eval** workflow. It must print `PASS`. On a
+   free-tier key it prints `PAUSED` when the daily quota runs out; run it again the next day until it finishes
+   (`docs/RUNBOOK.md`). Record the numbers in `docs/DECISIONS.md`.
 2. Confirm a profile with at least one internship or project that lists real skills. Open **Check a job**, paste a
    real fresher posting, and choose **Check this job**. Within about a minute the page shows a band, a summary, and
    quoted matches and gaps. No "Read without AI" notice appears.

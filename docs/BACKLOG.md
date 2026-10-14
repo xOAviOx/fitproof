@@ -31,5 +31,4 @@ Ideas that are deliberately **out of scope** for the MVP. Record new ideas here 
 - Retry an explanation after a temporary provider error (429 or 5xx). Today the job shows the structured overlap
   until the user chooses to check again
 - Compute embeddings in the eval so Strong is reachable and band agreement means more (separate embedding quota)
-- Let the eval stop on a spent daily quota and resume later, so free-tier keys can finish a run over several days
 - Move from the AI SDK's deprecated `generateObject` to `generateText` with structured output

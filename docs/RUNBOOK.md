@@ -77,6 +77,11 @@ Operating procedures. Sections for features that don't exist yet are marked with
 - For the model gate, run the **Model eval** workflow (`eval.yml`) in GitHub Actions. It uses `--require-model`, so it
   fails if the provider key secret is missing. Record new baselines in `docs/DECISIONS.md`.
 - `pnpm eval --only backend` runs a subset without applying the gates. `--json` also prints the summary as JSON.
+- **Free-tier keys.** A local model run saves every model response in `apps/worker/.eval-cache/` (git-ignored, one
+  file per provider and model). When the provider's daily quota runs out, the run prints `PAUSED` and exits with
+  code 2. Run the same command after the quota resets (midnight Pacific time for Gemini). Saved responses are
+  replayed without calling the model, so only the remaining requests spend quota. A full run takes two or three
+  days on a 20-requests-per-day key. `--fresh` ignores the saved responses and calls the model for everything.
 
 ## Rotate keys
 
