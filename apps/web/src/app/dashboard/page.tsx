@@ -15,6 +15,7 @@ import {
 } from "@repo/db";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CoverageLine } from "@/components/coverage-line";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth";
@@ -64,6 +65,7 @@ export default async function DashboardPage() {
             ? ` · member since ${account.createdAt.toLocaleDateString("en-IN", { dateStyle: "medium" })}`
             : ""}
         </p>
+        <CoverageLine className="pt-1" />
       </div>
 
       {!account && (

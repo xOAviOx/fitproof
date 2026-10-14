@@ -1,22 +1,22 @@
-import { PRODUCT } from "@repo/core";
+import { BOT, COLLECTION_CONFIG, PRODUCT } from "@repo/core";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: `About ${PRODUCT.name}Bot` };
+export const metadata: Metadata = { title: `About ${BOT.token}` };
 
-const TOKEN = `${PRODUCT.name}Bot`;
+const TOKEN = BOT.token;
 
 const FACTS = [
   {
-    title: "Only on request",
-    body: `${TOKEN} fetches a page only when a signed-in ${PRODUCT.name} user submits that exact link to check a job against their own profile. It does not crawl, follow links, or index sites.`,
+    title: "What it reads",
+    body: `Two things. When a signed-in ${PRODUCT.name} user submits a job link, it fetches that one page, and later re-checks it at most once a day to see whether the job has closed. Every ${COLLECTION_CONFIG.everyHours} hours, it reads the public job-board APIs (Greenhouse, Lever, Ashby, SmartRecruiters, Workable) of the companies in our registry, the same feeds that power their careers pages. It does not crawl, follow links, or index sites.`,
   },
   {
     title: "Honors robots.txt",
-    body: `Before fetching, it reads /robots.txt (cached for an hour) and obeys the rules for “${TOKEN}”, or “*” if there are none. Redirect targets are checked the same way. If robots.txt fails with a server error or can’t be reached, it fetches nothing.`,
+    body: `Before fetching, it reads /robots.txt (cached for an hour) and obeys the rules and any Crawl-delay for “${TOKEN}”, or “*” if there are none. Redirect targets are checked the same way. If robots.txt fails with a server error or can’t be reached, it fetches nothing.`,
   },
   {
     title: "Light on your servers",
-    body: "Once a link has been read, checks of the same link for the next day reuse the stored copy. Requests are limited per user, give up after 10 seconds, and stop reading after 3 MB.",
+    body: `One request per company board per run, plus one per new or changed posting when a board lists jobs without their descriptions. Requests to a host are at least ${COLLECTION_CONFIG.requestGapMs} ms apart and back off on errors. A link a user submitted is read once and reused for a day.`,
   },
   {
     title: "No sign-in walls",
@@ -31,7 +31,7 @@ export default function BotPage() {
       <h1 className="text-4xl font-semibold tracking-tight">{TOKEN}</h1>
       <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
         {PRODUCT.name} helps students and early-career candidates in {PRODUCT.market} understand how well a
-        job description fits their experience. {TOKEN} is how it reads a job posting someone links to.
+        job description fits their experience. {TOKEN} is how it reads job postings.
       </p>
       <dl className="mt-10 divide-y border-y">
         {FACTS.map((fact) => (
@@ -46,8 +46,8 @@ export default function BotPage() {
           Opting out
         </h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Add this to your robots.txt. It takes effect within an hour, and users will be asked to paste the
-          description instead.
+          Add this to your robots.txt. It takes effect within an hour: scheduled reads stop, and users will be
+          asked to paste the description instead.
         </p>
         <pre className="overflow-x-auto border bg-muted/40 p-4 font-mono text-sm">
           {`User-agent: ${TOKEN}\nDisallow: /`}

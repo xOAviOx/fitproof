@@ -5,7 +5,7 @@ import {
   parseOptionalLlmEnv,
   processAnalysisRunById,
 } from "@repo/analysis";
-import { PRODUCT } from "@repo/core";
+import { BOT, botUserAgent } from "@repo/core";
 import { after } from "next/server";
 import { serverEnv } from "@/env";
 import { getDb } from "@/lib/db";
@@ -40,11 +40,6 @@ export function analyzeInBackground(runId: string) {
   });
 }
 
-const BOT_TOKEN = `${PRODUCT.name}Bot`;
-
 export function jobFetchOptions() {
-  return {
-    userAgent: `${BOT_TOKEN}/0.3 (+${new URL("/bot", serverEnv().NEXT_PUBLIC_SITE_URL).href})`,
-    robotsToken: BOT_TOKEN,
-  };
+  return { userAgent: botUserAgent(serverEnv().NEXT_PUBLIC_SITE_URL), robotsToken: BOT.token };
 }

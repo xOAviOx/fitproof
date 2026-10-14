@@ -1,5 +1,7 @@
+export * from "./collection";
 export * from "./config/llm";
 export * from "./config/scoring";
+export * from "./dedupe";
 export * from "./eligibility";
 export * from "./highlight";
 export * from "./jobs";

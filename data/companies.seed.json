@@ -1,0 +1,977 @@
+{
+  "version": 1,
+  "verifiedAt": "2026-10-14",
+  "note": "Board tokens checked against each ATS's public API on the verifiedAt date. India job counts change; ingest records live failures.",
+  "companies": [
+    {
+      "slug": "6sense",
+      "name": "6sense",
+      "ats": "greenhouse",
+      "boardToken": "6sense",
+      "careersUrl": "https://6sense.com/about-us/careers/join-us/",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Pune"]
+    },
+    {
+      "slug": "acceldata",
+      "name": "Acceldata",
+      "ats": "lever",
+      "boardToken": "acceldata",
+      "careersUrl": "https://jobs.lever.co/acceldata",
+      "hq": "Campbell, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "accellor",
+      "name": "Accellor",
+      "ats": "workable",
+      "boardToken": "accellor",
+      "careersUrl": "https://apply.workable.com/accellor/",
+      "hq": "Fremont, United States",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "addepar",
+      "name": "Addepar",
+      "ats": "greenhouse",
+      "boardToken": "addepar1",
+      "careersUrl": "https://job-boards.greenhouse.io/addepar1",
+      "hq": "Mountain View, United States",
+      "locations": ["Bengaluru", "Pune"]
+    },
+    {
+      "slug": "aiprise",
+      "name": "AiPrise",
+      "ats": "ashby",
+      "boardToken": "aiprise",
+      "careersUrl": "https://jobs.ashbyhq.com/aiprise",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "alphasense",
+      "name": "AlphaSense",
+      "ats": "greenhouse",
+      "boardToken": "alphasense",
+      "careersUrl": "https://job-boards.greenhouse.io/alphasense",
+      "hq": "New York, United States",
+      "locations": ["Bengaluru", "Pune", "Remote"]
+    },
+    {
+      "slug": "apna",
+      "name": "Apna",
+      "ats": "workable",
+      "boardToken": "apna",
+      "careersUrl": "https://careers.apna.co/",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru", "Hyderabad", "Pune", "Remote"]
+    },
+    {
+      "slug": "arista-networks",
+      "name": "Arista Networks",
+      "ats": "smartrecruiters",
+      "boardToken": "AristaNetworks",
+      "careersUrl": "https://careers.smartrecruiters.com/AristaNetworks",
+      "hq": "Santa Clara, United States",
+      "locations": ["Bengaluru", "Pune"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "astrome-technologies",
+      "name": "Astrome Technologies",
+      "ats": "workable",
+      "boardToken": "astrome-technologies",
+      "careersUrl": "https://apply.workable.com/astrome-technologies/",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "astronomer",
+      "name": "Astronomer",
+      "ats": "ashby",
+      "boardToken": "astronomer",
+      "careersUrl": "https://jobs.ashbyhq.com/astronomer",
+      "hq": "New York, United States",
+      "locations": ["Hyderabad"]
+    },
+    {
+      "slug": "atlan",
+      "name": "Atlan",
+      "ats": "ashby",
+      "boardToken": "atlan",
+      "careersUrl": "https://jobs.ashbyhq.com/atlan",
+      "hq": "Singapore, Singapore",
+      "locations": ["Remote"]
+    },
+    {
+      "slug": "bosch",
+      "name": "Bosch Group",
+      "ats": "smartrecruiters",
+      "boardToken": "BoschGroup",
+      "careersUrl": "https://jobs.bosch.com/en",
+      "hq": "Gerlingen, Germany",
+      "locations": ["Bengaluru", "Pune", "Remote"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "brillio",
+      "name": "Brillio",
+      "ats": "lever",
+      "boardToken": "brillio-2",
+      "careersUrl": "https://jobs.lever.co/brillio-2",
+      "hq": "Dallas, United States",
+      "locations": ["Bengaluru", "Hyderabad", "Pune", "Remote"]
+    },
+    {
+      "slug": "broccoli-ai",
+      "name": "Broccoli AI",
+      "ats": "ashby",
+      "boardToken": "broccoli",
+      "careersUrl": "https://jobs.ashbyhq.com/broccoli",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "capgemini-fbs",
+      "name": "Capgemini (Farmers Business Services)",
+      "ats": "workable",
+      "boardToken": "capgemini-insurance",
+      "careersUrl": "https://apply.workable.com/capgemini-insurance/",
+      "hq": "Paris, France",
+      "locations": ["Bengaluru", "Hyderabad", "Pune", "Remote"]
+    },
+    {
+      "slug": "caxton-associates",
+      "name": "Caxton Associates",
+      "ats": "workable",
+      "boardToken": "caxton",
+      "careersUrl": "https://apply.workable.com/caxton/",
+      "hq": "London, United Kingdom",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "celonis",
+      "name": "Celonis",
+      "ats": "greenhouse",
+      "boardToken": "celonis",
+      "careersUrl": "https://careers.celonis.com/",
+      "hq": "Munich, Germany",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "certifyos",
+      "name": "CertifyOS",
+      "ats": "ashby",
+      "boardToken": "certifyos",
+      "careersUrl": "https://jobs.ashbyhq.com/certifyos",
+      "hq": "New York, United States",
+      "locations": ["Bengaluru", "Pune"]
+    },
+    {
+      "slug": "cohere-health",
+      "name": "Cohere Health",
+      "ats": "greenhouse",
+      "boardToken": "coherehealth",
+      "careersUrl": "https://job-boards.greenhouse.io/coherehealth",
+      "hq": "Boston, United States",
+      "locations": ["Hyderabad"]
+    },
+    {
+      "slug": "coinbase",
+      "name": "Coinbase",
+      "ats": "greenhouse",
+      "boardToken": "coinbase",
+      "careersUrl": "https://www.coinbase.com/careers",
+      "hq": "Remote-first, United States",
+      "locations": ["Remote"]
+    },
+    {
+      "slug": "commure",
+      "name": "Commure",
+      "ats": "ashby",
+      "boardToken": "Commure",
+      "careersUrl": "https://jobs.ashbyhq.com/Commure",
+      "hq": "Mountain View, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "composio",
+      "name": "Composio",
+      "ats": "ashby",
+      "boardToken": "composio",
+      "careersUrl": "https://jobs.ashbyhq.com/composio",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "connectwise",
+      "name": "ConnectWise",
+      "ats": "greenhouse",
+      "boardToken": "connectwise",
+      "careersUrl": "https://job-boards.greenhouse.io/connectwise",
+      "hq": "Tampa, United States",
+      "locations": ["Bengaluru", "Pune"]
+    },
+    {
+      "slug": "coupang",
+      "name": "Coupang",
+      "ats": "greenhouse",
+      "boardToken": "coupang",
+      "careersUrl": "https://www.coupang.jobs/en/jobs/",
+      "hq": "Seoul, South Korea",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "covergo",
+      "name": "CoverGo",
+      "ats": "workable",
+      "boardToken": "covergo",
+      "careersUrl": "https://apply.workable.com/covergo/",
+      "hq": "Hong Kong, Hong Kong",
+      "locations": ["Bengaluru", "Pune", "Remote"]
+    },
+    {
+      "slug": "crunchyroll",
+      "name": "Crunchyroll",
+      "ats": "greenhouse",
+      "boardToken": "crunchyroll",
+      "careersUrl": "https://www.crunchyroll.com/about/work/index.html",
+      "hq": "Coppell, United States",
+      "locations": ["Hyderabad"]
+    },
+    {
+      "slug": "cyberhaven",
+      "name": "Cyberhaven",
+      "ats": "ashby",
+      "boardToken": "cyberhaven",
+      "careersUrl": "https://jobs.ashbyhq.com/cyberhaven",
+      "hq": "San Jose, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "databricks",
+      "name": "Databricks",
+      "ats": "greenhouse",
+      "boardToken": "databricks",
+      "careersUrl": "https://www.databricks.com/company/careers/open-positions",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Pune", "Remote"]
+    },
+    {
+      "slug": "doordash",
+      "name": "DoorDash",
+      "ats": "greenhouse",
+      "boardToken": "doordashindia",
+      "careersUrl": "https://job-boards.greenhouse.io/doordashindia",
+      "hq": "San Francisco, United States",
+      "locations": ["Hyderabad", "Pune", "Remote"]
+    },
+    {
+      "slug": "druva",
+      "name": "Druva",
+      "ats": "greenhouse",
+      "boardToken": "druva",
+      "careersUrl": "https://www.druva.com/why-druva/explore/careers/jobs",
+      "hq": "Santa Clara, United States",
+      "locations": ["Pune"]
+    },
+    {
+      "slug": "dun-and-bradstreet",
+      "name": "Dun & Bradstreet",
+      "ats": "lever",
+      "boardToken": "dnb",
+      "careersUrl": "https://jobs.lever.co/dnb",
+      "hq": "Jacksonville, United States",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "endava",
+      "name": "Endava",
+      "ats": "smartrecruiters",
+      "boardToken": "Endava",
+      "careersUrl": "https://careers.smartrecruiters.com/Endava",
+      "hq": "London, United Kingdom",
+      "locations": ["Bengaluru", "Pune"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "endpoint-clinical",
+      "name": "Endpoint Clinical",
+      "ats": "lever",
+      "boardToken": "endpointclinical",
+      "careersUrl": "https://jobs.lever.co/endpointclinical",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Hyderabad", "Remote"]
+    },
+    {
+      "slug": "energy-exemplar",
+      "name": "Energy Exemplar",
+      "ats": "greenhouse",
+      "boardToken": "energyexemplarllc",
+      "careersUrl": "https://job-boards.greenhouse.io/energyexemplarllc",
+      "hq": "Salt Lake City, United States",
+      "locations": ["Bengaluru", "Pune"]
+    },
+    {
+      "slug": "entrata",
+      "name": "Entrata",
+      "ats": "lever",
+      "boardToken": "entrata",
+      "careersUrl": "https://jobs.lever.co/entrata",
+      "hq": "Lehi, United States",
+      "locations": ["Pune"]
+    },
+    {
+      "slug": "eurofins",
+      "name": "Eurofins",
+      "ats": "smartrecruiters",
+      "boardToken": "Eurofins",
+      "careersUrl": "https://careers.smartrecruiters.com/Eurofins",
+      "hq": "Luxembourg, Luxembourg",
+      "locations": ["Bengaluru"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "everbridge",
+      "name": "Everbridge",
+      "ats": "lever",
+      "boardToken": "everbridge",
+      "careersUrl": "https://jobs.lever.co/everbridge",
+      "hq": "Burlington, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "experian",
+      "name": "Experian",
+      "ats": "smartrecruiters",
+      "boardToken": "Experian",
+      "careersUrl": "https://careers.smartrecruiters.com/Experian",
+      "hq": "Dublin, Ireland",
+      "locations": ["Hyderabad", "Pune", "Remote"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "fampay",
+      "name": "Fam (FamPay)",
+      "ats": "lever",
+      "boardToken": "fampay",
+      "careersUrl": "https://jobs.lever.co/fampay",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "fivetran",
+      "name": "Fivetran",
+      "ats": "greenhouse",
+      "boardToken": "fivetran",
+      "careersUrl": "https://www.fivetran.com/careers",
+      "hq": "Oakland, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "freshworks",
+      "name": "Freshworks",
+      "ats": "smartrecruiters",
+      "boardToken": "freshworks",
+      "careersUrl": "https://careers.smartrecruiters.com/freshworks",
+      "hq": "San Mateo, United States",
+      "locations": ["Bengaluru", "Hyderabad"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "ghx",
+      "name": "GHX (Global Healthcare Exchange)",
+      "ats": "greenhouse",
+      "boardToken": "globalhealthcareexchangeinc",
+      "careersUrl": "https://job-boards.greenhouse.io/globalhealthcareexchangeinc",
+      "hq": "Louisville, United States",
+      "locations": ["Hyderabad"]
+    },
+    {
+      "slug": "gitlab",
+      "name": "GitLab",
+      "ats": "greenhouse",
+      "boardToken": "gitlab",
+      "careersUrl": "https://job-boards.greenhouse.io/gitlab",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "glance",
+      "name": "Glance",
+      "ats": "greenhouse",
+      "boardToken": "glance",
+      "careersUrl": "https://job-boards.greenhouse.io/glance",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "glean",
+      "name": "Glean",
+      "ats": "greenhouse",
+      "boardToken": "gleanwork",
+      "careersUrl": "https://job-boards.greenhouse.io/gleanwork",
+      "hq": "Palo Alto, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "hackerrank",
+      "name": "HackerRank",
+      "ats": "greenhouse",
+      "boardToken": "hackerrank",
+      "careersUrl": "https://job-boards.greenhouse.io/hackerrank",
+      "hq": "Mountain View, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "harness",
+      "name": "Harness",
+      "ats": "greenhouse",
+      "boardToken": "harnessinc",
+      "careersUrl": "https://www.harness.io/company/jobs",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "hevo-data",
+      "name": "Hevo Data",
+      "ats": "lever",
+      "boardToken": "hevodata",
+      "careersUrl": "https://jobs.lever.co/hevodata",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Pune"]
+    },
+    {
+      "slug": "hinge-health",
+      "name": "Hinge Health",
+      "ats": "ashby",
+      "boardToken": "hinge-health",
+      "careersUrl": "https://jobs.ashbyhq.com/hinge-health",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "hitachi-solutions",
+      "name": "Hitachi Solutions",
+      "ats": "smartrecruiters",
+      "boardToken": "HitachiSolutions",
+      "careersUrl": "https://careers.smartrecruiters.com/HitachiSolutions",
+      "hq": "Tokyo, Japan",
+      "locations": ["Bengaluru", "Hyderabad", "Pune"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "inmobi",
+      "name": "InMobi",
+      "ats": "greenhouse",
+      "boardToken": "inmobi",
+      "careersUrl": "https://job-boards.greenhouse.io/inmobi",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "instawork",
+      "name": "Instawork",
+      "ats": "greenhouse",
+      "boardToken": "instawork",
+      "careersUrl": "https://job-boards.greenhouse.io/instawork",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "jumpcloud",
+      "name": "JumpCloud",
+      "ats": "lever",
+      "boardToken": "jumpcloud",
+      "careersUrl": "https://jobs.lever.co/jumpcloud",
+      "hq": "Louisville, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "juniper-square",
+      "name": "Juniper Square",
+      "ats": "ashby",
+      "boardToken": "junipersquare",
+      "careersUrl": "https://jobs.ashbyhq.com/junipersquare",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "kaigentic",
+      "name": "kAIgentic",
+      "ats": "ashby",
+      "boardToken": "kaigentic",
+      "careersUrl": "https://jobs.ashbyhq.com/kaigentic",
+      "hq": "Singapore, Singapore",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "kobie",
+      "name": "Kobie Marketing",
+      "ats": "lever",
+      "boardToken": "kobie",
+      "careersUrl": "https://jobs.lever.co/kobie",
+      "hq": "St. Petersburg, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "level-ai",
+      "name": "Level AI",
+      "ats": "ashby",
+      "boardToken": "Level-AI",
+      "careersUrl": "https://jobs.ashbyhq.com/Level-AI",
+      "hq": "Mountain View, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "linkedin",
+      "name": "LinkedIn",
+      "ats": "smartrecruiters",
+      "boardToken": "LinkedIn3",
+      "careersUrl": "https://careers.smartrecruiters.com/LinkedIn3",
+      "hq": "Sunnyvale, United States",
+      "locations": ["Bengaluru", "Hyderabad", "Remote"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "matillion",
+      "name": "Matillion",
+      "ats": "lever",
+      "boardToken": "matillion",
+      "careersUrl": "https://jobs.lever.co/matillion",
+      "hq": "Manchester, United Kingdom",
+      "locations": ["Hyderabad", "Remote"]
+    },
+    {
+      "slug": "meesho",
+      "name": "Meesho",
+      "ats": "lever",
+      "boardToken": "meesho",
+      "careersUrl": "https://jobs.lever.co/meesho",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "mercari-india",
+      "name": "Mercari India",
+      "ats": "workable",
+      "boardToken": "mercari-india",
+      "careersUrl": "https://apply.workable.com/mercari-india/",
+      "hq": "Tokyo, Japan",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "mindera",
+      "name": "Mindera",
+      "ats": "workable",
+      "boardToken": "minderacraft",
+      "careersUrl": "https://apply.workable.com/minderacraft/",
+      "hq": "Porto, Portugal",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "mindtickle",
+      "name": "Mindtickle",
+      "ats": "lever",
+      "boardToken": "mindtickle",
+      "careersUrl": "https://jobs.lever.co/mindtickle",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru", "Pune"]
+    },
+    {
+      "slug": "mongodb",
+      "name": "MongoDB",
+      "ats": "greenhouse",
+      "boardToken": "mongodb",
+      "careersUrl": "https://www.mongodb.com/company/careers/teams",
+      "hq": "New York, United States",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "nagarro",
+      "name": "Nagarro",
+      "ats": "smartrecruiters",
+      "boardToken": "Nagarro1",
+      "careersUrl": "https://careers.smartrecruiters.com/Nagarro1",
+      "hq": "Munich, Germany",
+      "locations": ["Bengaluru", "Hyderabad", "Pune", "Remote"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "navtech",
+      "name": "Navtech (Navaratan Technologies)",
+      "ats": "workable",
+      "boardToken": "navtech",
+      "careersUrl": "https://apply.workable.com/navtech/",
+      "hq": "Hyderabad, India",
+      "locations": ["Hyderabad"]
+    },
+    {
+      "slug": "netskope",
+      "name": "Netskope",
+      "ats": "greenhouse",
+      "boardToken": "netskope",
+      "careersUrl": "https://www.netskope.com/company/careers/open-positions",
+      "hq": "Santa Clara, United States",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "neuron7",
+      "name": "Neuron7.ai",
+      "ats": "lever",
+      "boardToken": "neuron7",
+      "careersUrl": "https://jobs.lever.co/neuron7",
+      "hq": "Santa Clara, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "nexthink",
+      "name": "Nexthink",
+      "ats": "smartrecruiters",
+      "boardToken": "Nexthink",
+      "careersUrl": "https://careers.smartrecruiters.com/Nexthink",
+      "hq": "Lausanne, Switzerland",
+      "locations": ["Bengaluru"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "nielseniq",
+      "name": "NielsenIQ",
+      "ats": "smartrecruiters",
+      "boardToken": "NielsenIQ",
+      "careersUrl": "https://careers.smartrecruiters.com/NielsenIQ",
+      "hq": "Chicago, United States",
+      "locations": ["Bengaluru", "Pune"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "notion",
+      "name": "Notion",
+      "ats": "ashby",
+      "boardToken": "notion",
+      "careersUrl": "https://jobs.ashbyhq.com/notion",
+      "hq": "San Francisco, United States",
+      "locations": ["Hyderabad"]
+    },
+    {
+      "slug": "okta",
+      "name": "Okta",
+      "ats": "greenhouse",
+      "boardToken": "okta",
+      "careersUrl": "https://www.okta.com/company/careers/",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "opengov",
+      "name": "OpenGov",
+      "ats": "ashby",
+      "boardToken": "opengov",
+      "careersUrl": "https://jobs.ashbyhq.com/opengov",
+      "hq": "San Francisco, United States",
+      "locations": ["Pune"]
+    },
+    {
+      "slug": "paytm",
+      "name": "Paytm",
+      "ats": "lever",
+      "boardToken": "paytm",
+      "careersUrl": "https://jobs.lever.co/paytm",
+      "hq": "Noida, India",
+      "locations": ["Bengaluru", "Hyderabad", "Pune", "Remote"]
+    },
+    {
+      "slug": "pdi-technologies",
+      "name": "PDI Technologies",
+      "ats": "lever",
+      "boardToken": "pditechnologies",
+      "careersUrl": "https://jobs.lever.co/pditechnologies",
+      "hq": "Alpharetta, United States",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "phonepe",
+      "name": "PhonePe",
+      "ats": "smartrecruiters",
+      "boardToken": "PHONEPELIMITED",
+      "careersUrl": "https://careers.smartrecruiters.com/PHONEPELIMITED",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru", "Hyderabad", "Pune"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "proximity-works",
+      "name": "Proximity Works",
+      "ats": "workable",
+      "boardToken": "prox-works",
+      "careersUrl": "https://apply.workable.com/prox-works/",
+      "hq": "Mumbai, India",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "pubmatic",
+      "name": "PubMatic",
+      "ats": "greenhouse",
+      "boardToken": "pubmatic",
+      "careersUrl": "https://pubmatic.com/careers/job-search/",
+      "hq": "Redwood City, United States",
+      "locations": ["Bengaluru", "Pune", "Remote"]
+    },
+    {
+      "slug": "razorpay",
+      "name": "Razorpay",
+      "ats": "greenhouse",
+      "boardToken": "razorpaysoftwareprivatelimited",
+      "careersUrl": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "rubrik",
+      "name": "Rubrik",
+      "ats": "greenhouse",
+      "boardToken": "rubrik",
+      "careersUrl": "https://www.rubrik.com/company/careers",
+      "hq": "Palo Alto, United States",
+      "locations": ["Bengaluru", "Pune", "Remote"]
+    },
+    {
+      "slug": "safe-security",
+      "name": "Safe Security",
+      "ats": "lever",
+      "boardToken": "safe",
+      "careersUrl": "https://jobs.lever.co/safe",
+      "hq": "Palo Alto, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "sarvam-ai",
+      "name": "Sarvam AI",
+      "ats": "ashby",
+      "boardToken": "sarvam",
+      "careersUrl": "https://jobs.ashbyhq.com/sarvam",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "saviynt",
+      "name": "Saviynt",
+      "ats": "lever",
+      "boardToken": "saviynt",
+      "careersUrl": "https://jobs.lever.co/saviynt",
+      "hq": "El Segundo, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "seekho",
+      "name": "Seekho",
+      "ats": "workable",
+      "boardToken": "seekho",
+      "careersUrl": "https://apply.workable.com/seekho/",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "servicenow",
+      "name": "ServiceNow",
+      "ats": "smartrecruiters",
+      "boardToken": "ServiceNow",
+      "careersUrl": "https://careers.smartrecruiters.com/ServiceNow",
+      "hq": "Santa Clara, United States",
+      "locations": ["Bengaluru", "Hyderabad", "Remote"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "side",
+      "name": "Side",
+      "ats": "workable",
+      "boardToken": "sideinc",
+      "careersUrl": "https://apply.workable.com/sideinc/",
+      "hq": "London, United Kingdom",
+      "locations": ["Bengaluru", "Hyderabad", "Remote"]
+    },
+    {
+      "slug": "smarsh",
+      "name": "Smarsh",
+      "ats": "lever",
+      "boardToken": "smarsh",
+      "careersUrl": "https://jobs.lever.co/smarsh",
+      "hq": "Portland, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "sprinto",
+      "name": "Sprinto",
+      "ats": "lever",
+      "boardToken": "Sprinto",
+      "careersUrl": "https://jobs.lever.co/Sprinto",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "stripe",
+      "name": "Stripe",
+      "ats": "greenhouse",
+      "boardToken": "stripe",
+      "careersUrl": "https://stripe.com/careers/search",
+      "hq": "San Francisco, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "swiggy",
+      "name": "Swiggy",
+      "ats": "smartrecruiters",
+      "boardToken": "Swiggy",
+      "careersUrl": "https://careers.swiggy.in/",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru", "Hyderabad", "Pune"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "tide",
+      "name": "Tide",
+      "ats": "greenhouse",
+      "boardToken": "tide",
+      "careersUrl": "https://job-boards.greenhouse.io/tide",
+      "hq": "London, United Kingdom",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "toast",
+      "name": "Toast",
+      "ats": "greenhouse",
+      "boardToken": "toast",
+      "careersUrl": "https://careers.toasttab.com/homepage",
+      "hq": "Boston, United States",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "truveta",
+      "name": "Truveta",
+      "ats": "greenhouse",
+      "boardToken": "truveta",
+      "careersUrl": "https://job-boards.greenhouse.io/truveta",
+      "hq": "Bellevue, United States",
+      "locations": ["Hyderabad"]
+    },
+    {
+      "slug": "twilio",
+      "name": "Twilio",
+      "ats": "greenhouse",
+      "boardToken": "twilio",
+      "careersUrl": "https://job-boards.greenhouse.io/twilio",
+      "hq": "San Francisco, United States",
+      "locations": ["Remote"]
+    },
+    {
+      "slug": "version-1",
+      "name": "Version 1",
+      "ats": "smartrecruiters",
+      "boardToken": "Version1",
+      "careersUrl": "https://careers.smartrecruiters.com/Version1",
+      "hq": "Dublin, Ireland",
+      "locations": ["Bengaluru", "Pune"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "wabtec",
+      "name": "Wabtec",
+      "ats": "smartrecruiters",
+      "boardToken": "Wabtec",
+      "careersUrl": "https://careers.smartrecruiters.com/Wabtec",
+      "hq": "Pittsburgh, United States",
+      "locations": ["Bengaluru", "Hyderabad"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "weave",
+      "name": "Weave",
+      "ats": "ashby",
+      "boardToken": "weave",
+      "careersUrl": "https://jobs.ashbyhq.com/weave",
+      "hq": "Lehi, United States",
+      "locations": ["Remote"]
+    },
+    {
+      "slug": "wise",
+      "name": "Wise",
+      "ats": "smartrecruiters",
+      "boardToken": "Wise",
+      "careersUrl": "https://wise.jobs/",
+      "hq": "London, United Kingdom",
+      "locations": ["Hyderabad"],
+      "active": false,
+      "note": "Inactive: api.smartrecruiters.com/robots.txt disallows every crawler except LinkedInBot (checked 2026-10-14)."
+    },
+    {
+      "slug": "writesonic",
+      "name": "Writesonic",
+      "ats": "workable",
+      "boardToken": "writesonic",
+      "careersUrl": "https://apply.workable.com/writesonic/",
+      "hq": "San Francisco, United States",
+      "locations": ["Remote"]
+    },
+    {
+      "slug": "youtrip",
+      "name": "YouTrip",
+      "ats": "workable",
+      "boardToken": "youtrip",
+      "careersUrl": "https://apply.workable.com/youtrip/",
+      "hq": "Singapore, Singapore",
+      "locations": ["Bengaluru"]
+    },
+    {
+      "slug": "zeta",
+      "name": "Zeta",
+      "ats": "lever",
+      "boardToken": "zeta",
+      "careersUrl": "https://jobs.lever.co/zeta",
+      "hq": "Bengaluru, India",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "zeta-global",
+      "name": "Zeta Global",
+      "ats": "greenhouse",
+      "boardToken": "zetaglobal",
+      "careersUrl": "https://job-boards.greenhouse.io/zetaglobal",
+      "hq": "New York, United States",
+      "locations": ["Bengaluru", "Hyderabad"]
+    },
+    {
+      "slug": "zimperium",
+      "name": "Zimperium",
+      "ats": "lever",
+      "boardToken": "zimperium",
+      "careersUrl": "https://jobs.lever.co/zimperium",
+      "hq": "Dallas, United States",
+      "locations": ["Bengaluru", "Remote"]
+    },
+    {
+      "slug": "zscaler",
+      "name": "Zscaler",
+      "ats": "greenhouse",
+      "boardToken": "zscaler",
+      "careersUrl": "https://job-boards.greenhouse.io/zscaler",
+      "hq": "San Jose, United States",
+      "locations": ["Bengaluru", "Hyderabad", "Pune", "Remote"]
+    }
+  ]
+}

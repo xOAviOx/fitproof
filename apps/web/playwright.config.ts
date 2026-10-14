@@ -54,6 +54,7 @@ export default defineConfig({
             NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_placeholder_for_ci_builds",
             NEXT_PUBLIC_SITE_URL: baseURL,
             RESUME_UPLOADS_ENABLED: "true",
+            ADMIN_EMAILS: "owner@example.test",
             SUPABASE_SECRET_KEY: "e2e-storage-secret-never-use-in-production",
             // Empty keys win over the root .env, so jobs are always read by keyword, never by a live model.
             GEMINI_API_KEY: "",

@@ -1,0 +1,56 @@
+name: Collect jobs
+
+# Reads every company board in data/companies.seed.json plus Adzuna, then re-checks freshness.
+# Ingest stops itself after COLLECTION_CONFIG.runBudgetMinutes and the next run resumes with the
+# boards it didn't reach. Verify runs even when ingest fails, so closed jobs still disappear.
+on:
+  schedule:
+    - cron: "40 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      companies:
+        description: "Only these registry slugs, space separated (blank = every board)"
+        required: false
+        default: ""
+      skip_adzuna:
+        description: "Skip the Adzuna search"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect-jobs
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    if: vars.COLLECT_JOBS == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXT_PUBLIC_SITE_URL: ${{ vars.APP_URL }}
+      ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+      ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Ingest
+        env:
+          COMPANIES: ${{ inputs.companies }}
+          SKIP_ADZUNA: ${{ inputs.skip_adzuna }}
+        run: |
+          args=()
+          for slug in $COMPANIES; do args+=(--company "$slug"); done
+          if [ "$SKIP_ADZUNA" = "true" ]; then args+=(--no-adzuna); fi
+          pnpm worker ingest "${args[@]}"
+      - name: Verify
+        if: ${{ !cancelled() }}
+        run: pnpm worker verify

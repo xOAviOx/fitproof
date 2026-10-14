@@ -29,6 +29,13 @@
       "when": 1791921838676,
       "tag": "0003_eligibility_availability",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792003496861,
+      "tag": "0004_collection",
+      "breakpoints": true
     }
   ]
 }

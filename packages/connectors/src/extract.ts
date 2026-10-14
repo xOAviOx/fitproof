@@ -86,6 +86,15 @@ export function htmlToText(html: string): string {
   return cleanJobText(parts.join(""));
 }
 
+/** `htmlToText` for API fields that may hold HTML escaped once more, as Greenhouse's `content` does. */
+export function htmlFieldToText(html: string): string {
+  const unescaped =
+    !/<[a-z]/i.test(html) && /&lt;[a-z]/i.test(html)
+      ? parseHTML(`<!doctype html><html><body>${html}</body></html>`).document.body.textContent
+      : html;
+  return htmlToText(unescaped);
+}
+
 const text = z
   .string()
   .transform((value) => value.trim())
@@ -159,13 +168,7 @@ function fromJsonLd(document: { querySelectorAll: (selector: string) => ArrayLik
     const raw = findJobPosting(data);
     if (!raw) continue;
     const posting = jobPostingSchema.parse(raw);
-    let description = posting.description ?? "";
-    // Some boards HTML-escape the description twice.
-    if (!/<[a-z]/i.test(description) && /&lt;[a-z]/i.test(description)) {
-      description = parseHTML(`<!doctype html><html><body>${description}</body></html>`).document.body
-        .textContent;
-    }
-    const body = htmlToText(description);
+    const body = htmlFieldToText(posting.description ?? "");
     if (!body) continue;
     const locations = [...new Set((posting.jobLocation ?? []).filter(Boolean))];
     const remote = posting.jobLocationType?.toUpperCase() === "TELECOMMUTE";

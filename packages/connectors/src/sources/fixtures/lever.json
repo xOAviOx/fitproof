@@ -1,0 +1,100 @@
+[
+  {
+    "additionalPlain": "Zeta is an equal opportunity employer.  \nAt Zeta, we are committed to equal employment opportunities regardless of job history, disability, gender identity, religion, race, marital/parental status, or another special status. We are proud to be an equitable workplace that welcomes individuals from all walks of life if they fit the roles and responsibilities.\n \n",
+    "additional": "<div><strong>Zeta is an equal opportunity employer.&nbsp;&nbsp;</strong></div>\n<div>At Zeta, we are committed to equal employment opportunities regardless of job history, disability, gender identity, religion, race, marital/parental status, or another special status. We are proud to be an equitable workplace that welcomes individuals from all walks of life if they fit the roles and responsibilities.</div>\n<div>&nbsp;</div>",
+    "categories": {
+      "commitment": "Full-time",
+      "department": "Production Operations",
+      "location": "Hyderabad",
+      "team": "Engineering",
+      "allLocations": ["Hyderabad"]
+    },
+    "createdAt": 1787732026874,
+    "descriptionPlain": "About Us\n \nBuild the future of banking.\nZeta is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences. \n \nOur impact runs at real-world scale. Today, over 25 million cards are live on Zeta-powered platforms across 7 countries, supported by a passionate team of 1,700+ Zetanauts across India, the US, EMEA, and Asia. Backed by SoftBank Vision Fund, Mastercard, and other reputed strategic investors, we reached a valuation of $2 billion in 2025.",
+    "description": "<div>\n<div><strong>About Us</strong></div>\n<div>&nbsp;</div>\n<div><strong>Build the future of banking.</strong></div>\n<div><u><a href=\"https://www.zeta.tech/in/\">Zeta</a></u> is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences.&nbsp;</div>\n<div>&nbsp;</div>\n<div>Our impact runs at real-world scale. Today, <strong>ov",
+    "id": "dad16204-8051-4517-9e50-966f329045b5",
+    "lists": [
+      {
+        "text": "Responsibilities:",
+        "content": "<div>\n<div>\n<ul style=\"list-style-type: square;\">\n<li><span data-contrast=\"auto\">Build and maintain cloud infrastructure and network automation across AWS, and Cloudflare environments.&nbsp;</span></li>\n<li><span data-contrast=\"auto\">Troubleshoot production cloud, network, and CDN issues while improving operational efficiency through automation.&nbsp;</span></li>\n<li><span data-contrast=\"auto\">Create technical documentation, automation runbooks, and collaborate with cross-functional engineering teams. </span><span data-ccp-props=\"{&quot;134233117&quot;:false,&quot;134233118&quot;:false,&quot;335559738&quot;:0,&quot;335559739&quot;:0}\">&nbsp;</span></li>"
+      },
+      {
+        "text": "Skills:",
+        "content": "<div>\n<div>\n<ul style=\"list-style-type: square;\">\n<li><span data-contrast=\"auto\">Hands-on experience with </span><span data-contrast=\"auto\">AWS</span><span data-contrast=\"auto\"> (mandatory), Linux, Kubernetes (EKS preferred), and Terraform or Cross plane.&nbsp;</span></li>\n<li><span data-contrast=\"auto\">Strong scripting skills in&nbsp;</span><span data-contrast=\"auto\">Python</span><span data-contrast=\"auto\"> or Bash for infrastructure and network automation.&nbsp;</span></li>\n<li><span data-contrast=\"auto\">Good understanding of cloud networking, DNS, Load Balancers, VPC, Security Groups, TGW, Direct Connect, VPC Endpoint and REST APIs. </span><span data-ccp-props=\"{&quot;134233117&quot;:false,&quot;134233118&quot;:false,&quot;335559738&quot;:0,&quot;335559739&quot;:0}\">&nbsp;</span></li>"
+      }
+    ],
+    "text": "Cloud Network Engineer II",
+    "country": "IN",
+    "workplaceType": "onsite",
+    "opening": "",
+    "openingPlain": "",
+    "descriptionBody": "<div>\n<div><strong>About Us</strong></div>\n<div>&nbsp;</div>\n<div><strong>Build the future of banking.</strong></div>\n<div><u><a href=\"https://www.zeta.tech/in/\">Zeta</a></u> is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences.&nbsp;</div>\n<div>&nbsp;</div>\n<div>Our impact runs at real-world scale. Today, <strong>ov",
+    "descriptionBodyPlain": "About Us\n \nBuild the future of banking.\nZeta is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences. \n \nOur impact runs at real-world scale. Today, over 25 million cards are live on Zeta-powered platforms across 7 countries, supported by a passionate team of 1,700+ Zetanauts across India, the US, EMEA, and Asia. Backed by SoftBank Vision Fund, Mastercard, and other reputed strategic investors, we reached a valuation of $2 billion in 2025.",
+    "hostedUrl": "https://jobs.lever.co/zeta/dad16204-8051-4517-9e50-966f329045b5",
+    "applyUrl": "https://jobs.lever.co/zeta/dad16204-8051-4517-9e50-966f329045b5/apply"
+  },
+  {
+    "additionalPlain": "Zeta is an equal opportunity employer.  \nAt Zeta, we are committed to equal employment opportunities regardless of job history, disability, gender identity, religion, race, marital/parental status, or another special status. We are proud to be an equitable workplace that welcomes individuals from all walks of life if they fit the roles and responsibilities.\n",
+    "additional": "<div><strong style=\"font-size: 16px;\">Zeta is an equal opportunity employer.&nbsp;&nbsp;</strong></div>\n<div><span style=\"font-size: 16px;\">At Zeta, we are committed to equal employment opportunities regardless of job history, disability, gender identity, religion, race, marital/parental status, or another special status. We are proud to be an equitable workplace that welcomes individuals from all walks of life if they fit the roles and responsibilities.</span></div>",
+    "categories": {
+      "commitment": "Full-time",
+      "department": "Production Operations",
+      "location": "Hyderabad/Bangalore",
+      "team": "Engineering",
+      "allLocations": ["Hyderabad/Bangalore"]
+    },
+    "createdAt": 1784699953951,
+    "descriptionPlain": "About Us\n \nBuild the future of banking.\nZeta is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences. \n \nOur impact runs at real-world scale. Today, over 25 million cards are live on Zeta-powered platforms across 7 countries, supported by a passionate team of 1,700+ Zetanauts across India, the US, EMEA, and Asia. Backed by SoftBank Vision Fund, Mastercard, and other reputed strategic investors, we reached a valuation of $2 billion in 2025.",
+    "description": "<div><strong>About Us</strong></div>\n<div>&nbsp;</div>\n<div><strong>Build the future of banking.</strong></div>\n<div><a rel=\"noopener noreferrer\" href=\"https://www.zeta.tech/in/\" class=\"postings-link\"><u>Zeta</u></a> is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences.&nbsp;</div>\n<div>&nbsp;</div>\n<div>Our impact r",
+    "id": "803792f5-0e9c-45bc-82ce-c0a552ce0cf8",
+    "lists": [
+      {
+        "text": "Responsibilities",
+        "content": "\n<li>Establish a SRE site and help build an effective, inclusive SRE team.</li>\n<li>Provide technical leadership for the local team and work closely with partner team technical leads and cloud leadership.</li>\n<li>Provide guidance to other team members on managing availability and performance of mission critical services, on building automation to prevent problem recurrence, and building automated responses for non-exceptional service conditions.</li>\n<li>Manage execution of project priorities, deadlines, and deliverables.</li>"
+      },
+      {
+        "text": "Skills",
+        "content": "\n<li>Experience designing, analyzing, and troubleshooting large-scale distributed systems.</li>\n<li>Experience in MySQL or Postgres SQL in database.</li>\n<li>Hands-on experience on operating with k8s and any cloud.</li>\n<li>Excellent communication skills and a sense of ownership, with a systematic problem-solving approach</li>\n"
+      }
+    ],
+    "text": "Lead Site Reliability Engineer",
+    "country": "IN",
+    "workplaceType": "onsite",
+    "opening": "",
+    "openingPlain": "",
+    "descriptionBody": "<div><strong>About Us</strong></div>\n<div>&nbsp;</div>\n<div><strong>Build the future of banking.</strong></div>\n<div><a class=\"postings-link\" href=\"https://www.zeta.tech/in/\" target=\"_blank\" rel=\"noopener noreferrer\"><u>Zeta</u></a> is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences.&nbsp;</div>\n<div>&nbsp;</div>\n<",
+    "descriptionBodyPlain": "About Us\n \nBuild the future of banking.\nZeta is a next-generation banking technology company providing cloud-native, fully stackable processing and core banking platforms for issuers. With a focus on scalability, compliance, and innovation, Zeta empowers financial institutions to modernize their technology infrastructure and deliver secure, seamless digital banking experiences. \n \nOur impact runs at real-world scale. Today, over 25 million cards are live on Zeta-powered platforms across 7 countries, supported by a passionate team of 1,700+ Zetanauts across India, the US, EMEA, and Asia. Backed by SoftBank Vision Fund, Mastercard, and other reputed strategic investors, we reached a valuation of $2 billion in 2025.",
+    "hostedUrl": "https://jobs.lever.co/zeta/803792f5-0e9c-45bc-82ce-c0a552ce0cf8",
+    "applyUrl": "https://jobs.lever.co/zeta/803792f5-0e9c-45bc-82ce-c0a552ce0cf8/apply"
+  },
+  {
+    "additional": "",
+    "additionalPlain": "",
+    "categories": {
+      "commitment": "full time",
+      "department": "Prefr",
+      "location": "hyderabad",
+      "team": "finance",
+      "allLocations": ["hyderabad"]
+    },
+    "createdAt": 1790573982021,
+    "description": "",
+    "descriptionPlain": "",
+    "id": "aa98a938-af3a-45f5-851d-966b2b5bad33",
+    "lists": [
+      {
+        "text": "",
+        "content": "<div>\n<p>Prefr (operated by CreditVidya) is a digital-first lending platform that makes credit accessible to millions across India. with loan offerings ranging from ₹50,000 to ₹5 Lakh, we’re enabling instant personal loans and flexible pay-later credit lines, especially for first-time borrowers and underserved regions. backed by RBI-approved NBFC partnerships, we’ve built a platform that uses selfie-based KYC, minimal documentation, and AI-powered underwriting to disburse loans within minutes.</p>\n<p>we are seeking an experienced Finance Manager to oversee the accounting, payments, and treasury functions for a fast-growing Fintech company and will lead the AP team, ensuring timely and accurate payments of company liabilities, optimizing the AP process, and working closely with vendors, procurement, and internal stakeholders. the Finance Manager will ensure compliance with statutory requirements (TDS, GST, MSME Act, Companies Act) and optimize cash flow management while driving financial process improvements and ensuring the accuracy of financial statements.</p>"
+      }
+    ],
+    "text": "accounts payable manager",
+    "country": "IN",
+    "workplaceType": "onsite",
+    "opening": "",
+    "openingPlain": "",
+    "descriptionBody": "",
+    "descriptionBodyPlain": "",
+    "hostedUrl": "https://jobs.lever.co/cred/aa98a938-af3a-45f5-851d-966b2b5bad33",
+    "applyUrl": "https://jobs.lever.co/cred/aa98a938-af3a-45f5-851d-966b2b5bad33/apply"
+  }
+]

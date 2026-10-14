@@ -320,6 +320,7 @@ export async function listUserJobs(db: Database, userId: string) {
         sourceName: jobs.sourceName,
         createdAt: jobs.createdAt,
         requirementsStatus: jobs.requirementsStatus,
+        closedAt: jobs.closedAt,
         band: matches.band,
         explanationStatus: matches.explanationStatus,
         saved: sql<boolean>`${applications.id} is not null`,

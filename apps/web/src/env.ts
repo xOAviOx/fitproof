@@ -19,6 +19,17 @@ const serverEnvSchema = z
       .string()
       .regex(/^[a-z0-9-]+$/)
       .default("resumes"),
+    /** Comma-separated sign-in emails that may open /admin. Empty means nobody can. */
+    ADMIN_EMAILS: z
+      .string()
+      .default("")
+      .transform((value) =>
+        value
+          .split(",")
+          .map((email) => email.trim().toLowerCase())
+          .filter(Boolean),
+      )
+      .pipe(z.array(z.email())),
   })
   .superRefine((env, ctx) => {
     if (env.RESUME_UPLOADS_ENABLED && !env.SUPABASE_SECRET_KEY) {

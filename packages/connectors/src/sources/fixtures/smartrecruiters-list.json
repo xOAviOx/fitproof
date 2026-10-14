@@ -1,0 +1,187 @@
+{
+  "offset": 0,
+  "limit": 100,
+  "totalFound": 3,
+  "content": [
+    {
+      "id": "744000155542414",
+      "name": "Finance Business Partner _SO/TCR-IN",
+      "uuid": "efacda4c-24a7-4eca-9ec7-956745eb3990",
+      "jobAdId": "f0317959-0443-4968-926c-5b986a1edfb8",
+      "defaultJobAd": true,
+      "refNumber": "REF296599K",
+      "company": {
+        "identifier": "BoschGroup",
+        "name": "Bosch Group"
+      },
+      "releasedDate": "2026-10-14T15:04:17.872Z",
+      "location": {
+        "city": "bengaluru",
+        "country": "in",
+        "address": "no.123  industrial layout  hosur road  koramangala,",
+        "postalCode": "560095",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "bengaluru, , India"
+      },
+      "industry": {
+        "id": "computer_software",
+        "label": "Computer Software"
+      },
+      "department": {},
+      "function": {
+        "id": "finance",
+        "label": "Finance"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "mid_senior_level",
+        "label": "Mid-Senior Level"
+      },
+      "customField": [
+        {
+          "fieldId": "5abe2a4ab60a5e486a2d9b1d",
+          "fieldLabel": "Contract type",
+          "valueId": "1e46492b-d24f-460c-b095-38cf08a778d8",
+          "valueLabel": "Unlimited"
+        },
+        {
+          "fieldId": "5abe28e96d8bc56863dd9746",
+          "fieldLabel": "Tariff Area",
+          "valueId": "2473485f-051f-4fbc-b802-f3620b73998c",
+          "valueLabel": "India Local Grades"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/744000155542414",
+      "language": {
+        "code": "en",
+        "label": "English",
+        "labelNative": "English (US)"
+      }
+    },
+    {
+      "id": "744000155527049",
+      "name": "Sr MATLAB ASW Developer -EDC3",
+      "uuid": "49e72c14-c475-4f1a-b380-12b4a83d7524",
+      "jobAdId": "0a3e131e-5b4b-404e-ad18-bd06aca9dcc0",
+      "defaultJobAd": true,
+      "refNumber": "REF298439X",
+      "company": {
+        "identifier": "BoschGroup",
+        "name": "Bosch Group"
+      },
+      "releasedDate": "2026-10-14T14:06:45.724Z",
+      "location": {
+        "city": "bangalore",
+        "country": "in",
+        "address": "cyber park, survey no.66 & 67, doddathogur village, electronic city,",
+        "postalCode": "5600100",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "bangalore, , India"
+      },
+      "industry": {
+        "id": "computer_software",
+        "label": "Computer Software"
+      },
+      "department": {},
+      "function": {
+        "id": "engineering",
+        "label": "Engineering"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "associate",
+        "label": "Associate"
+      },
+      "customField": [
+        {
+          "fieldId": "5abe2a4ab60a5e486a2d9b1d",
+          "fieldLabel": "Contract type",
+          "valueId": "1e46492b-d24f-460c-b095-38cf08a778d8",
+          "valueLabel": "Unlimited"
+        },
+        {
+          "fieldId": "5abe28e96d8bc56863dd9746",
+          "fieldLabel": "Tariff Area",
+          "valueId": "2473485f-051f-4fbc-b802-f3620b73998c",
+          "valueLabel": "India Local Grades"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/744000155527049",
+      "language": {
+        "code": "en",
+        "label": "English",
+        "labelNative": "English (US)"
+      }
+    },
+    {
+      "id": "744000155451389",
+      "name": "Full Stack Software Developer with AI expertise, Pune",
+      "uuid": "c0ebf937-5593-4fdb-9803-516e9d298b97",
+      "jobAdId": "6af94e5c-09f7-4103-a461-3cb335fe6855",
+      "defaultJobAd": true,
+      "refNumber": "REF294801S",
+      "company": {
+        "identifier": "BoschGroup",
+        "name": "Bosch Group"
+      },
+      "releasedDate": "2026-10-14T09:19:18.574Z",
+      "location": {
+        "city": "hosur road bangalore",
+        "country": "in",
+        "address": "plot no.76 & 77 & part 78 keonics electronic city,",
+        "postalCode": "560100",
+        "remote": false,
+        "hybrid": false,
+        "fullLocation": "hosur road bangalore, , India"
+      },
+      "industry": {
+        "id": "computer_software",
+        "label": "Computer Software"
+      },
+      "department": {},
+      "function": {
+        "id": "engineering",
+        "label": "Engineering"
+      },
+      "typeOfEmployment": {
+        "id": "permanent",
+        "label": "Full-time"
+      },
+      "experienceLevel": {
+        "id": "associate",
+        "label": "Associate"
+      },
+      "customField": [
+        {
+          "fieldId": "5abe2a4ab60a5e486a2d9b1d",
+          "fieldLabel": "Contract type",
+          "valueId": "1e46492b-d24f-460c-b095-38cf08a778d8",
+          "valueLabel": "Unlimited"
+        },
+        {
+          "fieldId": "5abe28e96d8bc56863dd9746",
+          "fieldLabel": "Tariff Area",
+          "valueId": "2473485f-051f-4fbc-b802-f3620b73998c",
+          "valueLabel": "India Local Grades"
+        }
+      ],
+      "visibility": "PUBLIC",
+      "ref": "https://api.smartrecruiters.com/v1/companies/BoschGroup/postings/744000155451389",
+      "language": {
+        "code": "en",
+        "label": "English",
+        "labelNative": "English (US)"
+      }
+    }
+  ]
+}

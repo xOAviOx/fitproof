@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, isAdmin } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -43,11 +43,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </Link>
             {user ? (
               <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                {NAV_LINKS.map((link) => (
-                  <Button key={link.href} asChild variant="ghost" size="sm">
-                    <Link href={link.href}>{link.label}</Link>
-                  </Button>
-                ))}
+                {[...NAV_LINKS, ...(isAdmin(user) ? [{ href: "/admin", label: "Admin" }] : [])].map(
+                  (link) => (
+                    <Button key={link.href} asChild variant="ghost" size="sm">
+                      <Link href={link.href}>{link.label}</Link>
+                    </Button>
+                  ),
+                )}
                 <form action="/auth/signout" method="post">
                   <Button type="submit" variant="outline" size="sm">
                     Sign out

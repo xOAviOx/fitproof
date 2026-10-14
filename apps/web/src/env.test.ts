@@ -26,6 +26,14 @@ describe("parseServerEnv", () => {
     expect(env.LOG_LEVEL).toBe("info");
   });
 
+  it("reads admin emails as a normalized list and rejects malformed entries", () => {
+    expect(parseServerEnv(valid).ADMIN_EMAILS).toEqual([]);
+    expect(
+      parseServerEnv({ ...valid, ADMIN_EMAILS: " Owner@Example.com, ,second@example.com" }).ADMIN_EMAILS,
+    ).toEqual(["owner@example.com", "second@example.com"]);
+    expect(() => parseServerEnv({ ...valid, ADMIN_EMAILS: "not-an-email" })).toThrow(/ADMIN_EMAILS/);
+  });
+
   it("names every missing variable without echoing values", () => {
     const attempt = () => parseServerEnv({ DATABASE_URL: "mysql://nope" });
     expect(attempt).toThrow(/DATABASE_URL/);

@@ -1,4 +1,6 @@
 export * from "./client";
+export * from "./collection";
+export * from "./collection-stats";
 export * from "./embeddings";
 export { pingDatabase } from "./health";
 export * from "./jobs";

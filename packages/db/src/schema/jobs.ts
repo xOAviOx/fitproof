@@ -1,4 +1,11 @@
-import { EMBEDDING_DIMENSIONS } from "@repo/core";
+import {
+  EMBEDDING_DIMENSIONS,
+  type EmploymentType,
+  type JobSalary,
+  type RemoteType,
+  type RoleFamily,
+  type SeniorityLevel,
+} from "@repo/core";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -28,6 +35,19 @@ import {
 } from "./enums";
 import { users } from "./users";
 
+export type PostingFacts = {
+  roleFamily: RoleFamily;
+  seniority: SeniorityLevel;
+  employmentType: EmploymentType;
+  remoteType: RemoteType;
+  /** Canonical Indian cities, plus "Remote" for India-remote roles. */
+  locations: string[];
+  salary: JobSalary | null;
+  normalizedCompany: string;
+  normalizedTitle: string;
+  canonicalApplyUrl: string | null;
+};
+
 const readableByAuthenticated = (using: ReturnType<typeof sql>) =>
   pgPolicy("authenticated_read", { for: "select", to: authenticatedRole, using });
 
@@ -43,6 +63,8 @@ export const companies = pgTable(
     slug: text("slug").notNull().unique(),
     atsType: atsTypeEnum("ats_type"),
     boardToken: text("board_token"),
+    /** Lever hosts EU customers on a separate API. */
+    atsRegion: text("ats_region"),
     careersUrl: text("careers_url"),
     hq: text("hq"),
     locations: jsonb("locations").$type<string[]>().notNull().default([]),
@@ -96,6 +118,7 @@ export const jobs = pgTable(
     index("jobs_company_id_idx").on(t.companyId),
     index("jobs_content_hash_idx").on(t.contentHash),
     index("jobs_dedupe_idx").on(t.normalizedCompany, t.normalizedTitle),
+    index("jobs_canonical_apply_url_idx").on(t.canonicalApplyUrl),
     readableByAuthenticated(sql`owner_user_id is null or owner_user_id = ${authUid}`),
   ],
 ).enableRLS();
@@ -117,6 +140,11 @@ export const jobPostings = pgTable(
     descriptionText: text("description_text").notNull(),
     raw: jsonb("raw").$type<Record<string, unknown>>().notNull(),
     contentHash: text("content_hash").notNull(),
+    /** What collection read from the posting; the canonical job is built from its best posting's facts. */
+    facts: jsonb("facts").$type<PostingFacts>(),
+    /** The source's change marker for postings whose description needs its own request. */
+    detailVersion: text("detail_version"),
+    postedAt: timestamptz("posted_at"),
     firstSeenAt: timestamptz("first_seen_at").notNull().defaultNow(),
     lastSeenAt: timestamptz("last_seen_at").notNull().defaultNow(),
     closedAt: timestamptz("closed_at"),
@@ -125,6 +153,8 @@ export const jobPostings = pgTable(
   (t) => [
     unique("job_postings_source_key").on(t.source, t.sourceJobId),
     index("job_postings_job_id_idx").on(t.jobId),
+    index("job_postings_company_id_idx").on(t.companyId),
+    index("job_postings_open_seen_idx").on(t.source, t.closedAt, t.lastSeenAt),
   ],
 ).enableRLS();
 

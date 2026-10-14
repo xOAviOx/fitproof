@@ -2,13 +2,17 @@ import { createDb, type Database } from "@repo/db";
 import { createProfileExtractor } from "@repo/llm";
 import { createResumeStorage, provisionResumeBucket } from "@repo/storage";
 import pino, { type Logger } from "pino";
+import { ingestCommand, verifyCommand } from "./collection/commands";
 import { analyzeJobs } from "./commands/analyze-jobs";
 import { extractResumes } from "./commands/extract-resumes";
 import { selftest } from "./commands/selftest";
 import { parseWorkerEnv } from "./env";
 import { parseResumeEnv, parseStorageEnv } from "./resume-env";
 
-type Command = { description: string; run: (db: Database, logger: Logger) => Promise<unknown> };
+type Command = {
+  description: string;
+  run: (db: Database, logger: Logger, args: string[]) => Promise<unknown>;
+};
 
 const COMMANDS: Record<string, Command> = {
   selftest: { description: "Check database connectivity and record a run in job_runs", run: selftest },
@@ -30,6 +34,14 @@ const COMMANDS: Record<string, Command> = {
     description: "Analyse up to ten queued jobs users added",
     run: (db, logger) => analyzeJobs(db, logger, process.env),
   },
+  ingest: {
+    description: "Read every company board in the registry and Adzuna (--company <slug>, --no-adzuna)",
+    run: ingestCommand,
+  },
+  verify: {
+    description: "Close unseen Adzuna ads, re-check links users added, prune old raw postings",
+    run: (db, logger) => verifyCommand(db, logger),
+  },
   "storage-setup": {
     description: "Create or update the private résumé bucket (operator only)",
     async run() {
@@ -45,7 +57,7 @@ const COMMANDS: Record<string, Command> = {
 
 function usage(): string {
   const lines = Object.entries(COMMANDS).map(
-    ([name, command]) => `  ${name.padEnd(12)}${command.description}`,
+    ([name, command]) => `  ${name.padEnd(16)}${command.description}`,
   );
   return ["Usage: pnpm worker <command>", "", "Commands:", ...lines].join("\n");
 }
@@ -66,7 +78,7 @@ async function main(argv: string[]): Promise<number> {
   const logger = pino({ level: env.LOG_LEVEL, base: { app: "worker", command: name } });
   const { db, close } = createDb(env.DATABASE_URL, { max: 2 });
   try {
-    await command.run(db, logger);
+    await command.run(db, logger, argv.slice(1));
     return 0;
   } catch (error) {
     logger.error({ err: error }, "command failed");

@@ -101,9 +101,61 @@ Operating procedures. Sections for features that don't exist yet are marked with
   M7 adds a self-serve deletion flow and a script that does both.
 - Record the request date and completion date in your support log, not in the app database.
 
+## Turn on scheduled job collection (M4)
+
+1. Apply migration `0004_collection` (the **Migrate database** workflow runs it on push to `main`).
+2. In GitHub → Settings → Secrets and variables → Actions, make sure `DATABASE_URL` (secret) and `APP_URL`
+   (variable, the public site URL the bot's User-Agent links to) are set. For Adzuna, add the secrets
+   `ADZUNA_APP_ID` and `ADZUNA_APP_KEY` from developer.adzuna.com. Without them the runs skip Adzuna.
+3. Set the repository variable `COLLECT_JOBS` to `true`. `collect.yml` then runs every 6 hours at minute 40.
+4. Run **Collect jobs** once by hand (Actions → Collect jobs → Run workflow) and check the summary line in the
+   Ingest step log, or `/admin`.
+5. To see `/admin`, add your sign-in email to `ADMIN_EMAILS` in the web environment (comma-separated) and redeploy.
+   Everyone else gets a 404.
+
 ## Add a company to the registry (M4)
 
-To be written with the M4 connectors. It will cover adding the company to `data/companies.seed.json`, then running `pnpm worker ingest --company <slug>`.
+1. Find the company's ATS board and token from its careers page: `boards.greenhouse.io/<token>`,
+   `jobs.lever.co/<token>` (or `jobs.eu.lever.co`, which needs `"region": "eu"`), `jobs.ashbyhq.com/<token>`, or
+   `apply.workable.com/<token>`. SmartRecruiters boards are skipped while its API's robots.txt disallows crawlers.
+2. Check the board answers and lists jobs in a target city:
+   - Greenhouse: `https://boards-api.greenhouse.io/v1/boards/<token>/jobs`
+   - Lever: `https://api.lever.co/v0/postings/<token>?mode=json`
+   - Ashby: `https://api.ashbyhq.com/posting-api/job-board/<token>`
+   - Workable: `https://apply.workable.com/api/v1/widget/accounts/<token>`
+3. Add an entry to `data/companies.seed.json`, keeping slugs sorted:
+   ```json
+   {
+     "slug": "acme",
+     "name": "Acme",
+     "ats": "greenhouse",
+     "boardToken": "acme",
+     "careersUrl": "https://acme.example/careers",
+     "hq": "Bengaluru, India",
+     "locations": ["Bengaluru"]
+   }
+   ```
+   `slug` is lowercase letters, digits, and hyphens. `locations` lists the target places the board hires for
+   (`Bengaluru`, `Hyderabad`, `Pune`, `Remote`). `pnpm --filter @repo/worker test` checks the file.
+4. Read just that board: `pnpm worker ingest --company acme`, or run **Collect jobs** with `companies: acme`.
+   The log line `board read` shows how many postings were listed and kept. A failure is in `/admin` under
+   **Failing boards**.
+5. To stop reading a company, set `"active": false` and a `"note"` saying why. Its jobs stay, and close as usual.
+
+## Re-run or debug collection (M4)
+
+- `pnpm worker ingest` reads every board (least recently read first) and searches Adzuna if a day has passed.
+  `--company <slug>` (repeatable) reads only those boards and skips Adzuna; `--no-adzuna` skips Adzuna only.
+  `pnpm worker verify` closes Adzuna ads unseen for 7 days, re-checks links users added, and prunes old postings.
+  Both need `DATABASE_URL` and `NEXT_PUBLIC_SITE_URL`.
+- A run that hits the 25-minute budget reports `stopped at the time budget`; the next run starts with the boards it
+  didn't reach. Re-running is always safe: postings are upserted, and a run already in progress makes a new one exit.
+- A run killed mid-way stays `running` in `job_runs` and blocks new runs of the same kind for 90 minutes.
+- To try collection without touching production, start `pnpm --filter @repo/db pglite:serve`, run
+  `pnpm db:migrate` and then `pnpm worker ingest` with `DATABASE_URL` and `DATABASE_MIGRATION_URL` set to
+  `postgresql://postgres:postgres@127.0.0.1:54329/postgres`. Environment variables override `.env`.
+- A board failing with `robots.txt disallows` must stay off. `couldn't be read` and `returned 5xx` are usually
+  temporary. `returned 404` usually means the company moved ATS: find the new board and update its entry.
 
 ## Restore a backup (M7)
 

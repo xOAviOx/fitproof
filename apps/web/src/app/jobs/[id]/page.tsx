@@ -16,6 +16,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
+import { AdzunaAttribution } from "@/components/adzuna-attribution";
 import { requireUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { BandBadge } from "../band";
@@ -105,6 +106,7 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
           </p>
           <h1 className="text-3xl font-semibold tracking-tight break-words sm:text-4xl">{job.title}</h1>
           {facts.length > 0 && <p className="mt-3 text-sm text-muted-foreground">{facts.join(" · ")}</p>}
+          {job.source === "adzuna" && <AdzunaAttribution className="mt-3" />}
         </div>
         <div className="flex flex-col items-start gap-3 sm:items-end">
           {data.match && <BandBadge band={data.match.band} size="lg" />}
@@ -122,6 +124,14 @@ export default async function JobPage({ params }: { params: Promise<{ id: string
       </div>
 
       <div className="mb-10 space-y-4">
+        {job.closedAt && (
+          <Notice>
+            This posting looked closed when we checked it on{" "}
+            {job.closedAt.toLocaleDateString("en-IN", { dateStyle: "medium" })}: the page was gone, said it
+            had stopped taking applications, or the company’s board no longer listed it. Check the careers
+            page before you apply.
+          </Notice>
+        )}
         {active && (
           <AnalysisStatus
             jobId={job.id}

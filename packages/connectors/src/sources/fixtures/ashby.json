@@ -1,0 +1,109 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "49bdf081-6e20-4323-8c73-6d6b19544ff5",
+      "title": "Software Engineer, Developer Experience",
+      "department": "Engineering",
+      "team": "Engineering",
+      "employmentType": "FullTime",
+      "location": "Hyderabad, India",
+      "shouldDisplayCompensationOnJobPostings": false,
+      "secondaryLocations": [],
+      "publishedAt": "2026-06-24T08:26:55.883+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressRegion": "India",
+          "addressCountry": "India",
+          "addressLocality": "Hyderabad"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/notion/49bdf081-6e20-4323-8c73-6d6b19544ff5",
+      "applyUrl": "https://jobs.ashbyhq.com/notion/49bdf081-6e20-4323-8c73-6d6b19544ff5/application",
+      "descriptionHtml": "<h1>Who We Are</h1><p style=\"min-height:1.5em\">Notion is the collaborative AI workspace where teams and agents <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.youtube.com/watch?v=vkpYpWfEK5s\">think together</a>. We're building one place where your knowledge, projects, meetings, and AI tools live side by side, so work is faster, clearer, and less fragmented. Millions of individuals, small teams, and large companies run their work on Notion.</p><p style=\"min-height:1.5em\"></p><p style=\"min-height:1.5em\">Notinos (our employees) are customer zero in bringing this future of work to life. We care about craft, building things that last, and the belief that great work is still fundamentally human. Our goal isn’t to ship the next feature. Each and every team of Notinos is working to set the standard for how humans work together in the AI era. From building a business’s system of record to making and managing AI agents to automating away the busy work, we care deeply about giving our customers more time for their life’s work.</p><p style=\"min-height:1.5em\"></p><h1>About The Role</h1><p style=\"min-height:1.5em\">Build AI-powered developer experience that makes engineers enabled.</p><p style=\"min-height:1.5em\">You’ll join our Developer Experience team, united by the mission of “Engineers can do their work quickly, easily, comfortably, and safely.” You’ll be part of a team spanning the US and India that turns ambiguous goals into shippable projects that meaningfully improve developer throughput and reliability.</p>",
+      "descriptionPlain": "WHO WE ARE\n\nNotion is the collaborative AI workspace where teams and agents think together https://www.youtube.com/watch?v=vkpYpWfEK5s. We're building one place where your knowledge, projects, meetings, and AI tools live side by side, so work is faster, clearer, and less fragmented. Millions of individuals, small teams, and large companies run their work on Notion.\n\n\n\nNotinos (our employees) are customer zero in bringing this future of work to life. We care about craft, building things that last, and the belief that great work is still fundamentally human. Our goal isn’t to ship the next feature. Each and every team of Notinos is working to set the standard for how humans work together in the AI era. From building a business’s system of record to making and managing AI agents to automating away the busy work, we care deeply about giving our customers more time for their life’s work.\n\n\n\n\nABOUT THE ROLE\n\nBuild AI-powered developer experience that makes engineers enabled.\n\nYou’ll join our Developer Experience team, united by the mission of “Engineers can do their work quickly, easily, comfortably, and safely.” You’ll be part of a team spanning the US and India that turns ambiguous goals into shippable projects that meaningfully improve developer throughput and reliability.",
+      "compensation": {
+        "compensationTierSummary": null,
+        "scrapeableCompensationSalarySummary": null,
+        "compensationTiers": [],
+        "summaryComponents": []
+      }
+    },
+    {
+      "id": "79c18580-c927-456c-9d5f-72efbc6c43cb",
+      "title": "Forward Deployed Engineer, India",
+      "department": "Engineering",
+      "team": "Engineering",
+      "employmentType": "FullTime",
+      "location": "Hyderabad, India",
+      "shouldDisplayCompensationOnJobPostings": false,
+      "secondaryLocations": [],
+      "publishedAt": "2026-09-15T09:05:25.781+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressRegion": "India",
+          "addressCountry": "India",
+          "addressLocality": "Hyderabad"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/notion/79c18580-c927-456c-9d5f-72efbc6c43cb",
+      "applyUrl": "https://jobs.ashbyhq.com/notion/79c18580-c927-456c-9d5f-72efbc6c43cb/application",
+      "descriptionHtml": "<h1>Who We Are</h1><p style=\"min-height:1.5em\">Notion is the collaborative AI workspace where teams and agents <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.youtube.com/watch?v=vkpYpWfEK5s\">think together</a>. We're building one place where your knowledge, projects, meetings, and AI tools live side by side, so work is faster, clearer, and less fragmented. Millions of individuals, small teams, and large companies run their work on Notion.</p><p style=\"min-height:1.5em\"></p><p style=\"min-height:1.5em\">Notinos (our employees) are customer zero in bringing this future of work to life. We care about craft, building things that last, and the belief that great work is still fundamentally human. Our goal isn’t to ship the next feature. Each and every team of Notinos is working to set the standard for how humans work together in the AI era. From building a business’s system of record to making and managing AI agents to automating away the busy work, we care deeply about giving our customers more time for their life’s work.</p><p style=\"min-height:1.5em\"></p><h1>About the Role:</h1><p style=\"min-height:1.5em\">Notion is looking for a Forward Deployed Engineer focused on migrations to join our growing team in India. You will help deliver complex, production-grade data migrations, integrations, and automations for customers across APAC.</p><p style=\"min-height:1.5em\">This is initially an internally focused, hands-on engineering role. You will partner closely with regional Forward Deployed Engineers, who own customer discovery, solution architecture, stakeholder communication, risk management, and final customer validation. You will own the behind-the-scenes technical execution layer from feasibility assessment and implementation through testing, production rollout, QA, reconciliation, reporting, and operational handoff.</p>",
+      "descriptionPlain": "WHO WE ARE\n\nNotion is the collaborative AI workspace where teams and agents think together https://www.youtube.com/watch?v=vkpYpWfEK5s. We're building one place where your knowledge, projects, meetings, and AI tools live side by side, so work is faster, clearer, and less fragmented. Millions of individuals, small teams, and large companies run their work on Notion.\n\n\n\nNotinos (our employees) are customer zero in bringing this future of work to life. We care about craft, building things that last, and the belief that great work is still fundamentally human. Our goal isn’t to ship the next feature. Each and every team of Notinos is working to set the standard for how humans work together in the AI era. From building a business’s system of record to making and managing AI agents to automating away the busy work, we care deeply about giving our customers more time for their life’s work.\n\n\n\n\nABOUT THE ROLE:\n\nNotion is looking for a Forward Deployed Engineer focused on migrations to join our growing team in India. You will help deliver complex, production-grade data migrations, integrations, and automations for customers across APAC.\n\nThis is initially an internally focused, hands-on engineering role. You will partner closely with regional Forward Deployed Engineers, who own customer discovery, solution architecture, stakeholder communication, risk management, and final customer validation. You will own the behind-the-scenes technical execution layer from feasibility assessment and implementation through testing, production rollout, QA, reconciliation, reporting, and operational handoff.",
+      "compensation": {
+        "compensationTierSummary": null,
+        "scrapeableCompensationSalarySummary": null,
+        "compensationTiers": [],
+        "summaryComponents": []
+      }
+    },
+    {
+      "id": "1fc309c8-da20-4ff2-84c7-8b863ece2b0a",
+      "title": "Software Engineer, Developer Platform",
+      "department": "Engineering",
+      "team": "Engineering",
+      "employmentType": "FullTime",
+      "location": "San Francisco, California",
+      "shouldDisplayCompensationOnJobPostings": false,
+      "secondaryLocations": [
+        {
+          "location": "New York, New York",
+          "address": {
+            "postalAddress": {
+              "addressRegion": "New York",
+              "addressCountry": "United States",
+              "addressLocality": "New York"
+            }
+          }
+        }
+      ],
+      "publishedAt": "2026-08-24T14:44:49.699+00:00",
+      "isListed": true,
+      "isRemote": true,
+      "workplaceType": "Hybrid",
+      "address": {
+        "postalAddress": {
+          "addressRegion": "California",
+          "addressCountry": "United States",
+          "addressLocality": "San Francisco"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/notion/1fc309c8-da20-4ff2-84c7-8b863ece2b0a",
+      "applyUrl": "https://jobs.ashbyhq.com/notion/1fc309c8-da20-4ff2-84c7-8b863ece2b0a/application",
+      "descriptionHtml": "<h1>Who We Are</h1><p style=\"min-height:1.5em\">Notion is the collaborative AI workspace where teams and agents <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.youtube.com/watch?v=vkpYpWfEK5s\">think together</a>. We're building one place where your knowledge, projects, meetings, and AI tools live side by side, so work is faster, clearer, and less fragmented. Millions of individuals, small teams, and large companies run their work on Notion.</p><p style=\"min-height:1.5em\"></p><p style=\"min-height:1.5em\">Notinos (our employees) are customer zero in bringing this future of work to life. We care about craft, building things that last, and the belief that great work is still fundamentally human. Our goal isn’t to ship the next feature. Each and every team of Notinos is working to set the standard for how humans work together in the AI era. From building a business’s system of record to making and managing AI agents to automating away the busy work, we care deeply about giving our customers more time for their life’s work.</p><p style=\"min-height:1.5em\"></p><h1>About the Role:</h1><p style=\"min-height:1.5em\">As a <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://www.notion.com/product/dev\">Developer Platform</a> engineer, you will directly contribute to the foundational pieces that make Notion extensible and connected. You will build tools, APIs, and platform experiences that help customers connect Notion to the world — bringing their apps, data, and workflows into one workspace. Your work will make it easier for developers, admins, and builders to create reliable integrations and automations on top of Notion.<br /></p>",
+      "descriptionPlain": "WHO WE ARE\n\nNotion is the collaborative AI workspace where teams and agents think together https://www.youtube.com/watch?v=vkpYpWfEK5s. We're building one place where your knowledge, projects, meetings, and AI tools live side by side, so work is faster, clearer, and less fragmented. Millions of individuals, small teams, and large companies run their work on Notion.\n\n\n\nNotinos (our employees) are customer zero in bringing this future of work to life. We care about craft, building things that last, and the belief that great work is still fundamentally human. Our goal isn’t to ship the next feature. Each and every team of Notinos is working to set the standard for how humans work together in the AI era. From building a business’s system of record to making and managing AI agents to automating away the busy work, we care deeply about giving our customers more time for their life’s work.\n\n\n\n\nABOUT THE ROLE:\n\nAs a Developer Platform https://www.notion.com/product/dev engineer, you will directly contribute to the foundational pieces that make Notion extensible and connected. You will build tools, APIs, and platform experiences that help customers connect Notion to the world — bringing their apps, data, and workflows into one workspace. Your work will make it easier for developers, admins, and builders to create reliable integrations and automations on top of Notion.",
+      "compensation": {
+        "compensationTierSummary": null,
+        "scrapeableCompensationSalarySummary": null,
+        "compensationTiers": [],
+        "summaryComponents": []
+      }
+    }
+  ]
+}

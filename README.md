@@ -14,7 +14,7 @@ An explainable job-search assistant for final-year students and candidates with 
 | M1 | Résumé → editable profile | Implemented and locally tested with synthetic PDF/DOCX layouts; live provider/storage setup and three real-world résumé checks still pending |
 | M2 | Preferences and eligibility | Implemented and locally tested (unit, RLS integration, desktop and mobile e2e). Filters apply to real jobs once they exist (pasted jobs in M3, discovery in M5) |
 | M3 | Bring-your-own-job | Implemented and locally tested (unit, integration, keyword-mode eval, desktop and mobile e2e). The model path works live with Gemini, but **acceptance isn't met yet**: the first model eval stopped at the free tier's 20 requests per day, with half the set done (see "Evaluation baselines" in `docs/DECISIONS.md`) |
-| M4 | Job collection (ATS connectors, Adzuna) | Not started |
+| M4 | Job collection (ATS connectors, Adzuna) | Implemented and locally tested (unit, PGlite integration, recorded API responses, a real-API ingest into a local database). **Not yet run against production:** migration `0004` and the `COLLECT_JOBS` switch are pending, and Adzuna keys aren't set yet |
 | M5 | Discovery and ranking | Not started |
 | M6 | Tailoring and résumé versions | Not started |
 | M7 | Hardening, backups, Docker images | Not started |
@@ -23,14 +23,15 @@ An explainable job-search assistant for final-year students and candidates with 
 
 ```
 apps/web             Next.js 16 (App Router): UI, auth, route handlers, server actions
-apps/worker          CLI pipelines run by GitHub Actions (selftest, extract-resumes, analyze-jobs, storage-setup) and the eval runner
+apps/worker          CLI pipelines run by GitHub Actions (selftest, extract-resumes, analyze-jobs, ingest, verify, storage-setup) and the eval runner
 packages/core        Pure domain logic and config, no I/O (vocabularies, scoring, eligibility, quote verification, prompts)
 packages/db          Drizzle schema, migrations, RLS policies, job queue, PGlite test harness
 packages/llm         AI SDK provider adapters, user-scoped caching, quotas, extraction, explanations, embeddings
 packages/analysis    The job analysis pipeline shared by the web app, the worker, and the eval
-packages/connectors  Polite, SSRF-safe fetching of user-supplied job links
+packages/connectors  Polite, SSRF-safe fetching of user-supplied job links, and ATS/Adzuna API clients
 packages/storage     Private résumé storage behind a replaceable interface
 data/eval/           Synthetic job descriptions, profiles, and labels for `pnpm eval`
+data/companies.seed.json  The company registry: one ATS board per company
 docs/                DECISIONS, RUNBOOK, PRIVACY, BACKLOG
 ```
 
@@ -122,6 +123,28 @@ To use a model for jobs on Vercel, add `GEMINI_API_KEY` (or the OpenAI settings)
 optionally `LLM_EMBEDDING_MODEL`, `LLM_RPM`, and `LLM_DAILY_REQUESTS` to the web project, then redeploy. The
 optional backup sweep is described in `docs/RUNBOOK.md`.
 
+## Job collection (M4)
+
+`pnpm worker ingest` reads the public job APIs of the companies in `data/companies.seed.json` (Greenhouse, Lever,
+Ashby, and Workable boards; SmartRecruiters is supported but off, because its API's robots.txt disallows crawlers),
+plus a daily Adzuna search when keys are set. It keeps early-career Backend, Frontend, and Data Analyst postings in
+Bengaluru, Hyderabad, Pune, or remote within India (ADR-031), reads their requirements by keyword (no model
+quota), and groups the same role from several sources into one job (ADR-033). `pnpm worker verify` closes what
+has gone away (ADR-034). `collect.yml` runs both every 6 hours once `COLLECT_JOBS=true`; see `docs/RUNBOOK.md` to
+turn it on and to add a company.
+
+- **Freshness:** a board posting that disappears closes on the next run. Adzuna ads close after 7 days unseen, and
+  links users added are re-checked daily. Closed jobs are marked closed in Jobs, on the job page, and in the Tracker.
+- **`/admin`** (only for emails in `ADMIN_EMAILS`, everyone else gets a 404): boards per ATS, failing boards with
+  their last error, open and stale jobs per source, duplicates grouped, recent runs, quote validity, and model token
+  use over 30 days.
+- **Coverage line:** the home page and dashboard say how many boards were read successfully in the last 48 hours.
+  It disappears if collection stops.
+- **Politeness:** robots.txt and Crawl-delay are honored, requests to a host are paced, and each run stops after 25
+  minutes and resumes next time (ADR-032). `/bot` explains this to site owners.
+
+Users can't browse collected jobs yet; discovery and ranking arrive in M5.
+
 ## Prerequisites
 
 - Node.js 22.12+ (`.nvmrc` pins 22) and pnpm 11 (`corepack enable` picks up the pinned version)
@@ -164,7 +187,7 @@ pnpm dev                    # http://localhost:3000
 
 1. Push this repo to GitHub, then in Vercel choose **Add New → Project** and import it.
 2. Set **Root Directory** to `apps/web`. The framework preset (Next.js) and pnpm are detected automatically.
-3. Add these environment variables for Production and Preview: `DATABASE_URL`, `DATABASE_POOL_MAX` (optional), `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and `NEXT_PUBLIC_SITE_URL` (your Vercel URL). Also add `ENABLE_EXPERIMENTAL_COREPACK=1` so Vercel installs the pnpm version pinned in the root `package.json` instead of guessing from the lockfile.
+3. Add these environment variables for Production and Preview: `DATABASE_URL`, `DATABASE_POOL_MAX` (optional), `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_SITE_URL` (your Vercel URL), and optionally `ADMIN_EMAILS` (who may open `/admin`). Also add `ENABLE_EXPERIMENTAL_COREPACK=1` so Vercel installs the pnpm version pinned in the root `package.json` instead of guessing from the lockfile.
    Under Settings → **Functions**, set the function region to Mumbai (`bom1`) so the server runs next to the database. New projects default to Washington, D.C. (`iad1`), which adds roughly 200 ms to every database round trip.
 4. Deploy, then open `https://<your-domain>/api/health`. It should return `{"status":"ok", ...}`.
 5. Add the deployed URL to the Supabase redirect URLs (step 5 above).
@@ -173,8 +196,10 @@ pnpm dev                    # http://localhost:3000
 
 | Name | Kind | Used by |
 | --- | --- | --- |
-| `APP_URL` | Repository variable | `keepalive.yml`: daily health ping, which keeps the Supabase project from pausing |
-| `DATABASE_URL` | Secret | `keepalive.yml` worker selftest (and the scheduled ingest jobs from M4) |
+| `APP_URL` | Repository variable | `keepalive.yml`: daily health ping, which keeps the Supabase project from pausing. `collect.yml`: the bot's User-Agent links to `<APP_URL>/bot` |
+| `DATABASE_URL` | Secret | `keepalive.yml` worker selftest and `collect.yml` |
+| `ADZUNA_APP_ID`, `ADZUNA_APP_KEY` | Secrets (optional) | `collect.yml`: the daily Adzuna search. Without them, Adzuna is skipped |
+| `COLLECT_JOBS` | Repository variable | Set to `true` to enable the 6-hourly `collect.yml` (it also needs `APP_URL`) |
 | `DATABASE_MIGRATION_URL` | Secret, in a `production` environment | `migrate.yml`: applies migrations when `packages/db/migrations` changes on `main` |
 | `GEMINI_API_KEY` or `OPENAI_API_KEY` | Secret | `extract-resumes.yml`, `analyze-jobs.yml`, and `eval.yml` |
 | `LLM_PROVIDER`, `LLM_MODEL`, `LLM_EMBEDDING_MODEL`, `LLM_RPM`, `LLM_DAILY_REQUESTS` | Repository variables (optional) | The same three workflows. Defaults: `gemini`, `gemini-2.5-flash`, the provider's embedding model, 5, and 100 |
@@ -188,6 +213,7 @@ Workflows:
 - `migrate.yml` runs on migration changes, or on demand.
 - `analyze-jobs.yml` finishes job analyses the web app couldn't (off unless `ANALYZE_JOBS_WORKER=true`).
 - `eval.yml` runs the model eval on demand and fails below the quote-validity gates. Each run spends provider quota.
+- `collect.yml` runs ingest, then verify, every 6 hours (off unless `COLLECT_JOBS=true`). Run it by hand with a list of company slugs to read only those boards.
 
 ## Commands
 
@@ -205,6 +231,8 @@ Workflows:
 | `pnpm worker storage-setup` | Operator-only: provision a private résumé bucket |
 | `pnpm worker extract-resumes` | Process up to five queued résumé uploads |
 | `pnpm worker analyze-jobs` | Process up to 10 queued job analyses |
+| `pnpm worker ingest` | Read every registry board and Adzuna. `--company <slug>` (repeatable) reads only those boards; `--no-adzuna` skips Adzuna |
+| `pnpm worker verify` | Close Adzuna ads unseen for 7 days, re-check links users added, prune raw postings closed for 60 days |
 | `pnpm eval` | Run `data/eval` and check the gates: keyword mode without an LLM key, model mode (spends quota) with one. `--only <prefix>` runs a subset; `--require-model` fails without a key. Model runs save responses and resume after a spent daily quota; `--fresh` starts over |
 | `pnpm --filter @repo/db pglite:serve` | In-memory Postgres on port 54329, for smoke-testing without Docker or Supabase (no auth) |
 
@@ -293,6 +321,32 @@ Manual acceptance check (after adding a provider key to `.env` or the web projec
 7. Sign in as another user and open the first user's job URL. It shows "Page not found".
 8. Try nine more postings across backend, frontend, and data analyst roles. Note any quote that isn't in the
    posting, and any band that looks wrong, in `docs/BACKLOG.md` or as an eval case.
+
+### M4 verification
+
+Unit tests cover title, seniority, employment-type, and location rules, the scope filter, company and title
+normalization, URL canonicalization, SimHash and containment similarity, the duplicate rule, and the coverage line.
+Connector tests replay trimmed real responses from each ATS (October 2026) through a fake client, and the source
+client is tested against a local server (robots.txt, Crawl-delay, pacing, retries, and error codes). Integration
+tests on PGlite cover registry sync, posting upsert, grouping, closing, the empty-board guard, pruning, user-link
+checks, and the admin stats. Worker tests run ingest and verify end to end with recorded responses, including a
+failing board, the time budget, and the once-a-day Adzuna search. The seed file is validated in tests. Playwright
+checks `/admin` for the owner (including a failing board), a 404 for everyone else, and the coverage line.
+
+A real-API run on 2026-10-14 into a local database read all 87 active boards with no failures in about 14 minutes
+(132 requests; Lever boards are the slowest at up to 3 minutes each). Of 9,603 listings, 133 were in scope,
+stored as 116 jobs. The run exposed Workable listing a job once per location; that is fixed, and re-reading those
+boards twice more showed the merged locations once, then no changes. Re-reading a board closed a posting planted
+in the database, and its job, in one run. Adzuna was not tested live because the keys aren't set yet.
+
+Manual acceptance check (after migration `0004` is applied and `COLLECT_JOBS=true`):
+1. Run **Collect jobs** by hand. The Ingest step logs `ingest finished` with no `Every board failed` error.
+2. Open `/admin` with an email in `ADMIN_EMAILS`. Boards show a recent "Last read" time, open jobs appear per
+   source, and any failing board is listed with its error while the run still succeeded.
+3. Open the home page signed out. The coverage line names the number of boards read.
+4. After the next scheduled run (6 hours), check **Recent runs**: ingest then verify, both succeeded.
+5. With Adzuna keys set, check that `/admin` shows Adzuna postings and that **Duplicates grouped** is above zero
+   once an Adzuna ad matches a board posting.
 
 ## Docs
 

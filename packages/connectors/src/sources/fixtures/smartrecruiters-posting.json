@@ -1,0 +1,83 @@
+{
+  "id": "744000155451389",
+  "name": "Full Stack Software Developer with AI expertise, Pune",
+  "uuid": "c0ebf937-5593-4fdb-9803-516e9d298b97",
+  "jobId": "f2eb7a1e-1e31-4a53-b4bb-d5c7d7095088",
+  "jobAdId": "6af94e5c-09f7-4103-a461-3cb335fe6855",
+  "defaultJobAd": true,
+  "refNumber": "REF294801S",
+  "company": {
+    "name": "Bosch Group",
+    "identifier": "BoschGroup"
+  },
+  "location": {
+    "city": "hosur road bangalore",
+    "country": "in",
+    "address": "plot no.76 & 77 & part 78 keonics electronic city,",
+    "postalCode": "560100",
+    "remote": false,
+    "hybrid": false,
+    "fullLocation": "hosur road bangalore, , India"
+  },
+  "customField": [
+    {
+      "fieldId": "5abe2a4ab60a5e486a2d9b1d",
+      "fieldLabel": "Contract type",
+      "valueId": "1e46492b-d24f-460c-b095-38cf08a778d8",
+      "valueLabel": "Unlimited"
+    },
+    {
+      "fieldId": "5abe28e96d8bc56863dd9746",
+      "fieldLabel": "Tariff Area",
+      "valueId": "2473485f-051f-4fbc-b802-f3620b73998c",
+      "valueLabel": "India Local Grades"
+    }
+  ],
+  "releasedDate": "2026-10-14T09:19:18.574Z",
+  "postingUrl": "https://jobs.smartrecruiters.com/BoschGroup/744000155451389-full-stack-software-developer-with-ai-expertise-pune",
+  "applyUrl": "https://jobs.smartrecruiters.com/BoschGroup/744000155451389-full-stack-software-developer-with-ai-expertise-pune?oga=true",
+  "referralUrl": "https://jobs.smartrecruiters.com/external-referrals/company/BoschGroup/publication/c0ebf937-5593-4fdb-9803-516e9d298b97?dcr_ci=BoschGroup",
+  "jobAd": {
+    "sections": {
+      "companyDescription": {
+        "title": "Company Description",
+        "text": "<p><strong>Bosch Global Software Technologies Private Limited</strong>&#xa0;is a 100% owned subsidiary of Robert Bosch GmbH, one of the world's leading global supplier of technology and services, offering end-to-end Engineering, IT and Business Solutions. With over 27,000+ associates, it’s the largest software development center of Bosch, outside Germany, indicating that it is the Technology Powerhouse of Bosch in India with a global footprint and presence in the US, Europe and the Asia Pacific region.</p>"
+      },
+      "jobDescription": {
+        "title": "Job Description",
+        "text": "<p>&#xa0;<u><strong>Must Have Skills:</strong></u></p><ul><li>Strong proficiency in <strong>React, TypeScript</strong>, modular code structuring, and reusable design patterns.</li><li>Strong development capabilities using <strong>Python</strong>.</li><li>Experience in working on <strong>API endpoints, REST APIs</strong>, <strong>FastAPI</strong> and integrating AI-generated content into frontend logic.</li><li>Ability to build clean, performance-optimized UI components for data-heavy workflow.</li><li>Experience in Eclipse Theia extension.</li><li>Good Experience in <strong>Agentic Coding: </strong></li></ul><ol><li>&#xa0;Use AI coding agents for implementation</li><li>Can own problems end-to-end, from user need to operated software, and delivers implementation primarily through AI coding agents.</li><li>Deliver implementation primarily through AI coding agents: translate intent into precise specs, constraints, and acceptance criteria, and supervise multiple agents work streams in parallel.</li>"
+      },
+      "qualifications": {
+        "title": "Qualifications",
+        "text": "<p>B.E</p>"
+      },
+      "additionalInformation": {
+        "title": "Additional Information",
+        "text": "<p>3 to 6 years experience</p>"
+      }
+    }
+  },
+  "active": true,
+  "visibility": "PUBLIC",
+  "industry": {
+    "id": "computer_software",
+    "label": "Computer Software"
+  },
+  "function": {
+    "id": "engineering",
+    "label": "Engineering"
+  },
+  "experienceLevel": {
+    "id": "associate",
+    "label": "Associate"
+  },
+  "typeOfEmployment": {
+    "id": "permanent",
+    "label": "Full-time"
+  },
+  "language": {
+    "code": "en",
+    "label": "English",
+    "labelNative": "English (US)"
+  }
+}

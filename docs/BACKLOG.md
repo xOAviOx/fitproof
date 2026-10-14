@@ -32,3 +32,11 @@ Ideas that are deliberately **out of scope** for the MVP. Record new ideas here 
   until the user chooses to check again
 - Compute embeddings in the eval so Strong is reachable and band agreement means more (separate embedding quota)
 - Move from the AI SDK's deprecated `generateObject` to `generateText` with structured output
+- Ask SmartRecruiters for permission to read its Posting API (robots.txt disallows us today), then set its 17 seed
+  entries back to active (ADR-031)
+- A Workday connector. `workday` is already a source type, but its public endpoints need per-tenant discovery
+- Page Lever boards (`skip`/`limit`) if large boards start timing out. One request per board works today, but some
+  take tens of seconds
+- Verify the seed file's `hq` values against a source; they came from general knowledge and quick searches
+- Re-read collected jobs that users open with the model (they are read by keyword only, ADR-031)
+- Add more boards. About 45 candidates with weak India signals were left out of the first seed

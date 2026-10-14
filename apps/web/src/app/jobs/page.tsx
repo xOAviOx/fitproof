@@ -50,6 +50,11 @@ export default async function JobsPage() {
                   </span>
                 </span>
                 <span className="flex items-center gap-3">
+                  {job.closedAt && (
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-destructive">
+                      Closed
+                    </span>
+                  )}
                   {job.saved && (
                     <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
                       Saved

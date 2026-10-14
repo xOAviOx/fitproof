@@ -117,6 +117,9 @@ importers:
       '@repo/analysis':
         specifier: workspace:*
         version: link:../../packages/analysis
+      '@repo/connectors':
+        specifier: workspace:*
+        version: link:../../packages/connectors
       '@repo/core':
         specifier: workspace:*
         version: link:../../packages/core

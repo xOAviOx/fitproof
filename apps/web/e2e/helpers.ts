@@ -1,9 +1,13 @@
 import { expect, type Page, test } from "@playwright/test";
 import { RESUME_MIME_TYPES } from "@repo/core";
 
-/** Creates a fresh synthetic user and stores its session cookie. Only works against e2e/services.ts. */
-export async function signIn(page: Page, path = "/profile") {
-  const response = await page.request.post("http://127.0.0.1:54321/test/users");
+/**
+ * Creates a fresh synthetic user (or reuses the one with `email`) and stores its session cookie.
+ * Only works against e2e/services.ts.
+ */
+export async function signIn(page: Page, path = "/profile", options: { email?: string } = {}) {
+  const query = options.email ? `?email=${encodeURIComponent(options.email)}` : "";
+  const response = await page.request.post(`http://127.0.0.1:54321/test/users${query}`);
   expect(response.ok()).toBe(true);
   const session: unknown = await response.json();
   await page.context().addCookies([

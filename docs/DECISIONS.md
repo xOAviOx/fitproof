@@ -348,6 +348,81 @@ Short ADRs. Newest last. Status is one of: Accepted, Superseded, Proposed.
   hold model output for the synthetic eval data only. The **Model eval** workflow starts from an empty directory, so
   every CI run is live.
 
+## ADR-031: Collection scope, a seed-file registry, and keyword reading
+
+- **Status:** Accepted (M4)
+- **Decision:** `data/companies.seed.json` is the company registry's source of truth. Every ingest syncs it into
+  `companies`: new entries are added, changed ones updated, and entries removed from the file (or marked
+  `"active": false` with a `note`) are deactivated, never deleted, so their jobs and history stay. Each entry names
+  one ATS board (`greenhouse`, `lever`, `ashby`, `smartrecruiters`, or `workable`) and its token, which was checked
+  against the live API when it was added.
+- **Scope:** a posting is stored only when it is in Bengaluru, Hyderabad, or Pune, or is remote within India; its
+  title falls in one of the three role families; and the title isn't clearly senior (senior, staff, principal,
+  lead, manager, level III and above). A bare "India" location, or a remote role with no country, is skipped as
+  unknown. Every rule is code in `packages/core/src/collection.ts`.
+- **Reading:** collected postings are read by the keyword reader (ADR-024), once per content change. Collection
+  spends no model quota; M5 can upgrade the jobs users actually open.
+- **Seed (2026-10-14):** 104 boards checked live. Each had at least one relevant title in a target city. All 17
+  SmartRecruiters boards are inactive because `api.smartrecruiters.com/robots.txt` disallows every crawler except
+  LinkedInBot (ADR-032). The connector stays tested against recorded responses, so a board can be turned on if
+  that changes. 87 boards are active: 35 Greenhouse, 22 Lever, 16 Ashby, and 14 Workable.
+- **Trade-off:** title rules miss roles with unusual names, and skipping unknown locations drops some real India
+  jobs. Both are visible as `skipped` counts on each run in `/admin`.
+
+## ADR-032: Scheduled reading is polite, paced, and resumable
+
+- **Status:** Accepted (M4)
+- **Decision:** `pnpm worker ingest` reads each board's public API through one client (`packages/connectors/src/
+  sources/client.ts`) with the FitwiseBot User-Agent (now `0.4`).
+  - robots.txt is checked per host before every request, as for user links (ADR-026). An unreadable robots.txt is
+    retried once, then the host is skipped for that run with an error that says so.
+  - Requests to one host are at least 400 ms apart, or the site's Crawl-delay (capped at 10 seconds) when larger.
+  - 429, 5xx, and network errors are retried twice with exponential backoff. Responses are limited to 25 MB and 90
+    seconds. Error messages carry only the host and path.
+  - Detail endpoints (Greenhouse, SmartRecruiters) are called only when a posting's version changed.
+  - A run stops starting boards after 25 minutes. Boards are read least recently crawled first, so the next run
+    picks up the rest. A run in progress blocks a second one for up to 90 minutes.
+  - One board's failure is stored on the company (`last_error`) and in the run result, and the run carries on. The
+    run fails only when every board failed.
+- **Adzuna:** an API used under a registered key, not crawling, so robots.txt (which disallows all) isn't consulted for
+  `api.adzuna.com`. It is searched at most once a day: 4 queries × 3 cities × at most 2 pages, 3 seconds apart, and
+  never more than 40 requests a day, under the default limits of 250 a day and 2,500 a month. A 401 or 403 stops the
+  search. Its ads are credited to a registry company when the name matches. Displayed ads carry "Jobs by Adzuna"
+  linked to adzuna.in, as its terms require.
+- **Schedule:** `collect.yml` runs ingest and then verify every 6 hours (minute 40), when the repository variable
+  `COLLECT_JOBS` is `true`. Verify runs even if ingest failed.
+
+## ADR-033: One canonical job per role, with every posting kept
+
+- **Status:** Accepted (M4)
+- **Decision:** each source's listing is a row in `job_postings` (source and source job ID). Postings point to one
+  shared `jobs` row. A new posting joins an open shared job when `duplicateMatch` (`packages/core/src/dedupe.ts`)
+  says it's the same role:
+  - the same canonical apply URL (tracking parameters, "www.", fragments, and a trailing `/apply` removed), or
+  - the same normalized company and title, overlapping locations (unknown overlaps everything), and at least 80% of
+    the shorter description's word triples found in the other. Containment rather than SimHash, because Adzuna
+    returns a snippet of the full text. SimHash is still stored for later use.
+  Each grouping is recorded in `job_duplicates` with its method and similarity.
+- **Canonical text:** the job shows its best open posting: a company board before Adzuna, and the earliest seen among
+  equals, so the choice doesn't flip between runs.
+- **Trade-off:** one role posted separately for two cities stays two jobs; a re-titled repost starts a new one.
+
+## ADR-034: Freshness: re-list, close, and prune
+
+- **Status:** Accepted (M4)
+- **Decision:**
+  - Every successful board read updates `last_seen_at` on the postings it lists and closes the ones it no longer
+    lists, so a closed board posting disappears within one 6-hour cycle. A board that suddenly lists nothing while
+    10 or more of its postings are open is treated as broken, and nothing is closed.
+  - Adzuna ads can't be checked one by one, so an ad unseen for 7 days is closed.
+  - Links users added (ADR-026) are re-read once a day, at most 25 per run. A 404, or a page that says applications
+    have closed, closes the job. An unreadable page changes nothing.
+  - A shared job is open while any of its postings is, and was verified when its newest open posting was last seen.
+    `/admin` counts open jobs not confirmed for 48 hours as stale.
+  - Raw postings closed for 60 days are pruned. The canonical job, and any tracker entry pointing to it, stays.
+  - The coverage line on the home page and dashboard counts only boards read successfully in the last 48 hours, so it
+    stops claiming coverage if collection stops.
+
 ## Evaluation baselines
 
 | Date | Mode | Extraction quote validity | Skill recall | Core vs nice-to-have | Explanation quote validity | Band exact / within one |

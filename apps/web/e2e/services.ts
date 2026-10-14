@@ -3,7 +3,8 @@ import { generateKeyPairSync, randomUUID, sign, verify } from "node:crypto";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { setTimeout as delay } from "node:timers/promises";
 import { promisify } from "node:util";
-import { createDb } from "@repo/db";
+import { COLLECTION_RUN_KINDS } from "@repo/core";
+import { createDb, listBoardCompanies, markCompanyCrawled, syncCompanyRegistry, trackRun } from "@repo/db";
 import { sql } from "drizzle-orm";
 import pino from "pino";
 import { extractResumes } from "../../worker/src/commands/extract-resumes";
@@ -84,11 +85,23 @@ const server = createServer(async (request, response) => {
       return json(response, await processQueuedResumes());
     }
     if (url.pathname === "/test/users" && request.method === "POST") {
-      const id = randomUUID();
-      const email = `${id}@example.test`;
-      await db.execute(sql`insert into auth.users (id, email) values (${id}, ${email})`);
+      // A fixed address (for the ADMIN_EMAILS test) signs in as the same user every time.
+      const fixed = url.searchParams.get("email");
+      if (fixed && !/^[a-z0-9.-]+@example\.test$/.test(fixed))
+        return json(response, { message: "Bad email" }, 400);
+      const [existing] = fixed
+        ? ((await db.execute(sql`select id from auth.users where email = ${fixed}`)) as unknown as {
+            id: string;
+          }[])
+        : [];
+      const id = existing?.id ?? randomUUID();
+      const email = fixed ?? `${id}@example.test`;
+      if (!existing) await db.execute(sql`insert into auth.users (id, email) values (${id}, ${email})`);
       users.set(id, { id, email });
       return json(response, session(id, email));
+    }
+    if (url.pathname === "/test/collection" && request.method === "POST") {
+      return json(response, await seedCollection());
     }
     if (url.pathname === "/auth/v1/user") {
       const token = request.headers.authorization?.replace(/^Bearer /i, "") ?? "";
@@ -140,6 +153,52 @@ const server = createServer(async (request, response) => {
     json(response, { message: "Test service failed" }, 500);
   }
 });
+
+/** What one ingest leaves behind: a board read successfully, a failing board, and the run record. */
+async function seedCollection() {
+  const board = (slug: string, name: string) => ({
+    slug,
+    name,
+    ats: "greenhouse" as const,
+    boardToken: slug,
+    region: null,
+    careersUrl: null,
+    hq: null,
+    locations: ["Bengaluru"],
+  });
+  await syncCompanyRegistry(db, [board("e2e-acme", "Acme Test"), board("e2e-broken", "Broken Test")]);
+  const companies = await listBoardCompanies(db, { slugs: ["e2e-acme", "e2e-broken"] });
+  for (const company of companies) {
+    await markCompanyCrawled(
+      db,
+      company.id,
+      company.slug === "e2e-broken"
+        ? "boards-api.greenhouse.io/v1/boards/e2e-broken/jobs returned 404"
+        : null,
+    );
+  }
+  await trackRun(db, COLLECTION_RUN_KINDS.ingest, async () => ({
+    sources: {
+      greenhouse: {
+        boards: 2,
+        failed: 1,
+        listed: 12,
+        inScope: 3,
+        new: 3,
+        changed: 0,
+        closed: 0,
+        grouped: 0,
+        postingErrors: 0,
+      },
+    },
+    failures: [{ company: "e2e-broken", source: "greenhouse", error: "returned 404" }],
+    registry: null,
+    adzuna: "no_keys",
+    partial: false,
+    requests: 2,
+  }));
+  return { companies: companies.length };
+}
 
 async function processQueuedResumes() {
   return extractResumes(db, logger, {

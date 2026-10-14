@@ -1,0 +1,60 @@
+{
+  "__CLASS__": "Adzuna::API::Response::JobSearchResults",
+  "count": 3,
+  "mean": 1150000,
+  "results": [
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5011223344",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZXhhbXBsZSJ9.c2lnbmF0dXJl",
+      "title": "<strong>Software</strong> <strong>Engineer</strong> (Backend - SDE 2)",
+      "description": "At Databricks, we are passionate about enabling data teams to solve the world's toughest problems. As a <strong>software</strong> engineer on the pipeline team you will build services in Scala and Java…",
+      "created": "2026-10-10T08:15:00Z",
+      "redirect_url": "https://www.adzuna.in/land/ad/5011223344?se=example&utm_medium=api&utm_source=example&v=ABC",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Databricks India Private Limited"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Bangalore, Karnataka",
+        "area": ["India", "Karnataka", "Bangalore"]
+      },
+      "category": { "__CLASS__": "Adzuna::API::Response::Category", "label": "IT Jobs", "tag": "it-jobs" },
+      "contract_time": "full_time",
+      "contract_type": "permanent",
+      "salary_min": 1800000,
+      "salary_max": 2600000,
+      "salary_is_predicted": "1",
+      "latitude": 12.97,
+      "longitude": 77.59
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5011223355",
+      "title": "Data Analyst",
+      "description": "We are looking for a data analyst with strong SQL and Excel skills to build dashboards in Power BI…",
+      "created": "2026-10-11T10:00:00Z",
+      "redirect_url": "https://www.adzuna.in/land/ad/5011223355?se=example&v=DEF",
+      "company": { "__CLASS__": "Adzuna::API::Response::Company", "display_name": "Acme Analytics" },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Hyderabad, Telangana",
+        "area": ["India", "Telangana", "Hyderabad"]
+      },
+      "contract_time": "full_time",
+      "salary_min": 600000,
+      "salary_max": 900000,
+      "salary_is_predicted": "0"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5011223366",
+      "title": "Frontend Developer",
+      "description": "Build React interfaces…",
+      "created": "2026-10-12T10:00:00Z",
+      "redirect_url": "https://www.adzuna.in/land/ad/5011223366",
+      "location": { "display_name": "Pune, Maharashtra", "area": ["India", "Maharashtra", "Pune"] }
+    }
+  ]
+}

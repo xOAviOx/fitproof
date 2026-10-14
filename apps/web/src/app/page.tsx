@@ -1,5 +1,6 @@
 import { PRODUCT, ROLE_FAMILIES, ROLE_FAMILY_LABELS } from "@repo/core";
 import Link from "next/link";
+import { CoverageLine } from "@/components/coverage-line";
 import { Button } from "@/components/ui/button";
 
 const STEPS = [
@@ -30,6 +31,7 @@ export default function HomePage() {
         <Button asChild size="lg">
           <Link href="/login">Get started</Link>
         </Button>
+        <CoverageLine />
       </section>
 
       <section aria-labelledby="how-it-works" className="mt-16">
