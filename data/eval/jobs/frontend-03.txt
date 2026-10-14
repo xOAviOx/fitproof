@@ -1,0 +1,17 @@
+Frontend Developer Intern – Remote
+Openshelf (open-source library management)
+
+Openshelf is a small, fully remote team building open-source software that public libraries in India use to lend books. This is a 3-month paid internship with a mentor.
+
+You'll help us rebuild the catalogue search in React, fix bugs reported by librarians, and improve accessibility so that screen reader users can find and reserve books on their own.
+
+We'd love to hear from you if:
+- You're comfortable with JavaScript and have built something with React.
+- You care about accessibility and know the basics of semantic HTML and ARIA.
+- You use Git and are happy to work in public on GitHub.
+
+It's a plus if you have contributed to open source before or have used Vue.
+
+Who can apply: students graduating in 2026 or 2027, from any degree programme. The internship is remote, but you must be in India for payroll reasons.
+
+Stipend: ₹25,000/month for 3 months, 20 hours a week.

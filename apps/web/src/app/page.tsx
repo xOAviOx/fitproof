@@ -48,7 +48,7 @@ export default function HomePage() {
       </section>
 
       <p className="mt-16 text-sm text-muted-foreground">
-        Relevance is shown as Strong, Good, or Partial. It describes how well your experience matches the
+        Relevance is shown as Strong, Good, Partial, or Low. It describes how well your experience matches the
         description, not your chance of being hired.
       </p>
     </main>

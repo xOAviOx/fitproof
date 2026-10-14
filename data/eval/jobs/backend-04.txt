@@ -1,0 +1,25 @@
+SDE-1, Platform (Golang)
+Streamforge · Remote (India)
+
+Streamforge runs the video infrastructure behind 120 Indian edtech and media apps. The platform team builds the services that transcode, store, and deliver more than two million videos a day.
+
+You will
+1. Build and operate microservices in Golang that talk to each other over gRPC.
+2. Own PostgreSQL schemas for the services you write.
+3. Deploy and debug workloads on Kubernetes.
+4. Improve observability: metrics, traces, and useful alerts.
+
+You have
+1. 1–3 years of experience building backend services in production.
+2. Strong programming skills in Golang (or strong Java/C++ and a willingness to switch in your first month).
+3. Experience with gRPC or REST APIs between services.
+4. Working knowledge of Kubernetes and Docker.
+5. Good SQL skills, ideally with PostgreSQL.
+
+Bonus points
+- Kafka or another streaming system.
+- Experience with GCP.
+
+This is a fully remote role, but you must be based in India and legally authorized to work here; we cannot sponsor visas.
+
+CTC: ₹18–26 LPA, plus ESOPs.

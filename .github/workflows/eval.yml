@@ -1,0 +1,34 @@
+name: Model eval
+
+# Runs data/eval against the configured LLM provider and fails below the quote-validity gates.
+# Manual only: each run spends provider quota (at least 36 requests, plus one per regeneration).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: model-eval
+  cancel-in-progress: false
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm eval --require-model
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER || 'gemini' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'gemini-2.5-flash' }}
+          LLM_RPM: ${{ vars.LLM_RPM || '5' }}
+          LLM_DAILY_REQUESTS: ${{ vars.LLM_DAILY_REQUESTS || '100' }}

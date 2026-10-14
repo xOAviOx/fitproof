@@ -1,0 +1,23 @@
+Junior Data Analyst – Product Analytics
+Swaadly (food delivery) · Pune
+
+Help us understand how 3 million people order food. You will sit with the product team and own the metrics for search, cart, and checkout.
+
+Day to day
+- Analyse user behaviour with Python (pandas) and SQL.
+- Build and maintain Looker dashboards for product managers.
+- Set up and audit event tracking in Google Analytics.
+- Size opportunities and help design experiments.
+
+Must have
+- Python with pandas for data analysis.
+- Strong SQL.
+- Experience with Google Analytics or a similar product analytics tool.
+- Looker or any BI tool.
+
+Preferred
+- Statistics for A/B testing (hypothesis tests, confidence intervals).
+- NumPy.
+
+Joining: we are looking for people who can join within 15 days.
+Location: Baner, Pune (office-based). Salary: 7–10 LPA.

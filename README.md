@@ -13,7 +13,7 @@ An explainable job-search assistant for final-year students and candidates with 
 | M0 | Walking skeleton: monorepo, auth, schema + RLS, CI, health | Supabase database live with migrations applied; CI, nightly e2e, and migrate workflows green on GitHub; **web app not yet deployed to Vercel**, and Supabase auth URLs not yet configured |
 | M1 | Résumé → editable profile | Implemented and locally tested with synthetic PDF/DOCX layouts; live provider/storage setup and three real-world résumé checks still pending |
 | M2 | Preferences and eligibility | Implemented and locally tested (unit, RLS integration, desktop and mobile e2e). Filters apply to real jobs once they exist (pasted jobs in M3, discovery in M5) |
-| M3 | Bring-your-own-job | Not started |
+| M3 | Bring-your-own-job | Implemented and locally tested (unit, integration, keyword-mode eval, desktop and mobile e2e). **Acceptance not yet met:** the ≥ 90% quote-validity gate needs a model eval run with a provider key, which hasn't happened |
 | M4 | Job collection (ATS connectors, Adzuna) | Not started |
 | M5 | Discovery and ranking | Not started |
 | M6 | Tailoring and résumé versions | Not started |
@@ -23,12 +23,14 @@ An explainable job-search assistant for final-year students and candidates with 
 
 ```
 apps/web             Next.js 16 (App Router): UI, auth, route handlers, server actions
-apps/worker          CLI pipelines run by GitHub Actions (selftest, extract-resumes, storage-setup; ingestion later)
-packages/core        Pure domain logic and config, no I/O (vocabulary, scoring weights, preferences, eligibility rules)
+apps/worker          CLI pipelines run by GitHub Actions (selftest, extract-resumes, analyze-jobs, storage-setup) and the eval runner
+packages/core        Pure domain logic and config, no I/O (vocabularies, scoring, eligibility, quote verification, prompts)
 packages/db          Drizzle schema, migrations, RLS policies, job queue, PGlite test harness
-packages/llm         AI SDK provider adapters, user-scoped caching, quotas, quote verification
+packages/llm         AI SDK provider adapters, user-scoped caching, quotas, extraction, explanations, embeddings
+packages/analysis    The job analysis pipeline shared by the web app, the worker, and the eval
+packages/connectors  Polite, SSRF-safe fetching of user-supplied job links
 packages/storage     Private résumé storage behind a replaceable interface
-data/                Seed companies and eval fixtures (from M3/M4)
+data/eval/           Synthetic job descriptions, profiles, and labels for `pnpm eval`
 docs/                DECISIONS, RUNBOOK, PRIVACY, BACKLOG
 ```
 
@@ -92,6 +94,34 @@ use the same function from M3 on.
 Saves are rate-limited and use the same optimistic revision check as the profile, so a stale tab cannot overwrite
 newer answers.
 
+## Bring your own job (M3)
+
+Choose **Check a job** on the dashboard (or open `/jobs/new`). Paste a job description, or use a link to the
+posting. The job page then shows:
+
+- **A relevance band:** Strong, Good, Partial, Low, or Not eligible. Code computes it from your confirmed evidence,
+  never a model, and it is never shown as a percentage (ADR-023).
+- **Where you match, gaps to close, and checks.** Each item quotes the posting and, for matches, your profile.
+  **Show in context** highlights both quotes side by side in the posting and your evidence.
+- **Gap answers.** "I have Docker" adds Docker to your profile as a self-declared skill and re-scores at once.
+  "I don't have Docker" removes only a skill added that way.
+- **Save to tracker.** `/tracker` lists saved jobs with a status (Saved, Applied, Interviewing, Offer, Rejected,
+  Withdrawn), notes, and a next-action date.
+
+Analysis starts right after you add a job, and the page updates when it finishes (ADR-027). With LLM settings,
+a model reads the requirements and writes the explanation. Every quote it returns is checked against the posting
+and your profile, and it is regenerated once if more than 30% fail; after that the page shows only the overlap
+that code verified (ADR-025). **Without LLM settings, everything still works:** postings are read by keyword,
+with a notice that eligibility rules weren't read (ADR-024).
+
+Links are read by FitwiseBot (`/bot`), which honors robots.txt and never contacts LinkedIn, Naukri, Indeed,
+Glassdoor, or foundit. If a link can't be read, the form switches to paste and keeps the link (ADR-026).
+Limits: 10 added jobs per hour and 30 per day, 10 link reads per hour, and 200–30,000 characters per description.
+
+To use a model for jobs on Vercel, add `GEMINI_API_KEY` (or the OpenAI settings), `LLM_PROVIDER`, `LLM_MODEL`, and
+optionally `LLM_EMBEDDING_MODEL`, `LLM_RPM`, and `LLM_DAILY_REQUESTS` to the web project, then redeploy. The
+optional backup sweep is described in `docs/RUNBOOK.md`.
+
 ## Prerequisites
 
 - Node.js 22.12+ (`.nvmrc` pins 22) and pnpm 11 (`corepack enable` picks up the pinned version)
@@ -146,13 +176,18 @@ pnpm dev                    # http://localhost:3000
 | `APP_URL` | Repository variable | `keepalive.yml`: daily health ping, which keeps the Supabase project from pausing |
 | `DATABASE_URL` | Secret | `keepalive.yml` worker selftest (and the scheduled ingest jobs from M4) |
 | `DATABASE_MIGRATION_URL` | Secret, in a `production` environment | `migrate.yml`: applies migrations when `packages/db/migrations` changes on `main` |
+| `GEMINI_API_KEY` or `OPENAI_API_KEY` | Secret | `extract-resumes.yml`, `analyze-jobs.yml`, and `eval.yml` |
+| `LLM_PROVIDER`, `LLM_MODEL`, `LLM_EMBEDDING_MODEL`, `LLM_RPM`, `LLM_DAILY_REQUESTS` | Repository variables (optional) | The same three workflows. Defaults: `gemini`, `gemini-2.5-flash`, the provider's embedding model, 5, and 100 |
+| `ANALYZE_JOBS_WORKER` | Repository variable | Set to `true` to enable the 15-minute `analyze-jobs.yml` backup sweep |
 
 Workflows:
 
-- `ci.yml` runs lint, typecheck, unit and integration tests (including the RLS isolation suite), build, and a dependency audit on every PR and every push to `main`.
+- `ci.yml` runs lint, typecheck, unit and integration tests (including the RLS isolation suite), the keyword-mode eval, build, and a dependency audit on every PR and every push to `main`.
 - `nightly.yml` runs the Playwright e2e suite against a production build.
 - `keepalive.yml` runs daily.
 - `migrate.yml` runs on migration changes, or on demand.
+- `analyze-jobs.yml` finishes job analyses the web app couldn't (off unless `ANALYZE_JOBS_WORKER=true`).
+- `eval.yml` runs the model eval on demand and fails below the quote-validity gates. Each run spends provider quota.
 
 ## Commands
 
@@ -169,6 +204,8 @@ Workflows:
 | `pnpm worker selftest` | Check worker → database connectivity and record a run |
 | `pnpm worker storage-setup` | Operator-only: provision a private résumé bucket |
 | `pnpm worker extract-resumes` | Process up to five queued résumé uploads |
+| `pnpm worker analyze-jobs` | Process up to 10 queued job analyses |
+| `pnpm eval` | Run `data/eval` and check the gates: keyword mode without an LLM key, model mode (spends quota) with one. `--only <prefix>` runs a subset; `--require-model` fails without a key |
 | `pnpm --filter @repo/db pglite:serve` | In-memory Postgres on port 54329, for smoke-testing without Docker or Supabase (no auth) |
 
 ## Free-tier constraints (checked 2026-10-13; re-check before relying on them)
@@ -219,6 +256,41 @@ Manual acceptance check:
    Save and reload.
 6. Open Settings in two tabs, save in one, then save in the other. The second shows a "changed in another tab" error.
 7. Confirm a profile with dated work entries and check that the Experience rule shows your months of experience.
+
+### M3 verification
+
+Unit tests cover the skill vocabulary, job text cleaning and contact masking, extraction and explanation quote
+verification, the keyword reader, deterministic scoring and bands, highlight offsets, JSON-LD and Readability
+extraction, and link fetching against a local test server (SSRF protection, redirects, decompression, robots.txt
+rules, and blocked sites, including after a redirect). Integration tests on
+PGlite cover job creation and deduplication, RLS-scoped loading, gap answers, the tracker, the link cache, and the
+full pipeline with injected provider responses: regeneration on failed quotes, structured fallback, provider
+errors, re-scoring after a gap answer without a model call, and masking of profile contact details before
+embedding. Playwright runs on desktop and mobile with no LLM key (keyword mode): paste → quoted matches and gaps →
+side-by-side highlight → gap answer and undo → save → tracker edits persist; a LinkedIn link switches to paste; and
+another user gets "Page not found" and a 404 from the status API.
+
+`pnpm eval` (keyword mode, 2026-10-14): extraction quote validity 100%, skill recall 98.8%. Band agreement is 29.2%
+exact and 62.5% within one band, because keyword mode can't reach Strong. See "Evaluation baselines" in
+`docs/DECISIONS.md`. **The model-mode gate (≥ 90% quote validity on extraction and explanations) has not been
+run**, so M3 acceptance is still open.
+
+Manual acceptance check (after adding a provider key to `.env` or the web project):
+1. Run `pnpm eval` with the key set, or the **Model eval** workflow. It must print `PASS`. Record the numbers in
+   `docs/DECISIONS.md`.
+2. Confirm a profile with at least one internship or project that lists real skills. Open **Check a job**, paste a
+   real fresher posting, and choose **Check this job**. Within about a minute the page shows a band, a summary, and
+   quoted matches and gaps. No "Read without AI" notice appears.
+3. For one match, choose **Show in context**. The same line is highlighted in "The posting" and in "Your evidence".
+   Search the original posting for two quotes and check they appear word for word.
+4. On a gap, choose **I have …**. The skill moves to "Where you match" as a self-declared skill, and `/profile`
+   lists it. Choose **I don't have …** to undo it.
+5. Add a job by link from a company careers page (for example a Greenhouse or Lever posting). It loads. Then try a
+   LinkedIn link: the form explains why, switches to paste, and keeps the link.
+6. Choose **Save to tracker**, open the tracker, set the status to Applied, add a note and a date, save, and reload.
+7. Sign in as another user and open the first user's job URL. It shows "Page not found".
+8. Try nine more postings across backend, frontend, and data analyst roles. Note any quote that isn't in the
+   posting, and any band that looks wrong, in `docs/BACKLOG.md` or as an eval case.
 
 ## Docs
 

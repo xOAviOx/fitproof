@@ -38,6 +38,8 @@ jobs:
         run: pnpm typecheck
       - name: Unit and integration tests (incl. RLS isolation)
         run: pnpm test
+      - name: Eval (keyword reader; model metrics run in eval.yml)
+        run: pnpm eval
       - name: Build
         run: pnpm build
       - name: Dependency audit

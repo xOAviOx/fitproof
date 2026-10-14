@@ -12,6 +12,8 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@repo/analysis": "workspace:*",
+    "@repo/connectors": "workspace:*",
     "@repo/core": "workspace:*",
     "@repo/db": "workspace:*",
     "@repo/storage": "workspace:*",

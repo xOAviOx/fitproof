@@ -16,7 +16,8 @@
     "format": "biome check --write .",
     "db:generate": "pnpm --filter @repo/db generate",
     "db:migrate": "pnpm --filter @repo/db migrate",
-    "worker": "pnpm --filter @repo/worker start"
+    "worker": "pnpm --filter @repo/worker start",
+    "eval": "pnpm --filter @repo/worker eval"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",

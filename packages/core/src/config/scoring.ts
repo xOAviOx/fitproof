@@ -19,6 +19,8 @@ export const SCORING_CONFIG = {
     good: { minCoreCoverage: 0.6 },
     partial: { minCoreCoverage: 0.4 },
   },
+  /** Ordering only; users see bands. Missing coverage counts as `neutralCoverage`. */
+  ordering: { coverage: 0.6, similarity: 0.3, preferences: 0.1, neutralCoverage: 0.5 },
   almostQualified: { maxMissingCoreSkills: 2 },
   retrieval: { candidateLimit: 200 },
   explanations: { precomputeTopN: 30, maxQuoteFailureRate: 0.3 },
@@ -36,6 +38,12 @@ export const scoringConfigSchema = z
       strong: z.object({ minCoreCoverage: unitInterval, minResponsibilitySimilarity: unitInterval }),
       good: z.object({ minCoreCoverage: unitInterval }),
       partial: z.object({ minCoreCoverage: unitInterval }),
+    }),
+    ordering: z.object({
+      coverage: unitInterval,
+      similarity: unitInterval,
+      preferences: unitInterval,
+      neutralCoverage: unitInterval,
     }),
     almostQualified: z.object({ maxMissingCoreSkills: z.number().int().min(0) }),
     retrieval: z.object({ candidateLimit: z.number().int().positive() }),

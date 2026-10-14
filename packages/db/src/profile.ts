@@ -98,6 +98,15 @@ export async function loadResumeStatus(db: Database, userId: string) {
 }
 
 async function replaceContent(tx: Transaction, userId: string, profileId: string, content: ProfileContent) {
+  // Origin isn't part of the editable content, so keep it for skills that survive the save.
+  const origins = new Map(
+    (
+      await tx
+        .select({ id: profileSkills.id, origin: profileSkills.origin })
+        .from(profileSkills)
+        .where(eq(profileSkills.profileId, profileId))
+    ).map((row) => [row.id, row.origin]),
+  );
   for (const table of [
     profileSkills,
     profileExperiences,
@@ -115,7 +124,9 @@ async function replaceContent(tx: Transaction, userId: string, profileId: string
         ...base,
         sourceText: row.sourceText ?? "",
         normalizedName: row.name.normalize("NFKC").toLowerCase().trim(),
-        origin: row.sourceText ? ("resume" as const) : ("manual" as const),
+        origin:
+          (row.id ? origins.get(row.id) : undefined) ??
+          (row.sourceText ? ("resume" as const) : ("manual" as const)),
       })),
     );
   }

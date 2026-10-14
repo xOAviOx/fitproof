@@ -1,11 +1,7 @@
 import "server-only";
-import { emptyPreferences, type Preferences, summarizeExperience } from "@repo/core";
+import { emptyPreferences, indiaToday, type Preferences, summarizeExperience } from "@repo/core";
 import { loadPreferences, loadProfile } from "@repo/db";
 import { getDb } from "@/lib/db";
-
-/** Today's date in India, where the product's users are, as an ISO date. */
-export const indiaToday = () =>
-  new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
 
 export async function loadPreferencesView(userId: string) {
   // Sequential on purpose: each call opens its own RLS transaction.

@@ -94,6 +94,38 @@ export async function claimNextJob(
   return claimed ?? null;
 }
 
+/**
+ * Leases one specific job, under the same rules as `claimNextJob`. Lets the request that queued a
+ * job process it immediately; if that process dies, the lease expires and the worker takes over.
+ */
+export async function claimJobById(
+  db: Database,
+  id: string,
+  options: { leaseSeconds?: number } = {},
+): Promise<JobRun | null> {
+  const leaseSeconds = options.leaseSeconds ?? 300;
+  const [claimed] = await db
+    .update(jobRuns)
+    .set({
+      status: "running",
+      attempts: sql`${jobRuns.attempts} + 1`,
+      startedAt: sql`now()`,
+      lockedUntil: sql`now() + make_interval(secs => ${leaseSeconds})`,
+    })
+    .where(
+      and(
+        eq(jobRuns.id, id),
+        lt(jobRuns.attempts, jobRuns.maxAttempts),
+        or(
+          and(eq(jobRuns.status, "queued"), lte(jobRuns.scheduledAt, sql`now()`)),
+          and(eq(jobRuns.status, "running"), lt(jobRuns.lockedUntil, sql`now()`)),
+        ),
+      ),
+    )
+    .returning();
+  return claimed ?? null;
+}
+
 export async function completeJob(
   db: DbOrTx,
   id: string,
@@ -130,6 +162,14 @@ export async function failJob(
     .set({ status: "failed", error: message, finishedAt: new Date(), lockedUntil: null })
     .where(eq(jobRuns.id, run.id));
   return { retrying: false as const };
+}
+
+/** Pushes a requeued job back, e.g. until a provider quota resets. */
+export async function deferJob(db: DbOrTx, id: string, delaySeconds: number) {
+  await db
+    .update(jobRuns)
+    .set({ scheduledAt: sql`now() + make_interval(secs => ${Math.max(1, Math.ceil(delaySeconds))})` })
+    .where(and(eq(jobRuns.id, id), eq(jobRuns.status, "queued")));
 }
 
 /**

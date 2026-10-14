@@ -173,6 +173,10 @@ export function formatLpa(inr: number): string {
   return `₹${Number((inr / 100_000).toFixed(2))} LPA`;
 }
 
+/** Today's date in India, where the product's users are, as an ISO date. */
+export const indiaToday = (now = new Date()) =>
+  new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(now);
+
 export function formatDate(isoDate: string): string {
   return new Date(`${isoDate}T00:00:00Z`).toLocaleDateString("en-IN", {
     day: "numeric",

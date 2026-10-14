@@ -5,7 +5,14 @@ import {
   REMOTE_PREFERENCE_OPTIONS,
   ROLE_FAMILY_LABELS,
 } from "@repo/core";
-import { loadPreferences, loadProfile, schema, withUserContext } from "@repo/db";
+import {
+  listApplications,
+  listUserJobs,
+  loadPreferences,
+  loadProfile,
+  schema,
+  withUserContext,
+} from "@repo/db";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -15,7 +22,9 @@ import { getDb } from "@/lib/db";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-const NEXT_STEPS = ["Paste a job to see how well it fits", "Browse ranked jobs from tracked companies"];
+const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+// Job lists are capped at 100 rows.
+const count = (n: number, noun: string) => (n >= 100 ? `100+ ${noun}s` : plural(n, noun));
 
 function summarizePreferences(preferences: Preferences): string {
   const scope = [
@@ -37,6 +46,10 @@ export default async function DashboardPage() {
   const user = await requireUser();
   const { profile, content } = await loadProfile(getDb(), user.id);
   const { preferences } = await loadPreferences(getDb(), user.id);
+  const [jobs, applications] = await Promise.all([
+    listUserJobs(getDb(), user.id),
+    listApplications(getDb(), user.id),
+  ]);
   const [account] = await withUserContext(getDb(), user.id, (tx) =>
     tx.select({ createdAt: schema.users.createdAt }).from(schema.users).limit(1),
   );
@@ -67,7 +80,7 @@ export default async function DashboardPage() {
           </CardTitle>
           <CardDescription>
             {profile?.status === "confirmed"
-              ? `${content.skills.length} skills, ${content.experiences.length} work or internship entries, and ${content.projects.length} projects confirmed.`
+              ? `${plural(content.skills.length, "skill")}, ${plural(content.experiences.length, "work or internship entry", "work or internship entries")}, and ${plural(content.projects.length, "project")} confirmed.`
               : "Upload your résumé or build a profile manually. Review your evidence before anything is matched."}
           </CardDescription>
         </CardHeader>
@@ -99,16 +112,28 @@ export default async function DashboardPage() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <h2>Your next steps</h2>
+            <h2>Check a job</h2>
           </CardTitle>
-          <CardDescription>Coming in the next milestones.</CardDescription>
+          <CardDescription>
+            {jobs.length
+              ? `${count(jobs.length, "job")} checked, ${applications.length} saved to your tracker.`
+              : "Paste a job description or a careers-page link to see which lines you already meet and what's missing."}
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <ol className="list-decimal space-y-2 pl-5 text-sm">
-            {NEXT_STEPS.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ol>
+        <CardContent className="flex flex-wrap gap-2">
+          <Button asChild variant={profile?.status === "confirmed" ? "default" : "outline"}>
+            <Link href="/jobs/new">Check a job</Link>
+          </Button>
+          {jobs.length > 0 && (
+            <Button asChild variant="outline">
+              <Link href="/jobs">Your jobs</Link>
+            </Button>
+          )}
+          {applications.length > 0 && (
+            <Button asChild variant="outline">
+              <Link href="/tracker">Tracker</Link>
+            </Button>
+          )}
         </CardContent>
       </Card>
     </main>

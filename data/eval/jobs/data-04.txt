@@ -1,0 +1,22 @@
+Analytics Intern (Remote, 6 months)
+Greenleaf Agritech
+
+Greenleaf helps 50,000 farmers in Maharashtra and Karnataka get fair prices for their produce. Our analytics interns work on crop price and procurement data with the operations team.
+
+What you'll do
+- Clean and combine spreadsheets from field teams in Excel.
+- Write SQL queries against our Postgres reporting database.
+- Automate recurring reports using Python or R.
+- Help build simple ETL scripts that load field data every night.
+
+What you need
+- Excel: formulas, pivot tables, and charts.
+- Basic SQL.
+- Either Python or the R language for data analysis.
+
+Good to have
+- Any experience with ETL tools or scheduling scripts.
+
+Eligibility: students or recent graduates (2025 or 2026) from any discipline. You need to be available for 6 months starting July 2026.
+
+Stipend: ₹20,000 per month. Remote within India.

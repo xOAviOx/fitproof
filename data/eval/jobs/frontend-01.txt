@@ -1,0 +1,24 @@
+Frontend Engineer (React)
+Plotline Learning · Bengaluru · Hybrid
+
+We build live-class software for 1,500 coaching institutes. Our frontend team owns the teacher dashboard and the student app on the web.
+
+What you will work on
+- Build product features in React and TypeScript, from design hand-off to release.
+- Manage complex client state with Redux.
+- Write accessible, responsive layouts in HTML and CSS that work on low-end Android phones.
+- Write unit tests with Jest and React Testing Library.
+- Profile and fix slow pages.
+
+What you bring
+- A strong grasp of JavaScript and TypeScript.
+- At least one non-trivial React project you can walk us through.
+- Solid HTML and CSS, including flexbox and grid.
+- Experience with Redux or a similar state library.
+- Familiarity with Jest.
+
+Nice to have: Next.js, Tailwind CSS, and an eye for design.
+
+Eligibility: 2024 or 2025 graduates with a B.E./B.Tech, B.Sc, or BCA degree. Applicants should be willing to work from our Bengaluru office two days a week.
+
+Salary: ₹9–13 LPA.

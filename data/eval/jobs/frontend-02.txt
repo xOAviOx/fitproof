@@ -1,0 +1,26 @@
+UI Developer – Angular
+Finvera Systems Pvt. Ltd.
+Location: Pune (work from office, Hinjewadi Phase 2)
+Experience: Freshers
+
+Job Description:
+Finvera builds loan origination software used by 25 Indian banks and NBFCs. We are looking for UI developers to join our product engineering group.
+
+Key Responsibilities:
+* Develop screens and reusable components in Angular and TypeScript.
+* Style applications with SCSS following our design system.
+* Integrate REST APIs with backend teams and handle errors gracefully.
+* Fix UI defects raised by QA and customers.
+
+Required Skills:
+* Angular (any version from 12 onwards) — through internships, coursework, or projects.
+* TypeScript and JavaScript.
+* HTML5, CSS3, and SCSS.
+* Understanding of REST APIs and JSON.
+
+Qualification:
+* B.E./B.Tech (any branch) or MCA.
+* Minimum 60% marks throughout 10th, 12th, and graduation.
+* Immediate joiners preferred; must be able to join within 15 days.
+
+Package: 4.5 LPA – 6 LPA

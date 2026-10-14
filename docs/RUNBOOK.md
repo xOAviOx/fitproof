@@ -40,6 +40,40 @@ Operating procedures. Sections for features that don't exist yet are marked with
 - An orphan cleanup warning means the upload failed and Storage cleanup also failed. Compare the user's Storage
   folder to their `resume_files.storage_path` rows before removing any orphan object.
 
+## Job analysis (M3)
+
+- Adding or re-checking a job queues a `job.analyze` run, and the web app processes it right after responding
+  (ADR-027). The job page polls status, and each poll retries a due run. Nothing else is needed for normal use.
+- **Model or keyword mode.** The web app and worker use the model when they have usable LLM settings
+  (`GEMINI_API_KEY`, or `LLM_PROVIDER=openai` with an OpenAI `LLM_MODEL` and `OPENAI_API_KEY`). Otherwise they log
+  `No usable LLM settings; reading jobs by keyword` and read postings by keyword with structured explanations.
+  To use the model on Vercel, add the same LLM variables to the web project, then redeploy.
+- **Backup sweep.** Set the repository variable `ANALYZE_JOBS_WORKER=true` to enable `analyze-jobs.yml`, which runs
+  `pnpm worker analyze-jobs` every 15 minutes (up to 10 runs per batch). It needs the `DATABASE_URL` secret and the
+  same LLM secrets and variables as extraction. Locally, run `pnpm worker analyze-jobs`.
+- **A job stuck on "Reading the requirements"** (or "Reading…" in the jobs list). Check `job_runs` for `kind = 'job.analyze'` and the job ID in
+  `payload->>'jobId'`. A `queued` run with a future `scheduled_at` is waiting for the provider quota or a retry backoff.
+  A `failed` run's `error` is the message the user saw. Users can add the same text again, which re-queues a job
+  whose analysis failed.
+- **Quota.** Extraction and explanation calls share the `LLM_RPM` and `LLM_DAILY_REQUESTS` budget with résumé
+  extraction. Embedding calls have a separate budget with the same limits. One new job costs one extraction call,
+  one explanation call, and one embedding call, plus one more for each quote-validity retry. Re-checks reuse the
+  stored requirements, cached embeddings, and cached explanations when nothing changed.
+- **"We couldn't verify a written explanation"** on a job page means the model's quotes failed verification twice,
+  or the provider failed or hit its quota. The band and the line-by-line overlap are still computed by code. Run the
+  model eval (below) if this becomes common. A "Read without AI" notice means the job was read in keyword mode.
+- **Link fetching complaints.** `/bot` describes FitwiseBot and the opt-out. A site can block it in robots.txt with
+  `User-agent: FitwiseBot` and `Disallow: /`. To block a site entirely, add its domain to `BLOCKED_SITES` in
+  `packages/connectors/src/job-page.ts` and deploy.
+
+## Run the evaluation
+
+- `pnpm eval` runs `data/eval` against the production pipeline on a throwaway in-memory database. With no LLM key it
+  runs in keyword mode, which is what CI runs on every push. With a key in `.env`, it uses the model and spends quota.
+- For the model gate, run the **Model eval** workflow (`eval.yml`) in GitHub Actions. It uses `--require-model`, so it
+  fails if the provider key secret is missing. Record new baselines in `docs/DECISIONS.md`.
+- `pnpm eval --only backend` runs a subset without applying the gates. `--json` also prints the summary as JSON.
+
 ## Rotate keys
 
 | Secret | Where it lives | How to rotate |
@@ -47,7 +81,7 @@ Operating procedures. Sections for features that don't exist yet are marked with
 | Database password | `DATABASE_URL`, `DATABASE_MIGRATION_URL` (Vercel, GitHub, `.env`) | Supabase → Project Settings → Database → Reset password. Update all three places, then redeploy on Vercel |
 | Supabase publishable key | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase → API Keys → create a new publishable key, update Vercel, redeploy, then revoke the old key |
 | Google OAuth client secret | Supabase Auth provider settings | Rotate in Google Cloud Console, then paste the new secret into Supabase |
-| Gemini API key | `GEMINI_API_KEY` (worker only) | Create a new key in AI Studio, update the worker environment, then delete the old key |
+| Gemini API key | `GEMINI_API_KEY` (worker, and the web app from M3) | Create a new key in AI Studio, update the GitHub secret and the Vercel variable, redeploy the web app, then delete the old key |
 | Storage secret | `SUPABASE_SECRET_KEY` (web and worker) | Create a new Supabase secret, update both environments, redeploy the web app, then revoke the old key |
 
 ## Delete a user on request

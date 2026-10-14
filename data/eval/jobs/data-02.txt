@@ -1,0 +1,14 @@
+Business Analyst (Fresher)
+Ridewell Mobility | Hyderabad | Hybrid
+
+Ridewell runs electric bike-taxi services in four cities. The business analytics team answers the questions that drive pricing, driver incentives, and city launches.
+
+What you'll do:
+Write SQL to analyse trips, payments, and driver supply; build and maintain Tableau dashboards for city managers; and turn messy questions into clear analyses with charts that make the answer obvious. You will also maintain the Excel models that finance uses for weekly forecasts.
+
+What we're looking for:
+0–1 years of experience (internships welcome). You should be strong in SQL and Excel and have built at least one dashboard in Tableau. Good data visualization sense matters more to us than knowing every chart type. Python for analysis is a plus but not required.
+
+Hybrid: two days a week at our Madhapur office. CTC: ₹7–9 LPA.
+
+Questions? hiring-ba@ridewell.example

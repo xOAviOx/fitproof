@@ -1,0 +1,452 @@
+{
+  "$comment": "Synthetic candidates. Every name, employer, institution, and number is invented.",
+  "profiles": [
+    {
+      "id": "backend-intern",
+      "family": "backend",
+      "description": "2025 B.Tech CSE graduate with a Java/Spring Boot internship and a Node.js project",
+      "content": {
+        "summary": null,
+        "links": [],
+        "skills": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Python",
+            "tier": "self_declared"
+          }
+        ],
+        "experiences": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "tier": "internship",
+            "company": "Ledgerbox",
+            "title": "Backend Engineering Intern",
+            "location": "Bengaluru",
+            "startDate": "2024-05-01",
+            "endDate": "2024-07-31",
+            "isCurrent": false,
+            "bullets": [
+              "Built REST APIs in Java and Spring Boot for invoice reconciliation used by 120 merchants",
+              "Optimised MySQL queries, cutting report generation from 40 seconds to 6 seconds",
+              "Wrote JUnit tests and containerised the service with Docker"
+            ],
+            "skills": ["Java", "Spring Boot", "MySQL", "SQL", "Docker", "Git"]
+          }
+        ],
+        "projects": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Campus canteen ordering backend",
+            "description": "Node.js and Express API with MongoDB for ordering from the college canteen",
+            "url": null,
+            "bullets": ["Handled 300 orders a day during a four-week pilot"],
+            "skills": ["Node.js", "Express", "MongoDB", "Git"]
+          }
+        ],
+        "education": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "institution": "Deccan Institute of Technology",
+            "degree": "B.Tech",
+            "branch": "Computer Science and Engineering",
+            "startYear": 2021,
+            "graduationYear": 2025,
+            "scoreType": "cgpa",
+            "score": 8.1,
+            "scoreScale": 10,
+            "coursework": [
+              "Data Structures and Algorithms",
+              "Object Oriented Programming",
+              "Database Management Systems"
+            ]
+          }
+        ],
+        "certifications": []
+      },
+      "preferences": {
+        "desiredRoles": ["backend"],
+        "employmentTypes": ["full_time", "internship"],
+        "remotePreference": "any",
+        "locations": ["Bengaluru", "Pune", "Hyderabad"],
+        "willingToRelocate": true,
+        "minAnnualSalaryInr": null,
+        "noticePeriodDays": 0,
+        "availableFrom": null,
+        "graduationYear": 2025,
+        "degree": "B.Tech",
+        "branch": "Computer Science and Engineering",
+        "scoreType": "cgpa",
+        "score": 8.1,
+        "scoreScale": 10,
+        "workAuthorization": "authorized"
+      }
+    },
+    {
+      "id": "backend-student",
+      "family": "backend",
+      "description": "Final-year (2026) B.E. IT student with Python/Flask and C++ projects, no internships",
+      "content": {
+        "summary": null,
+        "links": [],
+        "skills": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Git",
+            "tier": "self_declared"
+          }
+        ],
+        "experiences": [],
+        "projects": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Clinic appointment booking API",
+            "description": "REST API in Python with Flask and PostgreSQL for a two-doctor clinic",
+            "url": null,
+            "bullets": ["Deployed on a Linux virtual machine behind Nginx"],
+            "skills": ["Python", "Flask", "PostgreSQL", "Linux"]
+          },
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Library management system",
+            "description": "Command-line library management system written in C++",
+            "url": null,
+            "bullets": [],
+            "skills": ["C++"]
+          }
+        ],
+        "education": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "institution": "Western Maharashtra College of Engineering",
+            "degree": "B.E.",
+            "branch": "Information Technology",
+            "startYear": 2022,
+            "graduationYear": 2026,
+            "scoreType": "cgpa",
+            "score": 7.2,
+            "scoreScale": 10,
+            "coursework": ["Data Structures", "Object Oriented Programming", "SQL and Database Systems"]
+          }
+        ],
+        "certifications": []
+      },
+      "preferences": {
+        "desiredRoles": ["backend"],
+        "employmentTypes": ["internship", "full_time"],
+        "remotePreference": "hybrid",
+        "locations": ["Pune", "Hyderabad"],
+        "willingToRelocate": false,
+        "minAnnualSalaryInr": null,
+        "noticePeriodDays": null,
+        "availableFrom": null,
+        "graduationYear": 2026,
+        "degree": "B.E.",
+        "branch": "Information Technology",
+        "scoreType": "cgpa",
+        "score": 7.2,
+        "scoreScale": 10,
+        "workAuthorization": "authorized"
+      }
+    },
+    {
+      "id": "frontend-intern",
+      "family": "frontend",
+      "description": "2025 B.Tech ECE graduate with a six-month React/TypeScript internship",
+      "content": {
+        "summary": null,
+        "links": [],
+        "skills": [],
+        "experiences": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "tier": "internship",
+            "company": "Tinyhive",
+            "title": "Frontend Intern",
+            "location": "Bengaluru",
+            "startDate": "2024-06-01",
+            "endDate": "2024-12-15",
+            "isCurrent": false,
+            "bullets": [
+              "Built dashboard features in React and TypeScript used by 2,000 teachers",
+              "Moved shared state to Redux Toolkit and removed duplicated API calls",
+              "Wrote Jest tests for form validation and date handling"
+            ],
+            "skills": ["React", "TypeScript", "Redux", "Jest", "JavaScript", "HTML", "CSS", "Git"]
+          }
+        ],
+        "projects": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Personal portfolio",
+            "description": "Statically generated portfolio built with Next.js and styled with Tailwind CSS",
+            "url": "https://portfolio.example.com",
+            "bullets": ["Scores 100 on Lighthouse accessibility"],
+            "skills": ["Next.js", "Tailwind CSS"]
+          }
+        ],
+        "education": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "institution": "Godavari Institute of Engineering",
+            "degree": "B.Tech",
+            "branch": "Electronics and Communication Engineering",
+            "startYear": 2021,
+            "graduationYear": 2025,
+            "scoreType": "cgpa",
+            "score": 7.8,
+            "scoreScale": 10,
+            "coursework": []
+          }
+        ],
+        "certifications": []
+      },
+      "preferences": {
+        "desiredRoles": ["frontend"],
+        "employmentTypes": ["full_time"],
+        "remotePreference": "hybrid",
+        "locations": ["Bengaluru", "Hyderabad"],
+        "willingToRelocate": true,
+        "minAnnualSalaryInr": 600000,
+        "noticePeriodDays": 0,
+        "availableFrom": null,
+        "graduationYear": 2025,
+        "degree": "B.Tech",
+        "branch": "Electronics and Communication Engineering",
+        "scoreType": "cgpa",
+        "score": 7.8,
+        "scoreScale": 10,
+        "workAuthorization": "authorized"
+      }
+    },
+    {
+      "id": "frontend-student",
+      "family": "frontend",
+      "description": "Final-year (2026) BCA student with small JavaScript and Vue projects",
+      "content": {
+        "summary": null,
+        "links": [],
+        "skills": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Git",
+            "tier": "self_declared"
+          }
+        ],
+        "experiences": [],
+        "projects": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Recipe finder",
+            "description": "Vanilla JavaScript app that searches a public recipe API",
+            "url": null,
+            "bullets": ["Responsive layout written in HTML and CSS without a framework"],
+            "skills": ["JavaScript", "HTML", "CSS"]
+          },
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Study planner",
+            "description": "To-do and study planner built with Vue",
+            "url": null,
+            "bullets": [],
+            "skills": ["Vue"]
+          }
+        ],
+        "education": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "institution": "Malwa College of Computer Applications",
+            "degree": "BCA",
+            "branch": "Computer Applications",
+            "startYear": 2023,
+            "graduationYear": 2026,
+            "scoreType": "percentage",
+            "score": 68,
+            "scoreScale": 100,
+            "coursework": []
+          }
+        ],
+        "certifications": []
+      },
+      "preferences": {
+        "desiredRoles": ["frontend"],
+        "employmentTypes": ["internship"],
+        "remotePreference": "remote",
+        "locations": [],
+        "willingToRelocate": null,
+        "minAnnualSalaryInr": null,
+        "noticePeriodDays": null,
+        "availableFrom": null,
+        "graduationYear": 2026,
+        "degree": "BCA",
+        "branch": "Computer Applications",
+        "scoreType": "percentage",
+        "score": 68,
+        "scoreScale": 100,
+        "workAuthorization": "authorized"
+      }
+    },
+    {
+      "id": "data-intern",
+      "family": "data_analyst",
+      "description": "2025 B.Com graduate with a retail analytics internship (SQL, Power BI, Excel)",
+      "content": {
+        "summary": null,
+        "links": [],
+        "skills": [],
+        "experiences": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "tier": "internship",
+            "company": "Bazaarline",
+            "title": "Data Analyst Intern",
+            "location": "Hyderabad",
+            "startDate": "2024-06-01",
+            "endDate": "2024-11-30",
+            "isCurrent": false,
+            "bullets": [
+              "Wrote SQL queries to track weekly sales across 40 stores",
+              "Built a Power BI dashboard the category team reviews every Monday",
+              "Automated stock reconciliation in Excel with pivot tables and XLOOKUP"
+            ],
+            "skills": ["SQL", "Power BI", "Excel"]
+          }
+        ],
+        "projects": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Restaurant reviews analysis",
+            "description": "Python and pandas analysis of 50,000 restaurant reviews to find what drives ratings",
+            "url": null,
+            "bullets": [],
+            "skills": ["Python", "pandas"]
+          }
+        ],
+        "education": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "institution": "Charminar College of Commerce",
+            "degree": "B.Com",
+            "branch": "Commerce",
+            "startYear": 2022,
+            "graduationYear": 2025,
+            "scoreType": "percentage",
+            "score": 72,
+            "scoreScale": 100,
+            "coursework": ["Business Statistics"]
+          }
+        ],
+        "certifications": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Data Analytics Professional Certificate",
+            "issuer": "Example Learning",
+            "issuedOn": "2024-03-01",
+            "skills": ["SQL", "Tableau", "Data visualization"]
+          }
+        ]
+      },
+      "preferences": {
+        "desiredRoles": ["data_analyst"],
+        "employmentTypes": ["full_time"],
+        "remotePreference": "any",
+        "locations": ["Bengaluru", "Hyderabad"],
+        "willingToRelocate": true,
+        "minAnnualSalaryInr": null,
+        "noticePeriodDays": 0,
+        "availableFrom": null,
+        "graduationYear": 2025,
+        "degree": "B.Com",
+        "branch": "Commerce",
+        "scoreType": "percentage",
+        "score": 72,
+        "scoreScale": 100,
+        "workAuthorization": "authorized"
+      }
+    },
+    {
+      "id": "data-student",
+      "family": "data_analyst",
+      "description": "Final-year (2026) B.Sc Statistics student with an R project and coursework",
+      "content": {
+        "summary": null,
+        "links": [],
+        "skills": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Excel",
+            "tier": "self_declared"
+          }
+        ],
+        "experiences": [],
+        "projects": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "name": "Rainfall trends in Maharashtra",
+            "description": "Statistical analysis in the R language of 30 years of district rainfall data, with charts",
+            "url": null,
+            "bullets": ["Built data visualization panels comparing districts by decade"],
+            "skills": ["R", "Statistics", "Data visualization"]
+          }
+        ],
+        "education": [
+          {
+            "sourceText": null,
+            "userConfirmed": true,
+            "institution": "Sahyadri Science College",
+            "degree": "B.Sc",
+            "branch": "Statistics",
+            "startYear": 2023,
+            "graduationYear": 2026,
+            "scoreType": "percentage",
+            "score": 81,
+            "scoreScale": 100,
+            "coursework": [
+              "Probability and Statistics",
+              "Regression Analysis",
+              "Statistical Computing with R"
+            ]
+          }
+        ],
+        "certifications": []
+      },
+      "preferences": {
+        "desiredRoles": ["data_analyst"],
+        "employmentTypes": ["internship", "full_time"],
+        "remotePreference": "any",
+        "locations": ["Pune"],
+        "willingToRelocate": false,
+        "minAnnualSalaryInr": null,
+        "noticePeriodDays": null,
+        "availableFrom": null,
+        "graduationYear": 2026,
+        "degree": "B.Sc",
+        "branch": "Statistics",
+        "scoreType": "percentage",
+        "score": 81,
+        "scoreScale": 100,
+        "workAuthorization": "authorized"
+      }
+    }
+  ]
+}

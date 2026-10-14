@@ -9,6 +9,14 @@ import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
+const NAV_LINKS = [
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/jobs", label: "Jobs" },
+  { href: "/tracker", label: "Tracker" },
+  { href: "/profile", label: "Profile" },
+  { href: "/settings", label: "Settings" },
+];
+
 export const metadata: Metadata = {
   title: { default: PRODUCT.name, template: `%s · ${PRODUCT.name}` },
   description: PRODUCT.promise,
@@ -28,22 +36,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <header className="border-b">
           <nav
             aria-label="Main"
-            className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between gap-4 px-4"
+            className="mx-auto flex min-h-14 w-full max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-2"
           >
             <Link href={user ? "/dashboard" : "/"} className="font-semibold">
               {PRODUCT.name}
             </Link>
             {user ? (
-              <div className="flex items-center gap-2">
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/dashboard">Dashboard</Link>
-                </Button>
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/profile">Profile</Link>
-                </Button>
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/settings">Settings</Link>
-                </Button>
+              <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                {NAV_LINKS.map((link) => (
+                  <Button key={link.href} asChild variant="ghost" size="sm">
+                    <Link href={link.href}>{link.label}</Link>
+                  </Button>
+                ))}
                 <form action="/auth/signout" method="post">
                   <Button type="submit" variant="outline" size="sm">
                     Sign out

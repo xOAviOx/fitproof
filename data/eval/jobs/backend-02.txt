@@ -1,0 +1,25 @@
+Backend Developer Intern (6 months)
+Paytrail · Pune (hybrid, 3 days in office)
+
+Paytrail builds expense management for small businesses. As an intern on the payments team, you will ship real features used by 8,000 companies, with a mentor who reviews every pull request.
+
+Responsibilities
+• Build and maintain APIs in Node.js with Express.
+• Model data in MongoDB and write aggregation queries for reporting.
+• Debug production issues with the team and write post-incident notes.
+• Write tests for the code you ship.
+
+Requirements
+• Solid JavaScript skills, including async code and promises.
+• Experience building at least one backend project with Node.js and Express.
+• Working knowledge of MongoDB.
+• Comfortable with Git and pull-request based workflows.
+
+Nice to have
+• TypeScript.
+• Any exposure to AWS (Lambda, S3, or EC2).
+
+Who can apply
+Final-year students graduating in 2026 or 2027 from any engineering or computer applications programme. You must be available full-time for six months starting no later than 1 August 2026.
+
+Stipend: ₹40,000 per month. Interns with strong performance receive pre-placement offers.

@@ -2,6 +2,7 @@ import { createDb, type Database } from "@repo/db";
 import { createProfileExtractor } from "@repo/llm";
 import { createResumeStorage, provisionResumeBucket } from "@repo/storage";
 import pino, { type Logger } from "pino";
+import { analyzeJobs } from "./commands/analyze-jobs";
 import { extractResumes } from "./commands/extract-resumes";
 import { selftest } from "./commands/selftest";
 import { parseWorkerEnv } from "./env";
@@ -24,6 +25,10 @@ const COMMANDS: Record<string, Command> = {
         extractor: createProfileExtractor(db, env),
       });
     },
+  },
+  "analyze-jobs": {
+    description: "Analyse up to ten queued jobs users added",
+    run: (db, logger) => analyzeJobs(db, logger, process.env),
   },
   "storage-setup": {
     description: "Create or update the private résumé bucket (operator only)",

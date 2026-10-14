@@ -1,0 +1,22 @@
+Software Engineer, Web (Next.js)
+Cartwheel Commerce · Hyderabad (hybrid)
+
+Cartwheel builds storefronts for direct-to-consumer brands. The web team ships the Next.js storefront that renders 30 million product pages a month.
+
+Your work
+• Build pages and components with Next.js, React, and TypeScript.
+• Style with Tailwind CSS against our design tokens.
+• Query our GraphQL API and handle loading and error states well.
+• Write automated tests and keep our Lighthouse scores high.
+
+About you
+• 0–2 years of experience; strong internships or projects count.
+• Hands-on experience with Next.js and React.
+• Good TypeScript skills.
+• Experience with Tailwind CSS or another utility-first approach.
+• You have consumed GraphQL APIs.
+• You write tests as part of every change.
+
+Nice to have: experience with webpack configuration and CI/CD pipelines.
+
+Hybrid: three days a week in our Gachibowli office. Pay: ₹10–15 LPA.

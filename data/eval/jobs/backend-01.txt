@@ -1,0 +1,31 @@
+Software Engineer – Backend (2025 Batch)
+Kiranakart Technologies · Bengaluru (on-site, Koramangala)
+
+About us
+Kiranakart helps 40,000 neighbourhood stores across India order stock, manage credit, and get paid. Our platform team owns the order, inventory, and ledger services that every store depends on.
+
+What you'll do
+- Design and build REST APIs for ordering and inventory using Java and Spring Boot.
+- Write efficient MySQL queries and help us evolve the schema as we grow.
+- Write unit and integration tests, review code, and take part in on-call once you're settled in.
+- Work with product managers and Android engineers to ship features end to end.
+
+What we're looking for
+- Strong fundamentals in data structures and algorithms.
+- Good working knowledge of Java and object-oriented programming.
+- Hands-on experience with Spring Boot through internships or projects.
+- Comfortable writing SQL, preferably on MySQL.
+- Familiar with Git.
+
+Good to have
+- Exposure to Kafka or any message queue.
+- Some experience with Docker.
+
+Eligibility
+- B.E./B.Tech in Computer Science, Information Technology, or related branches.
+- 2025 graduates only.
+- Minimum 7.0 CGPA (on a 10-point scale) with no active backlogs.
+- Candidates must be able to join within 30 days of the offer.
+
+Compensation: ₹12–16 LPA plus joining bonus.
+To apply, send your résumé to campus.hiring@kiranakart.example or call +91 98450 12345.

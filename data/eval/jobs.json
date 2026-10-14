@@ -1,0 +1,159 @@
+{
+  "$comment": "Synthetic job descriptions modelled on Indian fresher postings, hand-labelled. Skills are what the posting asks of the candidate (requirements, not the team's whole stack). Eligibility lists the hard conditions it states. Bands are a reviewer's judgement of fit for each paired profile.",
+  "asOf": "2026-07-01",
+  "jobs": [
+    {
+      "id": "backend-01",
+      "family": "backend",
+      "labels": {
+        "coreSkills": ["Java", "Spring Boot", "SQL", "Data structures and algorithms", "OOP", "Git"],
+        "niceToHave": ["MySQL", "Kafka", "Docker"],
+        "eligibility": ["degree", "graduation_batch", "availability"]
+      },
+      "pairs": [
+        { "profile": "backend-intern", "band": "strong" },
+        { "profile": "backend-student", "band": "excluded" }
+      ]
+    },
+    {
+      "id": "backend-02",
+      "family": "backend",
+      "labels": {
+        "coreSkills": ["JavaScript", "Node.js", "Express", "MongoDB", "Git"],
+        "niceToHave": ["TypeScript", "AWS"],
+        "eligibility": ["graduation_batch", "degree", "availability"]
+      },
+      "pairs": [
+        { "profile": "backend-intern", "band": "excluded" },
+        { "profile": "backend-student", "band": "low" }
+      ]
+    },
+    {
+      "id": "backend-03",
+      "family": "backend",
+      "labels": {
+        "coreSkills": ["Python", "SQL", "REST", "Git"],
+        "niceToHave": ["Redis", "Celery"],
+        "eligibility": ["experience_band"]
+      },
+      "pairs": [
+        { "profile": "backend-intern", "band": "partial" },
+        { "profile": "backend-student", "band": "good" }
+      ]
+    },
+    {
+      "id": "backend-04",
+      "family": "backend",
+      "labels": {
+        "coreSkills": ["Golang", "gRPC", "Kubernetes", "Docker", "SQL", "Microservices"],
+        "niceToHave": ["PostgreSQL", "Kafka", "GCP"],
+        "eligibility": ["experience_band", "work_authorization"]
+      },
+      "pairs": [
+        { "profile": "backend-intern", "band": "excluded" },
+        { "profile": "backend-student", "band": "excluded" }
+      ]
+    },
+    {
+      "id": "frontend-01",
+      "family": "frontend",
+      "labels": {
+        "coreSkills": ["JavaScript", "TypeScript", "React", "HTML", "CSS", "Redux", "Jest"],
+        "niceToHave": ["Next.js", "Tailwind CSS"],
+        "eligibility": ["graduation_batch", "degree", "location"]
+      },
+      "pairs": [
+        { "profile": "frontend-intern", "band": "strong" },
+        { "profile": "frontend-student", "band": "excluded" }
+      ]
+    },
+    {
+      "id": "frontend-02",
+      "family": "frontend",
+      "labels": {
+        "coreSkills": ["Angular", "TypeScript", "JavaScript", "HTML", "CSS", "SCSS", "REST"],
+        "niceToHave": [],
+        "eligibility": ["degree", "availability"]
+      },
+      "pairs": [
+        { "profile": "frontend-intern", "band": "partial" },
+        { "profile": "frontend-student", "band": "excluded" }
+      ]
+    },
+    {
+      "id": "frontend-03",
+      "family": "frontend",
+      "labels": {
+        "coreSkills": ["JavaScript", "React", "Accessibility", "HTML", "Git"],
+        "niceToHave": ["Vue"],
+        "eligibility": ["graduation_batch", "location"]
+      },
+      "pairs": [
+        { "profile": "frontend-intern", "band": "excluded" },
+        { "profile": "frontend-student", "band": "partial" }
+      ]
+    },
+    {
+      "id": "frontend-04",
+      "family": "frontend",
+      "labels": {
+        "coreSkills": ["Next.js", "React", "TypeScript", "Tailwind CSS", "GraphQL"],
+        "niceToHave": ["Webpack", "CI/CD"],
+        "eligibility": ["experience_band"]
+      },
+      "pairs": [
+        { "profile": "frontend-intern", "band": "good" },
+        { "profile": "frontend-student", "band": "low" }
+      ]
+    },
+    {
+      "id": "data-01",
+      "family": "data_analyst",
+      "labels": {
+        "coreSkills": ["SQL", "Excel", "Power BI", "Statistics"],
+        "niceToHave": [],
+        "eligibility": ["degree", "graduation_batch"]
+      },
+      "pairs": [
+        { "profile": "data-intern", "band": "strong" },
+        { "profile": "data-student", "band": "excluded" }
+      ]
+    },
+    {
+      "id": "data-02",
+      "family": "data_analyst",
+      "labels": {
+        "coreSkills": ["SQL", "Excel", "Tableau", "Data visualization"],
+        "niceToHave": ["Python"],
+        "eligibility": ["experience_band"]
+      },
+      "pairs": [
+        { "profile": "data-intern", "band": "good" },
+        { "profile": "data-student", "band": "partial" }
+      ]
+    },
+    {
+      "id": "data-03",
+      "family": "data_analyst",
+      "labels": {
+        "coreSkills": ["Python", "pandas", "SQL", "Google Analytics", "Looker"],
+        "niceToHave": ["Statistics", "NumPy"],
+        "eligibility": ["availability"]
+      },
+      "pairs": [{ "profile": "data-intern", "band": "partial" }, { "profile": "data-student", "band": "low" }]
+    },
+    {
+      "id": "data-04",
+      "family": "data_analyst",
+      "labels": {
+        "coreSkills": ["Excel", "SQL", "Python", "R language"],
+        "niceToHave": ["ETL"],
+        "eligibility": ["graduation_batch", "availability"]
+      },
+      "pairs": [
+        { "profile": "data-intern", "band": "strong" },
+        { "profile": "data-student", "band": "partial" }
+      ]
+    }
+  ]
+}

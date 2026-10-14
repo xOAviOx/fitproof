@@ -1,0 +1,24 @@
+Data Analyst – Graduate Program 2025
+Northwind Retail India · Bengaluru
+
+Northwind runs 210 grocery stores across South India. Our graduate program places analysts with merchandising, supply chain, and marketing teams for two years, with structured training in the first three months.
+
+Responsibilities
+- Pull and clean data from our warehouse using SQL.
+- Build weekly sales and stock dashboards in Power BI.
+- Use Excel (pivot tables, lookups) for quick analyses requested by category managers.
+- Apply basic statistics to explain changes in sales and flag unusual patterns.
+- Present findings clearly to non-technical stakeholders.
+
+Requirements
+- Good SQL skills: joins, aggregations, and window functions.
+- Advanced Excel.
+- Experience building dashboards in Power BI.
+- Understanding of descriptive statistics.
+
+Eligibility
+- Any graduate degree: B.Com, B.Sc, BBA, B.A. (Economics), or B.E./B.Tech.
+- Graduating in 2025.
+- At least 65% aggregate in graduation.
+
+The role is based at our head office in Whitefield, Bengaluru. Salary: ₹6.5 LPA.

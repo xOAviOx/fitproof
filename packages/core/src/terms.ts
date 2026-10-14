@@ -16,7 +16,7 @@ export function normalizeTerm(text: string): string {
 
 type Dictionary<K extends string> = readonly { key: K; aliases: readonly string[] }[];
 
-function termMatcher<K extends string>(dictionary: Dictionary<K>) {
+export function termMatcher<K extends string>(dictionary: Dictionary<K>) {
   // Longest aliases first, and each match is blanked out, so "electrical and electronics"
   // is not also read as "electronics".
   const entries = dictionary

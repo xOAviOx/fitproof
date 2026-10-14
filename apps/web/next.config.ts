@@ -19,7 +19,14 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  transpilePackages: ["@repo/core", "@repo/db", "@repo/storage"],
+  transpilePackages: [
+    "@repo/analysis",
+    "@repo/connectors",
+    "@repo/core",
+    "@repo/db",
+    "@repo/llm",
+    "@repo/storage",
+  ],
   experimental: { serverActions: { bodySizeLimit: "6mb" } },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

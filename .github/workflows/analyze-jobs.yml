@@ -1,0 +1,39 @@
+name: Analyze jobs
+
+# The web app analyses a job right after it is added. This sweep picks up runs it couldn't finish
+# (closed tab, timeout, provider quota) so nothing stays queued for long.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: analyze-jobs
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    if: vars.ANALYZE_JOBS_WORKER == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm worker analyze-jobs
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER || 'gemini' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'gemini-2.5-flash' }}
+          LLM_EMBEDDING_MODEL: ${{ vars.LLM_EMBEDDING_MODEL }}
+          LLM_RPM: ${{ vars.LLM_RPM || '5' }}
+          LLM_DAILY_REQUESTS: ${{ vars.LLM_DAILY_REQUESTS || '100' }}

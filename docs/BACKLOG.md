@@ -21,3 +21,10 @@ Ideas that are deliberately **out of scope** for the MVP. Record new ideas here 
 - CGPA ↔ percentage conversion per university. Deliberately not done; cross-scale cutoffs show a check (ADR-019)
 - Work authorization for countries other than India (today those requirements always show a check)
 - Grow the city, degree, and branch vocabularies from real job descriptions collected in M4 (ADR-020)
+- Add real job descriptions (with permission) and a second labeller to `data/eval`; today's 12 are synthetic (ADR-028)
+- Grow the 67-skill vocabulary from real postings. The keyword baseline missed Celery because it isn't listed
+- Treat alternatives such as "Python or R" as one requirement. Today each skill counts separately, so missing
+  either one lowers coverage
+- A model-free similarity signal (for example, lexical overlap of responsibilities) so keyword mode can reach Strong
+- Mask recruiter names in pasted descriptions. Only emails and phone numbers are masked today
+- Let users delete a job they added. Today jobs stay until the account is deleted; the tracker entry can be removed

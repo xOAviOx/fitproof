@@ -55,6 +55,9 @@ export default defineConfig({
             NEXT_PUBLIC_SITE_URL: baseURL,
             RESUME_UPLOADS_ENABLED: "true",
             SUPABASE_SECRET_KEY: "e2e-storage-secret-never-use-in-production",
+            // Empty keys win over the root .env, so jobs are always read by keyword, never by a live model.
+            GEMINI_API_KEY: "",
+            OPENAI_API_KEY: "",
           },
         },
       ],

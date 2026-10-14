@@ -1,0 +1,10 @@
+Associate Software Engineer – Python
+Medisync Health, Hyderabad
+
+Medisync connects 300 hospitals to insurers so that cashless claims are approved in hours, not days. We are hiring associate engineers to join the claims platform team, which runs on Python services backed by PostgreSQL.
+
+In this role you will build services in Python using Django or FastAPI, design REST endpoints that partner hospitals integrate with, and write migrations and queries for our PostgreSQL databases. You will deploy to Linux servers and learn to read logs and metrics to fix problems before users notice them. Experience with Redis or Celery is an added advantage, and so is any work with healthcare data standards.
+
+You should have 0–1 years of professional experience. Internships count. We expect you to be comfortable with Python and SQL, to understand how HTTP and REST APIs work, and to use Git day to day. A degree in computer science or a related field is preferred but not required if you can show strong projects.
+
+This is an office-based role in Hitech City, Hyderabad. Salary range: 8 to 11 LPA.

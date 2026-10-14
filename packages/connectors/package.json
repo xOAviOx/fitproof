@@ -1,0 +1,20 @@
+{
+  "name": "@repo/connectors",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@mozilla/readability": "0.6.0",
+    "@repo/core": "workspace:*",
+    "linkedom": "0.18.13",
+    "robots-parser": "3.0.1",
+    "zod": "^4.6.7"
+  }
+}
